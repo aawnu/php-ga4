@@ -8,5 +8,7 @@
             "AlexWestergaard\\PhpGa4\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "guzzlehttp/guzzle": "^7.4"
+    }
 }
