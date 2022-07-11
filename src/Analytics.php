@@ -86,7 +86,9 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         $url = $this->debug || $validate ? $this::URL_DEBUG : $this::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
-        $body = $this->toArray();
+        $catch = parent::toArray(true, $errorStack);
+        $errorStack = $catch['error'];
+        $body = $catch['data'];
 
         $guzzle = new Guzzle();
         $res = $guzzle->request('POST', $url, ['json' => $body]);

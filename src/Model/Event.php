@@ -35,12 +35,11 @@ abstract class Event extends ToArray implements Interface\Export
         }
 
         $catch = parent::toArray(true, $errorStack);
+        $errorStack = $catch['error'];
 
         if (is_array($catch['data']) && !empty($catch['data'])) {
-            $return['params'] = parent::toArray($catch['data']);
+            $return['params'] = $catch['data'];
         }
-
-        $errorStack = parent::toArray($catch['error']);
 
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
