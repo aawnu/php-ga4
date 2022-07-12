@@ -13,7 +13,7 @@ class ViewSearchResults extends Model\Event implements Interface\ViewSearchResul
 
     public function getName(): string
     {
-        return 'search_term';
+        return 'view_search_results';
     }
 
     public function getParams(): array
