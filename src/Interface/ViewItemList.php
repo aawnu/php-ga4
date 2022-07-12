@@ -4,7 +4,7 @@ namespace AlexWestergaard\PhpGa4\Interface;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface SelectItem
+interface ViewItem
 {
     /**
      * The ID of the list in which the item was presented to the user. \

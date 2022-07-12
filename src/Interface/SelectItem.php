@@ -28,7 +28,7 @@ interface SelectItem
      * \* The items array is expected to have a single element, representing the selected item. If multiple elements are provided, only the first element in items will be used.
      *
      * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
+     * @param AlexWestergaard\PhpGa4\Item $item
      */
-    public function addItem(Item $item);
+    public function setItem(Item $item);
 }

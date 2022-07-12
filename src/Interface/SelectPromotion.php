@@ -2,7 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Interface;
 
-use AlexWestergaard\PhpGa4\Module;
+use AlexWestergaard\PhpGa4\Item;
 
 interface SelectPromotion
 {
@@ -58,5 +58,5 @@ interface SelectPromotion
      * @var items
      * @param AlexWestergaard\PhpGa4\Module\Item $item
      */
-    public function addItem(Module\Item $item);
+    public function addItem(Item $item);
 }
