@@ -32,7 +32,7 @@ abstract class ToArray implements Interface\Export
                     $errorStack = new GA4Exception("Param '{$param}' is required but not set", $errorStack);
                 }
                 continue;
-            } elseif (empty($this->{$param}) && (is_array($this->{$param}) || strval($this->{$param}) !== 0)) {
+            } elseif (empty($this->{$param}) && (is_array($this->{$param}) || strval($this->{$param}) !== '0')) {
                 if (in_array($param, $required)) {
                     $errorStack = new GA4Exception("Param '{$param}' is required but empty", $errorStack);
                 }
