@@ -95,19 +95,19 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
 
         $code = $res->getStatusCode() ?? 0;
         if ($code !== 200) {
-            $errorStack = new GA4Exception("REquest received code {$code}", 0, $errorStack);
+            $errorStack = new GA4Exception("REquest received code {$code}", $errorStack);
         }
 
         $body = $res->getBody()->getContents();
         $data = @json_decode($body, true);
 
         if (empty($body)) {
-            $errorStack = new GA4Exception("Received not body", 0, $errorStack);
+            $errorStack = new GA4Exception("Received not body", $errorStack);
         } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
-            $errorStack = new GA4Exception("Could not parse response", 0, $errorStack);
+            $errorStack = new GA4Exception("Could not parse response", $errorStack);
         } elseif (!empty($data['validationMessages'])) {
             foreach ($data['validationMessages'] as $msg) {
-                $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], 0, $errorStack);
+                $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], $errorStack);
             }
         }
 

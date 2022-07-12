@@ -25,16 +25,16 @@ abstract class ToArray implements Interface\Export
 
         foreach ($params as $param) {
             if (!property_exists($this, $param)) {
-                $errorStack = new GA4Exception("'{$param}' is not defined", 0, $errorStack);
+                $errorStack = new GA4Exception("'{$param}' is not defined", $errorStack);
                 continue;
             } elseif (!isset($this->{$param})) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("'{$param}' is required but not set", 0, $errorStack);
+                    $errorStack = new GA4Exception("'{$param}' is required but not set", $errorStack);
                 }
                 continue;
             } elseif (empty($this->{$param}) && (is_array($this->{$param}) || strval($this->{$param}) !== 0)) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("'{$param}' is required but empty", 0, $errorStack);
+                    $errorStack = new GA4Exception("'{$param}' is required but empty", $errorStack);
                 }
                 continue;
             }

@@ -24,11 +24,11 @@ abstract class Event extends ToArray implements Interface\Export
         $errorStack = null;
 
         if (!method_exists($this, 'getName')) {
-            $errorStack = new GA4Exception("'self::getName()' does not exist", 0, $errorStack);
+            $errorStack = new GA4Exception("'self::getName()' does not exist", $errorStack);
         } else {
             $name = $this->getName();
             if (empty($name)) {
-                $errorStack = new GA4Exception("'self::getName()' can not be empty", 0, $errorStack);
+                $errorStack = new GA4Exception("'self::getName()' can not be empty", $errorStack);
             } else {
                 $return['name'] = $name;
             }
