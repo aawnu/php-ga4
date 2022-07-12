@@ -82,7 +82,9 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
             throw new GA4Exception("Can't add more than 25 user properties");
         }
 
-        $this->user_properties[] = $prop->toArray();
+        $catch = $prop->toArray();
+
+        $this->user_properties[$catch['name']] = $catch['value'];
         return count($this->user_properties);
     }
 
