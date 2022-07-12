@@ -105,6 +105,58 @@ try {
 }
 ```
 
+## Custom Events
+You can build your own custom events by extending on the Model\Event abstraction class; example
+
+```php
+<?php
+
+use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Model;
+
+class ExampleEvent extends Model\Event
+{
+    protected $my_variable;
+    protected $my_required_variable;
+
+    public function getName(): string
+    {
+        return 'example_event';
+    }
+
+    public function getParams(): array
+    {
+        return [
+            'my_variable',
+            'my_required_variable',
+        ];
+    }
+
+    public function getRequiredParams(): array
+    {
+        return [
+            'my_required_variable',
+        ];
+    }
+
+    public function setMyVariable(string $value)
+    {
+        $this->my_variable = $value;
+    }
+
+    public function setMyRequiredVariable(string $value)
+    {
+        $this->my_required_variable = $value;
+    }
+}
+```
+
+It's important that you extend the Model\Event class because Analytics checks inheritance towards that class to ensure we grap all parameters and ensures required parameters.
+
+Property name and value will be used as parameter name and value.
+
+Just make sure not to use any [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
+
 ## Dependencies
 - [GuzzleHttp/Guzzle: 6.x](https://packagist.org/packages/guzzlehttp/guzzle)
   - Please update [composer.json](composer.json) Guzzle to version 7.x for PHP 8.0+
