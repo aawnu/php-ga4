@@ -106,7 +106,8 @@ try {
 ```
 
 ## Dependencies
-- [GuzzleHttp/Guzzle: 7.x](https://packagist.org/packages/guzzlehttp/guzzle)
+- [GuzzleHttp/Guzzle: 6.x](https://packagist.org/packages/guzzlehttp/guzzle)
+  - Please update [composer.json](composer.json) Guzzle to version 7.x for PHP 8.0+
 
 ## Source Documentation
 - [Measurement Protocol](https://developers.google.com/analytics/devguides/collection/protocol/ga4)
