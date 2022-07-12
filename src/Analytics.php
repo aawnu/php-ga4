@@ -44,8 +44,7 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     public function getRequiredParams(): array
     {
         return [
-            'client_id',
-            'events'
+            'client_id'
         ];
     }
 
@@ -69,16 +68,49 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         $this->timestamp_micros = floor($microOrUnix * 1000);
     }
 
+    /**
+     * Add user property to your analytics request \
+     * Maximum is 25 per request
+     *
+     * @param AlexWestergaard\PhpGa4\UserProperty $event
+     * @return int How many events you have added
+     * @throws AlexWestergaard\PhpGa4\GA4Exception
+     */
     public function addUserProperty(UserProperty $prop)
     {
+        if (count($this->user_properties) >= 25) {
+            throw new GA4Exception("Can't add more than 25 user properties");
+        }
+
         $this->user_properties[] = $prop->toArray();
+        return count($this->user_properties);
     }
 
+    /**
+     * Add event to your analytics request \
+     * Maximum is 25 per request
+     *
+     * @param AlexWestergaard\PhpGa4\Model\Event $event
+     * @return int How many events you have added
+     * @throws AlexWestergaard\PhpGa4\GA4Exception
+     */
     public function addEvent(Model\Event $event)
     {
+        if (count($this->events) >= 25) {
+            throw new GA4Exception("Can't add more than 25 events");
+        }
+
         $this->events[] = $event->toArray();
+        return count($this->events);
     }
 
+    /**
+     * Push your current stack to Google Analytics
+     *
+     * @param boolean $validate Same as debug but outputs request and response
+     * @return bool Whether the request returned status 200
+     * @throws AlexWestergaard\PhpGa4\GA4Exception
+     */
     public function post(bool $validate = false)
     {
         $errorStack = null;
