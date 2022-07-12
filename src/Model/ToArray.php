@@ -44,7 +44,11 @@ abstract class ToArray implements Interface\Export
             }
 
             $value = $this->{$param};
-            if (strlen($value) > 100) {
+
+            if (is_array($value)) {
+                // Should be handled and validated within setter, fx addItem/setItem
+                continue;
+            } elseif (mb_strlen($value) > 100) {
                 $errorStack = new GA4Exception("Value '{$value}' is too long, maximum is 100 characters", $errorStack);
             }
 
