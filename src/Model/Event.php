@@ -29,6 +29,10 @@ abstract class Event extends ToArray implements Interface\Export
             $name = $this->getName();
             if (empty($name)) {
                 $errorStack = new GA4Exception("'self::getName()' can not be empty", $errorStack);
+            } elseif (strlen($name) > 40) {
+                $errorStack = new GA4Exception("'self::getName()' can not be longer than 40 characters", $errorStack);
+            } elseif (preg_match('/[^\w\d\-]/', $name)) {
+                $errorStack = new GA4Exception("'self::getName()' can only be letters, numbers, underscores and dashes", $errorStack);
             } else {
                 $return['name'] = $name;
             }

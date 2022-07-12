@@ -120,24 +120,28 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
 
         $catch = parent::toArray(true, $errorStack);
         $errorStack = $catch['error'];
-        $body = $catch['data'];
+        $reqBody = $catch['data'];
 
-        $guzzle = new Guzzle();
-        $res = $guzzle->request('POST', $url, ['json' => $body]);
-
-        $code = $res->getStatusCode() ?? 0;
-        if ($code !== 200) {
-            $errorStack = new GA4Exception("REquest received code {$code}", $errorStack);
+        if (mb_strlen(json_encode($reqBody)) > 1024 * 130) {
+            $errorStack = new GA4Exception("Request body exceeds 130kB", $errorStack);
         }
 
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
         }
 
-        $body = $res->getBody()->getContents();
-        $data = @json_decode($body, true);
+        $guzzle = new Guzzle();
+        $res = $guzzle->request('POST', $url, ['json' => $reqBody]);
 
-        if (empty($body)) {
+        $resCode = $res->getStatusCode() ?? 0;
+        if ($resCode !== 200) {
+            $errorStack = new GA4Exception("Request received code {$resCode}", $errorStack);
+        }
+
+        $resBody = $res->getBody()->getContents();
+        $data = @json_decode($resBody, true);
+
+        if (empty($resBody)) {
             $errorStack = new GA4Exception("Received not body", $errorStack);
         } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
             $errorStack = new GA4Exception("Could not parse response", $errorStack);
@@ -148,15 +152,15 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         }
 
         if ($validate) {
-            echo "Request \\ ", $url, "\r\n", json_encode($catch['data'], JSON_PRETTY_PRINT), "\r\n\r\n";
-            echo "Response \\ ", $code, "\r\n", json_encode($data, JSON_PRETTY_PRINT), "\r\n\r\n";
+            echo "Request \\ ", $url, "\r\n", json_encode($reqBody, JSON_PRETTY_PRINT), "\r\n\r\n";
+            echo "Response \\ ", $resCode, "\r\n", json_encode($data, JSON_PRETTY_PRINT), "\r\n\r\n";
         }
 
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
         }
 
-        return $code === 200;
+        return $resCode === 200;
     }
 
     public function toArray(bool $isParent = false, $childErrors = null): array

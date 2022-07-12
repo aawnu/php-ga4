@@ -39,7 +39,16 @@ abstract class ToArray implements Interface\Export
                 continue;
             }
 
-            $return[$param] = $this->{$param};
+            if (strlen($param) > 40) {
+                $errorStack = new GA4Exception("'{$param}' is too long, maximum is 40 characters", $errorStack);
+            }
+
+            $value = $this->{$param};
+            if (strlen($value) > 100) {
+                $errorStack = new GA4Exception("'{$value}' is too long, maximum is 100 characters", $errorStack);
+            }
+
+            $return[$param] = $value;
         }
 
         if ($isParent) {
