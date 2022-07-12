@@ -1,0 +1,14 @@
+{
+    "name": "alexwestergaard/php-ga4",
+    "description": "PHP Wrapper for Google Analytics 4",
+    "type": "library",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "AlexWestergaard\\PhpGa4\\": "src/"
+        }
+    },
+    "require": {
+        "guzzlehttp/guzzle": "^7.4"
+    }
+}
