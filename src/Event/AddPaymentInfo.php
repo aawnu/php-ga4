@@ -12,7 +12,7 @@ class AddPaymentInfo extends Model\Event implements Interface\AddPaymentInfo
     protected $value;
     protected $coupon;
     protected $payment_type;
-    protected $items;
+    protected $items = [];
 
     public function getName(): string
     {
