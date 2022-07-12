@@ -19,8 +19,8 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     protected $timestamp_micros;
     protected $client_id;
     protected $user_id;
-    protected $user_properties;
-    protected $events;
+    protected $user_properties = [];
+    protected $events = [];
 
     public function __construct(string $measurementId, string $apiSecret, bool $debug = false)
     {
