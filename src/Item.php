@@ -5,6 +5,9 @@ namespace AlexWestergaard\PhpGa4;
 use AlexWestergaard\PhpGa4\Interface;
 use AlexWestergaard\PhpGa4\Model;
 
+/**
+ * @requires One of item_id or item_name must be present and valid
+ */
 class Item extends Model\ToArray implements Interface\Export, Interface\Item
 {
     protected $item_id;
@@ -63,9 +66,9 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
         $this->item_brand = $brand;
     }
 
-    public function setItemCategory(string $category)
+    public function addItemCategory(string $category)
     {
-        $this->item_category = $category;
+        $this->item_category[] = $category;
     }
 
     public function setItemListId(string $id)
@@ -138,6 +141,18 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
 
     public function toArray(bool $isParent = false, $childErrors = null): array
     {
-        return parent::toArray($isParent, $childErrors);
+        $return = parent::toArray($isParent, $childErrors);
+
+        if (isset($return['item_category'])) {
+            $cats = $return['item_category'];
+            unset($return['item_category']);
+
+            foreach ($cats as $i => $v) {
+                $id = $i > 0 ? $i + 1 : '';
+                $return['item_category' . $id] = $v;
+            }
+        }
+
+        return $return;
     }
 }

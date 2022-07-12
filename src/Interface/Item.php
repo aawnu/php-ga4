@@ -80,7 +80,7 @@ interface Item
      * @var item_category[]
      * @param string $category eg. Apparel
      */
-    public function setItemCategory(string $category);
+    public function addItemCategory(string $category);
 
     /**
      * The ID of the list in which the item was presented to the user. \
