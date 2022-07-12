@@ -98,6 +98,10 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
             $errorStack = new GA4Exception("REquest received code {$code}", $errorStack);
         }
 
+        if ($errorStack instanceof GA4Exception) {
+            throw $errorStack;
+        }
+
         $body = $res->getBody()->getContents();
         $data = @json_decode($body, true);
 
