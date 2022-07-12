@@ -45,7 +45,7 @@ abstract class ToArray implements Interface\Export
         if ($isParent) {
             return [
                 'data' => $return,
-                'error' => $childErrors
+                'error' => $errorStack
             ];
         } elseif ($errorStack instanceof GA4Exception) {
             throw $errorStack;
