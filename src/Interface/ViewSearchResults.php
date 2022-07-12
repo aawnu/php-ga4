@@ -4,7 +4,7 @@ namespace AlexWestergaard\PhpGa4\Interface;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface ViewSearch
+interface ViewSearchResults
 {
     /**
      * The term that was searched for.
@@ -18,7 +18,7 @@ interface ViewSearch
      * The items for the event.
      *
      * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
+     * @param AlexWestergaard\PhpGa4\Item $item
      */
     public function addItem(Item $item);
 }
