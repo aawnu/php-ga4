@@ -8,104 +8,90 @@ use AlexWestergaard\PhpGa4\Model;
 class Item extends Model\ToArray implements Interface\Export, Interface\Item
 {
     protected $item_id;
+    protected $item_name;
+    protected $affiliation;
+    protected $coupon;
+    protected $currency;
+    protected $discount;
+    protected $index;
+    protected $item_brand;
+    protected $item_category = [];
+    protected $item_list_id;
+    protected $item_list_name;
+    protected $item_variant;
+    protected $location_id;
+    protected $price;
+    protected $quantity;
 
     public function setItemId(string $id)
     {
         $this->item_id = $id;
     }
 
-    protected $item_name;
-
     public function setItemName(string $name)
     {
         $this->item_name = $name;
     }
-
-    protected $affiliation;
 
     public function setAffiliation(string $affiliation)
     {
         $this->affiliation = $affiliation;
     }
 
-    protected $coupon;
-
     public function setCoupon(string $code)
     {
         $this->coupon = $code;
     }
-
-    protected $currency;
 
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
     }
 
-    protected $discount;
-
     public function setDiscount(int|float $amount)
     {
         $this->discount = $amount;
     }
-
-    protected $index;
 
     public function setIndex(int $i)
     {
         $this->index = $i;
     }
 
-    protected $item_brand;
-
     public function setItemBrand(string $brand)
     {
         $this->item_brand = $brand;
     }
-
-    protected $item_category = [];
 
     public function setItemCategory(string $category)
     {
         $this->item_category = $category;
     }
 
-    protected $item_list_id;
-
     public function setItemListId(string $id)
     {
         $this->item_list_id = $id;
     }
-
-    protected $item_list_name;
 
     public function setItemListName(string $name)
     {
         $this->item_list_name = $name;
     }
 
-    protected $item_variant;
-
     public function setItemVariant(string $variant)
     {
         $this->item_variant = $variant;
     }
-
-    protected $location_id;
 
     public function setLocationId(string $id)
     {
         $this->location_id = $id;
     }
 
-    protected $price;
-
     public function setPrice(int|float $amount)
     {
         $this->price = $amount;
     }
-
-    protected $quantity;
 
     public function setQuantity(int $amount)
     {
