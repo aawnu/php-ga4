@@ -111,7 +111,6 @@ You can build your own custom events by extending on the Model\Event abstraction
 ```php
 <?php
 
-use AlexWestergaard\PhpGa4\Interface;
 use AlexWestergaard\PhpGa4\Model;
 
 class ExampleEvent extends Model\Event
