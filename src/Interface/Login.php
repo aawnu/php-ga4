@@ -2,7 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Interface;
 
-interface JoinGroup
+interface Login
 {
     /**
      * The method used to login.
