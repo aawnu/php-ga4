@@ -111,6 +111,11 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
             }
         }
 
+        if ($validate) {
+            echo "Request \\ ", $url, "\r\n", json_encode($catch['data'], JSON_PRETTY_PRINT), "\r\n\r\n";
+            echo "Response \\ ", $code, "\r\n", json_encode($data, JSON_PRETTY_PRINT), "\r\n\r\n";
+        }
+
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
         }
