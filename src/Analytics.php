@@ -122,7 +122,8 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         $errorStack = $catch['error'];
         $reqBody = $catch['data'];
 
-        if (mb_strlen(json_encode($reqBody)) > 1024 * 130) {
+        $kB = 1024;
+        if (mb_strlen(json_encode($reqBody)) > ($kB * 130)) {
             $errorStack = new GA4Exception("Request body exceeds 130kB", $errorStack);
         }
 

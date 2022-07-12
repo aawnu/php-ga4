@@ -25,27 +25,27 @@ abstract class ToArray implements Interface\Export
 
         foreach ($params as $param) {
             if (!property_exists($this, $param)) {
-                $errorStack = new GA4Exception("'{$param}' is not defined", $errorStack);
+                $errorStack = new GA4Exception("Param '{$param}' is not defined", $errorStack);
                 continue;
             } elseif (!isset($this->{$param})) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("'{$param}' is required but not set", $errorStack);
+                    $errorStack = new GA4Exception("Param '{$param}' is required but not set", $errorStack);
                 }
                 continue;
             } elseif (empty($this->{$param}) && (is_array($this->{$param}) || strval($this->{$param}) !== 0)) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("'{$param}' is required but empty", $errorStack);
+                    $errorStack = new GA4Exception("Param '{$param}' is required but empty", $errorStack);
                 }
                 continue;
             }
 
             if (strlen($param) > 40) {
-                $errorStack = new GA4Exception("'{$param}' is too long, maximum is 40 characters", $errorStack);
+                $errorStack = new GA4Exception("Param '{$param}' is too long, maximum is 40 characters", $errorStack);
             }
 
             $value = $this->{$param};
             if (strlen($value) > 100) {
-                $errorStack = new GA4Exception("'{$value}' is too long, maximum is 100 characters", $errorStack);
+                $errorStack = new GA4Exception("Value '{$value}' is too long, maximum is 100 characters", $errorStack);
             }
 
             $return[$param] = $value;
