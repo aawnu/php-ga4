@@ -17,14 +17,14 @@ class UnlockAchievement extends Model\Event implements Interface\UnlockAchieveme
     public function getParams(): array
     {
         return [
-            'unlock_achievement',
+            'achievement_id',
         ];
     }
 
     public function getRequiredParams(): array
     {
         return [
-            'unlock_achievement',
+            'achievement_id',
         ];
     }
 
