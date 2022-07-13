@@ -12,23 +12,25 @@ List of all pre-defined events ready to be used as recommended by the Google Ana
 - ViewItemList
 - ViewPromotion
 - ViewSearchResults
-- ## Enhanced E-commerce
-  - GenerateLead
-  - AddToWishlist
-  - AddToCart
-  - ViewCart
-  - RemoveFromCart
-  - BeginCheckout
-  - AddPaymentInfo
-  - AddShippingInfo
-  - Purchase
-  - Refund
-- ## Enhanced Engagement (Gaming?)
-  - EarnVirtualCurrency
-  - SpendVirtualCurrency
-  - LevelUp
-  - PostScore
-  - TutorialBegin
-  - TutorialComplete
-  - UnlockAchievement
-  - JoinGroup
+
+## Enhanced E-commerce
+- GenerateLead
+- AddToWishlist
+- AddToCart
+- ViewCart
+- RemoveFromCart
+- BeginCheckout
+- AddPaymentInfo
+- AddShippingInfo
+- Purchase
+- Refund
+
+## Enhanced Engagement (Gaming?)
+- EarnVirtualCurrency
+- SpendVirtualCurrency
+- LevelUp
+- PostScore
+- TutorialBegin
+- TutorialComplete
+- UnlockAchievement
+- JoinGroup
