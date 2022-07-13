@@ -1,6 +1,11 @@
 # php-ga4
 PHP Wrapper for Google Analytics 4
 
+```sh
+# Add library to your codebase
+composer require alexwestergaard/php-ga4
+```
+
 ## Pre-built Events
 List of all pre-defined events ready to be used as recommended by the Google Analytics Measurement Protocol.
 
