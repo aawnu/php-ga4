@@ -42,6 +42,10 @@ List of all pre-defined events ready to be used as recommended by the Google Ana
 ```php
 <?php
 
+/**
+ * This is psuedo code for visual representation.
+ */
+
 use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
