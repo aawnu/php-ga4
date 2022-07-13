@@ -4,6 +4,7 @@ use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event\AddToCart;
 use AlexWestergaard\PhpGa4\Event\RemoveFromCart;
 use AlexWestergaard\PhpGa4\Event\ViewCart;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Item;
 
 require_once __DIR__ . '/../vendor/autoload.php';
@@ -59,3 +60,13 @@ $viewCart->addItem($product);
 
 $removeFromCart = new RemoveFromCart();
 $removeFromCart->addItem($product);
+
+// ================================================
+// Push Analytics to Google for Validation
+try {
+    $validate = true; // Outputs request + response to/from Google Analytics
+    $analytics->post($validate);
+} catch (GA4Exception $e) {
+    // Handle exception
+    print_r($e);
+}

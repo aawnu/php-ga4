@@ -15,13 +15,13 @@ $debug = true; // Ensures we don't push live data
 $client_id = 'GA0.5632897.54363853.TEST';
 $user_id = 'GA4_VALIDATE';
 
-// -----------------------------------------
+// ================================================
 // Analytics
 $analytics = new Analytics($measurement_id, $api_secret, $debug);
 $analytics->setClientId($client_id);
 $analytics->setUserId($user_id);
 
-// -----------------------------------------
+// ================================================
 // Item
 $item = new Item();
 $item->setItemId('SKU_1');
@@ -31,7 +31,7 @@ $item->addItemCategory('2022');
 $item->setCurrency('USD');
 $item->setPrice(4.99);
 
-// -----------------------------------------
+// ================================================
 // User Property
 
 $UserProperty = new UserProperty();
@@ -40,7 +40,7 @@ $UserProperty->setValue('premium');
 
 $analytics->addUserProperty($UserProperty);
 
-// -----------------------------------------
+// ================================================
 // Event
 
 $addPaymentInfo = new Event\AddPaymentInfo();
@@ -50,7 +50,7 @@ $addPaymentInfo->addItem($item);
 
 $analytics->addEvent($addPaymentInfo);
 
-// -----------------------------------------
+// ================================================
 // Push Analytics to Google for Validation
 try {
     $validate = true; // Outputs request + response to/from Google Analytics
