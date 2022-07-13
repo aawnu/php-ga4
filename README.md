@@ -1,95 +1,117 @@
 # php-ga4
 PHP Wrapper for Google Analytics 4
 
+## Pre-built Events
+List of all pre-defined events ready to be used as recommended by the Google Analytics Measurement Protocol.
+
+- Share
+- Signup
+- Login
+- Search
+- SelectContent
+- SelectItem
+- SelectPromotion
+- ViewItem
+- ViewItemList
+- ViewPromotion
+- ViewSearchResults
+
+### E-commerce
+- GenerateLead
+- AddToWishlist
+- AddToCart
+- ViewCart
+- RemoveFromCart
+- BeginCheckout
+- AddPaymentInfo
+- AddShippingInfo
+- Purchase
+- Refund
+
+### Engagement (Gaming?)
+- EarnVirtualCurrency
+- SpendVirtualCurrency
+- LevelUp
+- PostScore
+- TutorialBegin
+- TutorialComplete
+- UnlockAchievement
+- JoinGroup
+
 ## Example
 ```php
 <?php
 
-use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\GA4Exception;
+use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
-$measurement_id = 'G-XXXXXX';
-$api_secret = md5('GA4');
-$debug = true; // Ensures we don't push live data
-
-$client_id = 'GA0.5632897.54363853.TEST';
-$user_id = 'GA4_VALIDATE';
-
-// -----------------------------------------
-// Analytics
-$analytics = new Analytics($measurement_id, $api_secret, $debug);
-$analytics->setClientId($client_id);
-$analytics->setUserId($user_id);
-
-// -----------------------------------------
-// Item
-$item = new Item();
-$item->setItemId('SKU_1');
-$item->setItemBrand('My Awesome Product 3000');
-$item->addItemCategory('Awesome');
-$item->addItemCategory('2022');
-$item->setCurrency('USD');
-$item->setPrice(4.99);
-
-// -----------------------------------------
-// User Property
-
-$UserProperty = new UserProperty();
-$UserProperty->setName('customer_tier');
-$UserProperty->setValue('premium');
-
-$analytics->addUserProperty($UserProperty);
-
-// -----------------------------------------
-// Event
-
-$addPaymentInfo = new Event\AddPaymentInfo();
-$addPaymentInfo->setCurrency('USD');
-$addPaymentInfo->setValue(4.99);
-$addPaymentInfo->addItem($item);
-
-$analytics->addEvent($addPaymentInfo);
-
-// -----------------------------------------
-// Push Analytics to Google for Validation
 try {
-    $validate = true; // Outputs request + response to/from Google Analytics
-    $analytics->post($validate);
-} catch (GA4Exception $e) {
+    $analytics = new Analytics('G-XXXXXXXX', 'gDS1gs423dDSH34sdfa');
+    $analytics->setClientId($_COOKIE['_ga'] ?? $_COOKIE['_gid'] ?? $fallback);
+    if ($loggedIn) {
+        $analytics->setUserId($uniqueUserId);
+    }
+    
+    $viewCart = new Event\ViewCart();
+    $viewCart->setCurrency('EUR');
+    
+    $totalPrice = 0;
+    foreach ($cartItems as $item) {
+        $product = new Item();
+        $product->setItemId($item['id']);
+        $product->setItemName($item['name']);
+        $product->setQuantity($item['qty']);
+        $totalPrice += $item['price_total'];
+        $product->setPrice(round($item['price_total'] / $item['qty'], 2)); // unit price
+        $product->setItemVariant($item['colorName']);
+    
+        $viewCart->addItem($product);
+    }
+    
+    $viewCart->setValue($totalPrice);
+    
+    $analytics->addEvent($viewCart);
+    
+    if (!$analytics->post()) {
+        // Handling if post was unsuccessfull
+    }
+    
+    // Handling if post was successfull
+} catch (GA4Exception $gErr) {
     // Handle exception
-    print_r($e);
+    // Exceptions might be stacked, make sure to check $gErr->getPrevious();
 }
 ```
 
 ### Request
 ```json
 {
-    "client_id": "GA0.5632897.54363853.TEST",
-    "user_id": "GA4_VALIDATE",
-    "user_properties": {
-        "customer_tier": {
-            "value": "premium"
-        }
-    },
+    "client_id": "GA0.43535.234234",
+    "user_id": "m6435",
     "events": [
         {
-            "name": "add_payment_info",
+            "name": "view_cart",
             "params": {
-                "currency": "USD",
-                "value": 4.99,
+                "currency": "EUR",
+                "value": 50.55,
                 "items": [
                     {
-                        "item_id": "SKU_1",
-                        "currency": "USD",
-                        "item_brand": "My Awesome Product 3000",
+                        "item_id": "1",
+                        "item_name": "product name",
+                        "item_variant": "white",
+                        "price": 17.79,
+                        "quantity": 2
+                    },
+                    {
+                        "item_id": "2",
+                        "item_name": "another product name",
+                        "item_variant": "gold",
                         "price": 4.99,
-                        "item_category": "Awesome",
-                        "item_category2": "2022"
+                        "quantity": 3
                     }
                 ]
             }
