@@ -30,7 +30,7 @@ interface Analytics
      * @var timestamp_micros
      * @param integer|float $microOrUnix microtime(true) or time()
      */
-    public function setTimestamp(int|float $microOrUnix);
+    public function setTimestamp($microOrUnix);
 
     /**
      * Indicate if these events should be used for personalized ads.
