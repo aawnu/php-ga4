@@ -45,7 +45,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     public function testAnalytics()
     {
         $this->prepareSituation();
-        
+
         $this->assertTrue($this->analytics->post());
     }
 
@@ -59,7 +59,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
-        $this->assertIsArray($arr);
+        $this->assertTrue(is_array($arr));
         $this->assertArrayHasKey('item_id', $arr);
         $this->assertArrayHasKey('item_name', $arr);
         $this->assertArrayHasKey('currency', $arr);
@@ -79,7 +79,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             ->setValue('premium');
 
         $this->assertInstanceOf(UserProperty::class, $userProperty);
-        $this->assertIsArray($userProperty->toArray());
+        $this->assertTrue(is_array($userProperty->toArray()));
 
         $this->analytics->addUserProperty($userProperty);
 
