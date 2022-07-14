@@ -2,13 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
 /**
  * @requires One of item_id or item_name must be present and valid
  */
-class Item extends Model\ToArray implements Interface\Export, Interface\Item
+class Item extends Model\ToArray implements Facade\Export, Facade\Item
 {
     protected $item_id;
     protected $item_name;
@@ -29,76 +29,105 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
     public function setItemId(string $id)
     {
         $this->item_id = $id;
+        return $this;
     }
 
     public function setItemName(string $name)
     {
         $this->item_name = $name;
+        return $this;
     }
 
     public function setAffiliation(string $affiliation)
     {
         $this->affiliation = $affiliation;
+        return $this;
     }
 
     public function setCoupon(string $code)
     {
         $this->coupon = $code;
+        return $this;
     }
 
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
-    public function setDiscount(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setDiscount($amount)
     {
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setDiscount value must be numeric");
+        }
+
         $this->discount = $amount;
+        return $this;
     }
 
     public function setIndex(int $i)
     {
         $this->index = $i;
+        return $this;
     }
 
     public function setItemBrand(string $brand)
     {
         $this->item_brand = $brand;
+        return $this;
     }
 
     public function addItemCategory(string $category)
     {
         $this->item_category[] = $category;
+        return $this;
     }
 
     public function setItemListId(string $id)
     {
         $this->item_list_id = $id;
+        return $this;
     }
 
     public function setItemListName(string $name)
     {
         $this->item_list_name = $name;
+        return $this;
     }
 
     public function setItemVariant(string $variant)
     {
         $this->item_variant = $variant;
+        return $this;
     }
 
     public function setLocationId(string $id)
     {
         $this->location_id = $id;
+        return $this;
     }
 
-    public function setPrice(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setPrice($amount)
     {
-        $this->price = $amount;
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setPrice value must be numeric");
+        }
+
+        $this->price = 0 + $amount;
+        return $this;
     }
 
     public function setQuantity(int $amount)
     {
         $this->quantity = $amount;
+        return $this;
     }
 
     public function getParams(): array
@@ -139,8 +168,14 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
         return $return;
     }
 
+    /**
+     * @param GA4Exception $childErrors
+     */
     public function toArray(bool $isParent = false, $childErrors = null): array
     {
+        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
+            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
+        }
         $return = parent::toArray($isParent, $childErrors);
 
         if (isset($return['item_category'])) {
@@ -154,5 +189,10 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
         }
 
         return $return;
+    }
+
+    public static function new()
+    {
+        return new static();
     }
 }

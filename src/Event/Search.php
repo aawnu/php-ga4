@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class Search extends Model\Event implements Interface\Search
+class Search extends Model\Event implements Facade\Search
 {
     protected $search_term;
 
@@ -29,5 +29,6 @@ class Search extends Model\Event implements Interface\Search
     public function setSearchTerm(string $term)
     {
         $this->search_term = $term;
+        return $this;
     }
 }

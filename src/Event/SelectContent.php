@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class SelectContent extends Model\Event implements Interface\SelectContent
+class SelectContent extends Model\Event implements Facade\SelectContent
 {
     protected $content_type;
     protected $item_id = [];
@@ -31,10 +31,12 @@ class SelectContent extends Model\Event implements Interface\SelectContent
     public function setContentType(string $type)
     {
         $this->content_type = $type;
+        return $this;
     }
 
     public function setItemId(string $id)
     {
         $this->item_id = $id;
+        return $this;
     }
 }

@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4;
 
 use GuzzleHttp\Client as Guzzle;
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class Analytics extends Model\ToArray implements Interface\Analytics, Interface\Export
+class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 {
     const URL_LIVE = 'https://www.google-analytics.com/mp/collect';
     const URL_DEBUG = 'https://www.google-analytics.com/debug/mp/collect';
@@ -51,21 +51,32 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     public function allowPersonalisedAds(bool $allow)
     {
         $this->non_personalized_ads = !$allow;
+        return $this;
     }
 
     public function setClientId(string $id)
     {
         $this->client_id = $id;
+        return $this;
     }
 
     public function setUserId(string $id)
     {
         $this->user_id = $id;
+        return $this;
     }
 
-    public function setTimestamp(int|float $microOrUnix)
+    /**
+     * @param int|float $microOrUnix
+     */
+    public function setTimestamp($microOrUnix)
     {
+        if (!is_numeric($microOrUnix)) {
+            throw new GA4Exception("setTimestamp value must be numeric");
+        }
+
         $this->timestamp_micros = floor($microOrUnix * 1000);
+        return $this;
     }
 
     /**
@@ -85,7 +96,7 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         $catch = $prop->toArray();
 
         $this->user_properties[$catch['name']] = $catch['value'];
-        return count($this->user_properties);
+        return $this;
     }
 
     /**
@@ -102,22 +113,27 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
             throw new GA4Exception("Can't add more than 25 events");
         }
 
+        $arr = $event->toArray();
+        if (isset($arr['items'])) {
+            var_dump($arr);
+            exit;
+        }
+
         $this->events[] = $event->toArray();
-        return count($this->events);
+        return $this;
     }
 
     /**
      * Push your current stack to Google Analytics
      *
-     * @param boolean $validate Same as debug but outputs request and response
      * @return bool Whether the request returned status 200
      * @throws AlexWestergaard\PhpGa4\GA4Exception
      */
-    public function post(bool $validate = false)
+    public function post()
     {
         $errorStack = null;
 
-        $url = $this->debug || $validate ? $this::URL_DEBUG : $this::URL_LIVE;
+        $url = $this->debug ? $this::URL_DEBUG : $this::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
         $catch = parent::toArray(true, $errorStack);
@@ -154,11 +170,6 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
             }
         }
 
-        if ($validate) {
-            echo "Request \\ ", $url, "\r\n", json_encode($reqBody, JSON_PRETTY_PRINT), "\r\n\r\n";
-            echo "Response \\ ", $resCode, "\r\n", json_encode($data, JSON_PRETTY_PRINT), "\r\n\r\n";
-        }
-
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
         }
@@ -169,5 +180,10 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     public function toArray(bool $isParent = false, $childErrors = null): array
     {
         return parent::toArray($isParent, $childErrors);
+    }
+
+    public static function new(string $measurementId, string $apiSecret, bool $debug = false)
+    {
+        return new static($measurementId, $apiSecret, $debug);
     }
 }

@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 
-class UserProperty implements Interface\Export
+class UserProperty implements Facade\Export
 {
     protected $name;
     protected $value;
@@ -29,6 +29,7 @@ class UserProperty implements Interface\Export
         }
 
         $this->name = $name;
+        return $this;
     }
 
     public function setValue($value)
@@ -38,6 +39,7 @@ class UserProperty implements Interface\Export
         }
 
         $this->value = $value;
+        return $this;
     }
 
     public function getParams(): array
@@ -62,5 +64,10 @@ class UserProperty implements Interface\Export
         }
 
         return $return;
+    }
+
+    public static function new()
+    {
+        return new static();
     }
 }

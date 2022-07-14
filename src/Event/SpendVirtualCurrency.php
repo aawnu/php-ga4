@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class SpendVirtualCurrency extends Model\Event implements Interface\SpendVirtualCurrency
+class SpendVirtualCurrency extends Model\Event implements Facade\SpendVirtualCurrency
 {
     protected $virtual_currency_name;
     protected $value;
@@ -36,15 +36,18 @@ class SpendVirtualCurrency extends Model\Event implements Interface\SpendVirtual
     public function setVirtualCurrencyName(string $name)
     {
         $this->virtual_currency_name = $name;
+        return $this;
     }
 
     public function setValue(int $num)
     {
         $this->value = $num;
+        return $this;
     }
 
-    public function setItemName(int $name)
+    public function setItemName(string $name)
     {
         $this->item_name = $name;
+        return $this;
     }
 }

@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class UnlockAchievement extends Model\Event implements Interface\UnlockAchievement
+class UnlockAchievement extends Model\Event implements Facade\UnlockAchievement
 {
     protected $achievement_id;
 
@@ -31,5 +31,6 @@ class UnlockAchievement extends Model\Event implements Interface\UnlockAchieveme
     public function setAchievementId(string $id)
     {
         $this->achievement_id = $id;
+        return $this;
     }
 }

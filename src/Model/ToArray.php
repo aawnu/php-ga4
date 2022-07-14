@@ -3,16 +3,23 @@
 namespace AlexWestergaard\PhpGa4\Model;
 
 use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 
-abstract class ToArray implements Interface\Export
+abstract class ToArray implements Facade\Export
 {
     abstract public function getParams(): array;
 
     abstract public function getRequiredParams(): array;
 
+    /**
+     * @param GA4Exception $childErrors
+     */
     public function toArray(bool $isParent = false, $childErrors = null): array
     {
+        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
+            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
+        }
+
         $return = [];
         $errorStack = null;
 
