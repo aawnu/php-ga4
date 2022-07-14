@@ -26,6 +26,7 @@ jobs:
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
+      - run: echo ${{ matrix.php-versions }}
       - name: "PHP <= 7.0"
         if: ${{ matrix.php-versions }} === '7.0'
         run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit 6.0
