@@ -15,7 +15,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Setting up each test enviroment variables
      */
-    protected function setUp(): void
+    protected function prepareSituation()
     {
         $this->prefill = [
             // Analytics
@@ -42,16 +42,20 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing that we can send request to Google Analytics with 200 response
      */
-    public function testAnalytics(): void
+    public function testAnalytics()
     {
+        $this->prepareSituation();
+        
         $this->assertTrue($this->analytics->post());
     }
 
     /**
      * Testing that out item is properly build
      */
-    public function testItem(): void
+    public function testItem()
     {
+        $this->prepareSituation();
+
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
@@ -66,8 +70,10 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing that we can send a User Property
      */
-    public function testUserProperty(): void
+    public function testUserProperty()
     {
+        $this->prepareSituation();
+
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
