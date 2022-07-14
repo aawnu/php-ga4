@@ -120,7 +120,7 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
             throw new GA4Exception("setPrice value must be numeric");
         }
 
-        $this->price = $amount;
+        $this->price = 0 + $amount;
         return $this;
     }
 
