@@ -29,6 +29,7 @@ class UserProperty implements Interface\Export
         }
 
         $this->name = $name;
+        return $this;
     }
 
     public function setValue($value)
@@ -38,6 +39,7 @@ class UserProperty implements Interface\Export
         }
 
         $this->value = $value;
+        return $this;
     }
 
     public function getParams(): array
