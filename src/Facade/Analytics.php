@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Model;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface BeginCheckout
+interface AddPaymentInfo
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -32,6 +32,14 @@ interface BeginCheckout
      * @param string $code eg. SUMMER_FUN
      */
     public function setCoupon(string $code);
+
+    /**
+     * The chosen method of payment.
+     *
+     * @var payment_type
+     * @param string $type eg. Credit Card
+     */
+    public function setPaymentType(string $type);
 
     /**
      * The items for the event.

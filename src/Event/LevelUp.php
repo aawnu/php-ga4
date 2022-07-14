@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class LevelUp extends Model\Event implements Interface\LevelUp
+class LevelUp extends Model\Event implements Facade\LevelUp
 {
     protected $level;
     protected $character;

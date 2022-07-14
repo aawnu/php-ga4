@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class PostScore extends Model\Event implements Interface\PostScore
+class PostScore extends Model\Event implements Facade\PostScore
 {
     protected $score;
     protected $level;

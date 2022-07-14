@@ -2,11 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
 
-class AddToCart extends Model\Event implements Interface\AddToCart
+class AddToCart extends Model\Event implements Facade\AddToCart
 {
     protected $currency;
     protected $value;

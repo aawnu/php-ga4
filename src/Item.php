@@ -2,13 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
 /**
  * @requires One of item_id or item_name must be present and valid
  */
-class Item extends Model\ToArray implements Interface\Export, Interface\Item
+class Item extends Model\ToArray implements Facade\Export, Facade\Item
 {
     protected $item_id;
     protected $item_name;

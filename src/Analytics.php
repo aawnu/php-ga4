@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4;
 
 use GuzzleHttp\Client as Guzzle;
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class Analytics extends Model\ToArray implements Interface\Analytics, Interface\Export
+class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 {
     const URL_LIVE = 'https://www.google-analytics.com/mp/collect';
     const URL_DEBUG = 'https://www.google-analytics.com/debug/mp/collect';

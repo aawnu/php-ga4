@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class EarnVirtualCurrency extends Model\Event implements Interface\EarnVirtualCurrency
+class EarnVirtualCurrency extends Model\Event implements Facade\EarnVirtualCurrency
 {
     protected $virtual_currency_name;
     protected $value;

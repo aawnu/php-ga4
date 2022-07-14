@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface Purchase
+interface AddShippingInfo
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -16,16 +16,6 @@ interface Purchase
      */
     public function setCurrency(string $iso);
 
-
-    /**
-     * The unique identifier of a transaction. \
-     * The transaction_id parameter helps you avoid getting duplicate events for a purchase.
-     *
-     * @var transaction_id
-     * @param integer|float $id eg. T_12345
-     */
-    public function setTransactionId(string $id);
-
     /**
      * The monetary value of the event.
      *
@@ -33,15 +23,6 @@ interface Purchase
      * @param integer|float $val eg. 7.77
      */
     public function setValue(int|float $val);
-
-    /**
-     * A product affiliation to designate a supplying company or brick and mortar store location. \
-     * Event-level and item-level affiliation parameters are independent.
-     *
-     * @var affiliation
-     * @param string $affiliation eg. Google Store
-     */
-    public function setAffiliation(string $affiliation);
 
     /**
      * The coupon name/code associated with the event. \
@@ -53,20 +34,12 @@ interface Purchase
     public function setCoupon(string $code);
 
     /**
-     * Shipping cost associated with a transaction.
+     * The shipping tier (e.g. Ground, Air, Next-day) selected for delivery of the purchased item.
      *
-     * @var shipping
-     * @param string $cost eg. 3.33
+     * @var shipping_tier
+     * @param string $tier eg. Ground
      */
-    public function setShipping(int $cost);
-
-    /**
-     * Tax cost associated with a transaction.
-     *
-     * @var tax
-     * @param string $tax eg. 1.11
-     */
-    public function setTax(int $tax);
+    public function setShippingTier(string $tier);
 
     /**
      * The items for the event.

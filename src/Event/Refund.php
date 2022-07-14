@@ -2,11 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
 
-class Refund extends Model\Event implements Interface\Refund
+class Refund extends Model\Event implements Facade\Refund
 {
     protected $currency;
     protected $transaction_id;

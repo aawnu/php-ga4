@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface AddShippingInfo
+interface BeginCheckout
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -32,14 +32,6 @@ interface AddShippingInfo
      * @param string $code eg. SUMMER_FUN
      */
     public function setCoupon(string $code);
-
-    /**
-     * The shipping tier (e.g. Ground, Air, Next-day) selected for delivery of the purchased item.
-     *
-     * @var shipping_tier
-     * @param string $tier eg. Ground
-     */
-    public function setShippingTier(string $tier);
 
     /**
      * The items for the event.

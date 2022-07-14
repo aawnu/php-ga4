@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 
-class UserProperty implements Interface\Export
+class UserProperty implements Facade\Export
 {
     protected $name;
     protected $value;

@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface SelectItem
+interface ViewItemList
 {
     /**
      * The ID of the list in which the item was presented to the user. \
@@ -28,7 +28,7 @@ interface SelectItem
      * \* The items array is expected to have a single element, representing the selected item. If multiple elements are provided, only the first element in items will be used.
      *
      * @var items
-     * @param AlexWestergaard\PhpGa4\Item $item
+     * @param AlexWestergaard\PhpGa4\Module\Item $item
      */
-    public function setItem(Item $item);
+    public function addItem(Item $item);
 }

@@ -2,11 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Model;
 
-class ViewSearchResults extends Model\Event implements Interface\ViewSearchResults
+class ViewSearchResults extends Model\Event implements Facade\ViewSearchResults
 {
     protected $search_term;
     protected $items = [];

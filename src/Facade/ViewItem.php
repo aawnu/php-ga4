@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4\Interface;
+namespace AlexWestergaard\PhpGa4\Facade;
 
 use AlexWestergaard\PhpGa4\Item;
 
-interface RemoveFromCart
+interface ViewItem
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
