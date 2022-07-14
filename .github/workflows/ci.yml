@@ -26,4 +26,5 @@ jobs:
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
+      - run: composer install
       - run: ./vendor/bin/phpunit
