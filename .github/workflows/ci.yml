@@ -21,13 +21,9 @@ jobs:
           fetch-depth: 0
       - run: |
           git merge origin/master --no-commit --ff-only
-      - name: "Composer Install"
-        run: |
-          composer install
       - uses: php-actions/composer@v6
       - uses: php-actions/phpunit@v3
-      - name: "Setup PHP"
-        uses: shivammathur/setup-php@v2
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
