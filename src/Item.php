@@ -154,7 +154,7 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
         return $return;
     }
 
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false, ?GA4Exception $childErrors = null): array
     {
         $return = parent::toArray($isParent, $childErrors);
 
