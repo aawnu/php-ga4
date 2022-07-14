@@ -1,0 +1,36 @@
+name: PHP CI
+
+on:
+  pull_request:
+    branches:
+      - "master"
+  workflow_dispatch:
+
+jobs:
+  render-php:
+    name: "PHP Matrix with Units"
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: ["ubuntu-latest", "windows-latest"]
+        php-versions: ["7.0", "7.4", "8.0"]
+        phpunit-versions: ["latest"]
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - run: |
+          git merge origin/master --no-commit --ff-only
+      - name: "Composer Install"
+        run: |
+          composer install
+      - uses: php-actions/composer@v6
+      - uses: php-actions/phpunit@v3
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+          tools: php-cs-fixer, phpunit:${{ matrix.phpunit-versions }}
