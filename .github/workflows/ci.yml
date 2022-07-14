@@ -10,6 +10,7 @@ jobs:
   render-php:
     runs-on: ${{ matrix.operating-system }}
     strategy:
+      max-parallel: 4
       fail-fast: false
       matrix:
         operating-system: ["ubuntu-latest", "windows-latest"]
