@@ -43,10 +43,12 @@ class GenerateLead extends Model\Event implements Interface\GenerateLead
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
     public function setValue(int|float $val)
     {
         $this->value = $val;
+        return $this;
     }
 }

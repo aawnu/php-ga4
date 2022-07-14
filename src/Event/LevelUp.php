@@ -31,10 +31,12 @@ class LevelUp extends Model\Event implements Interface\LevelUp
     public function setLevel(int $lvl)
     {
         $this->level = $lvl;
+        return $this;
     }
 
     public function setCharacter(string $char)
     {
         $this->character = $char;
+        return $this;
     }
 }

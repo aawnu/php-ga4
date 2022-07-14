@@ -29,5 +29,6 @@ class Search extends Model\Event implements Interface\Search
     public function setSearchTerm(string $term)
     {
         $this->search_term = $term;
+        return $this;
     }
 }

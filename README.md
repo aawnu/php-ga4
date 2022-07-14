@@ -64,31 +64,31 @@ try {
     if ($loggedIn) {
         $analytics->setUserId($uniqueUserId);
     }
-    
-    $viewCart = new Event\ViewCart();
-    $viewCart->setCurrency('EUR');
-    
+
+    $viewCart = Event\ViewCart::new()
+        ->setCurrency('EUR');
+
     $totalPrice = 0;
     foreach ($cartItems as $item) {
-        $product = new Item();
-        $product->setItemId($item['id']);
-        $product->setItemName($item['name']);
-        $product->setQuantity($item['qty']);
         $totalPrice += $item['price_total'];
-        $product->setPrice(round($item['price_total'] / $item['qty'], 2)); // unit price
-        $product->setItemVariant($item['colorName']);
-    
+        $product = Item::new()
+            ->setItemId($item['id'])
+            ->setItemName($item['name'])
+            ->setQuantity($item['qty'])
+            ->setPrice(round($item['price_total'] / $item['qty'], 2)) // unit pric
+            ->setItemVariant($item['colorName']);
+
         $viewCart->addItem($product);
     }
-    
+
     $viewCart->setValue($totalPrice);
-    
+
     $analytics->addEvent($viewCart);
-    
+
     if (!$analytics->post()) {
         // Handling if post was unsuccessfull
     }
-    
+
     // Handling if post was successfull
 } catch (GA4Exception $gErr) {
     // Handle exception

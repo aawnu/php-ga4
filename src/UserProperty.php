@@ -63,4 +63,9 @@ class UserProperty implements Interface\Export
 
         return $return;
     }
+
+    public static function new()
+    {
+        return new static();
+    }
 }

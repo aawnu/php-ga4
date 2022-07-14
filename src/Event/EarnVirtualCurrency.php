@@ -31,10 +31,12 @@ class EarnVirtualCurrency extends Model\Event implements Interface\EarnVirtualCu
     public function setVirtualCurrencyName(string $name)
     {
         $this->virtual_currency_name = $name;
+        return $this;
     }
     
     public function setValue(int $num)
     {
         $this->value = $num;
+        return $this;
     }
 }

@@ -29,76 +29,91 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
     public function setItemId(string $id)
     {
         $this->item_id = $id;
+        return $this;
     }
 
     public function setItemName(string $name)
     {
         $this->item_name = $name;
+        return $this;
     }
 
     public function setAffiliation(string $affiliation)
     {
         $this->affiliation = $affiliation;
+        return $this;
     }
 
     public function setCoupon(string $code)
     {
         $this->coupon = $code;
+        return $this;
     }
 
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
     public function setDiscount(int|float $amount)
     {
         $this->discount = $amount;
+        return $this;
     }
 
     public function setIndex(int $i)
     {
         $this->index = $i;
+        return $this;
     }
 
     public function setItemBrand(string $brand)
     {
         $this->item_brand = $brand;
+        return $this;
     }
 
     public function addItemCategory(string $category)
     {
         $this->item_category[] = $category;
+        return $this;
     }
 
     public function setItemListId(string $id)
     {
         $this->item_list_id = $id;
+        return $this;
     }
 
     public function setItemListName(string $name)
     {
         $this->item_list_name = $name;
+        return $this;
     }
 
     public function setItemVariant(string $variant)
     {
         $this->item_variant = $variant;
+        return $this;
     }
 
     public function setLocationId(string $id)
     {
         $this->location_id = $id;
+        return $this;
     }
 
     public function setPrice(int|float $amount)
     {
         $this->price = $amount;
+        return $this;
     }
 
     public function setQuantity(int $amount)
     {
         $this->quantity = $amount;
+        return $this;
     }
 
     public function getParams(): array
@@ -154,5 +169,10 @@ class Item extends Model\ToArray implements Interface\Export, Interface\Item
         }
 
         return $return;
+    }
+
+    public static function new()
+    {
+        return new static();
     }
 }

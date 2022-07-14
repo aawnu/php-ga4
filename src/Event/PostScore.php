@@ -33,15 +33,18 @@ class PostScore extends Model\Event implements Interface\PostScore
     public function setScore(int $score)
     {
         $this->level = $score;
+        return $this;
     }
 
     public function setLevel(int $lvl)
     {
         $this->level = $lvl;
+        return $this;
     }
 
     public function setCharacter(string $char)
     {
         $this->character = $char;
+        return $this;
     }
 }

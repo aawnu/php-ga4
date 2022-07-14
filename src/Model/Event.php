@@ -76,4 +76,9 @@ abstract class Event extends ToArray implements Interface\Export
 
         return $return;
     }
+
+    public static function new()
+    {
+        return new static();
+    }
 }

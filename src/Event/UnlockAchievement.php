@@ -31,5 +31,6 @@ class UnlockAchievement extends Model\Event implements Interface\UnlockAchieveme
     public function setAchievementId(string $id)
     {
         $this->achievement_id = $id;
+        return $this;
     }
 }

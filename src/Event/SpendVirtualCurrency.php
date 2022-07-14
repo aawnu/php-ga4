@@ -36,15 +36,18 @@ class SpendVirtualCurrency extends Model\Event implements Interface\SpendVirtual
     public function setVirtualCurrencyName(string $name)
     {
         $this->virtual_currency_name = $name;
+        return $this;
     }
 
     public function setValue(int $num)
     {
         $this->value = $num;
+        return $this;
     }
 
     public function setItemName(int $name)
     {
         $this->item_name = $name;
+        return $this;
     }
 }

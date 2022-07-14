@@ -33,15 +33,18 @@ class Share extends Model\Event implements Interface\Share
     public function setMethod(string $method)
     {
         $this->method = $method;
+        return $this;
     }
 
     public function setContentType(string $type)
     {
         $this->content_type = $type;
+        return $this;
     }
 
     public function setItemId(string $id)
     {
         $this->item_id = $id;
+        return $this;
     }
 }

@@ -29,5 +29,6 @@ class Login extends Model\Event implements Interface\Login
     public function setMethod(string $method)
     {
         $this->method = $method;
+        return $this;
     }
 }

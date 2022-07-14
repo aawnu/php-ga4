@@ -49,20 +49,24 @@ class BeginCheckout extends Model\Event implements Interface\BeginCheckout
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
     public function setValue(int|float $val)
     {
         $this->value = $val;
+        return $this;
     }
 
     public function setCoupon(string $code)
     {
         $this->coupon = $code;
+        return $this;
     }
 
     public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
+        return $this;
     }
 }

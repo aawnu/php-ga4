@@ -58,40 +58,48 @@ class Refund extends Model\Event implements Interface\Refund
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
     public function setTransactionId(string $id)
     {
         $this->transaction_id = $id;
+        return $this;
     }
 
     public function setValue(int|float $val)
     {
         $this->value = $val;
+        return $this;
     }
 
     public function setAffiliation(string $affiliation)
     {
         $this->affiliation = $affiliation;
+        return $this;
     }
 
     public function setCoupon(string $code)
     {
         $this->coupon = $code;
+        return $this;
     }
 
     public function setShipping(int $cost)
     {
         $this->shipping = $cost;
+        return $this;
     }
 
     public function setTax(int $tax)
     {
         $this->tax = $tax;
+        return $this;
     }
 
     public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
+        return $this;
     }
 }

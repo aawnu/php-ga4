@@ -31,10 +31,12 @@ class SelectContent extends Model\Event implements Interface\SelectContent
     public function setContentType(string $type)
     {
         $this->content_type = $type;
+        return $this;
     }
 
     public function setItemId(string $id)
     {
         $this->item_id = $id;
+        return $this;
     }
 }

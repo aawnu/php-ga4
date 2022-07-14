@@ -40,30 +40,36 @@ class SelectPromotion extends Model\Event implements Interface\SelectPromotion
     public function setCreativeName(string $name)
     {
         $this->creative_name = $name;
+        return $this;
     }
 
     public function setCreativeSlot(string $slot)
     {
         $this->creative_slot = $slot;
+        return $this;
     }
 
     public function setLocationId(string $id)
     {
         $this->location_id = $id;
+        return $this;
     }
 
     public function setPromotionId(string $id)
     {
         $this->promotion_id = $id;
+        return $this;
     }
 
     public function setPromotionName(string $name)
     {
         $this->promotion_name = $name;
+        return $this;
     }
 
     public function addItem(Item $item)
     {
         $this->items = $item->toArray();
+        return $this;
     }
 }

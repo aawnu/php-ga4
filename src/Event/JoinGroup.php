@@ -29,5 +29,6 @@ class JoinGroup extends Model\Event implements Interface\JoinGroup
     public function setGroupId(string $id)
     {
         $this->group_id = $id;
+        return $this;
     }
 }

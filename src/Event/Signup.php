@@ -29,5 +29,6 @@ class Signup extends Model\Event implements Interface\Signup
     public function setMethod(string $method)
     {
         $this->method = $method;
+        return $this;
     }
 }

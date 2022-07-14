@@ -47,15 +47,18 @@ class AddToCart extends Model\Event implements Interface\AddToCart
     public function setCurrency(string $iso)
     {
         $this->currency = $iso;
+        return $this;
     }
 
     public function setValue(int|float $val)
     {
         $this->value = $val;
+        return $this;
     }
 
     public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
+        return $this;
     }
 }

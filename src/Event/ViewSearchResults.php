@@ -34,10 +34,12 @@ class ViewSearchResults extends Model\Event implements Interface\ViewSearchResul
     public function setSearchTerm(string $term)
     {
         $this->search_term = $term;
+        return $this;
     }
 
     public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
+        return $this;
     }
 }
