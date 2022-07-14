@@ -133,7 +133,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     {
         $errorStack = null;
 
-        $url = $this->debug || $validate ? $this::URL_DEBUG : $this::URL_LIVE;
+        $url = $this->debug ? $this::URL_DEBUG : $this::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
         $catch = parent::toArray(true, $errorStack);

@@ -14,10 +14,6 @@ abstract class Event extends ToArray implements Facade\Export
      */
     abstract public function getName(): string;
 
-    abstract public function getParams(): array;
-
-    abstract public function getRequiredParams(): array;
-
     /**
      * @param GA4Exception $childErrors
      */
