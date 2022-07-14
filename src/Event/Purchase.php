@@ -2,6 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
@@ -67,8 +68,15 @@ class Purchase extends Model\Event implements Facade\Purchase
         return $this;
     }
 
-    public function setValue(int|float $val)
+    /**
+     * @param int|float $val
+     */
+    public function setValue($val)
     {
+        if (!is_numeric($val)) {
+            throw new GA4Exception("setValue value must be numeric");
+        }
+
         $this->value = $val;
         return $this;
     }
@@ -87,7 +95,7 @@ class Purchase extends Model\Event implements Facade\Purchase
 
     public function setShipping(int $cost)
     {
-        $this->shipping = $cost;
+        $this->shipping = 0 + $cost;
         return $this;
     }
 

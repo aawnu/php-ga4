@@ -2,6 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
@@ -52,15 +53,22 @@ class BeginCheckout extends Model\Event implements Facade\BeginCheckout
         return $this;
     }
 
-    public function setValue(int|float $val)
+    /**
+     * @param int|float $val
+     */
+    public function setValue($val)
     {
+        if (!is_numeric($val)) {
+            throw new GA4Exception("setValue value must be numeric");
+        }
+
         $this->value = $val;
         return $this;
     }
 
     public function setCoupon(string $code)
     {
-        $this->coupon = $code;
+        $this->coupon = 0 + $code;
         return $this;
     }
 

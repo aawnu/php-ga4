@@ -56,8 +56,15 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $this;
     }
 
-    public function setDiscount(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setDiscount($amount)
     {
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setDiscount value must be numeric");
+        }
+
         $this->discount = $amount;
         return $this;
     }
@@ -104,8 +111,15 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $this;
     }
 
-    public function setPrice(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setPrice($amount)
     {
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setPrice value must be numeric");
+        }
+
         $this->price = $amount;
         return $this;
     }
