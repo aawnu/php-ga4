@@ -66,8 +66,15 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         return $this;
     }
 
-    public function setTimestamp(int|float $microOrUnix)
+    /**
+     * @param int|float $microOrUnix
+     */
+    public function setTimestamp($microOrUnix)
     {
+        if (!is_numeric($microOrUnix)) {
+            throw new GA4Exception("setTimestamp value must be numeric");
+        }
+
         $this->timestamp_micros = floor($microOrUnix * 1000);
         return $this;
     }
