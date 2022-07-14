@@ -5,7 +5,7 @@ namespace AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
-class Signup extends Model\Event implements Facade\Signup
+class Signup extends Model\Event implements Facade\SignUp
 {
     protected $method;
 
