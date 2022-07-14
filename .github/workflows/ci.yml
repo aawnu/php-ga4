@@ -28,9 +28,9 @@ jobs:
           tools: phpunit:${{ matrix.phpunit-versions }}
       - run: composer install --no-dev
       - name: "PHP < 7.4"
-        if: "{{ matrix.php-versions }} == '7.0' "
+        if: ${{ matrix.php-versions }} == '7.0'
         run: composer require --dev phpunit/phpunit 6.0
       - name: "PHP >= 7.4"
-        if: "{{ matrix.php-versions }} != '7.0' "
+        if: ${{ matrix.php-versions }} != '7.0'
         run: composer require --dev phpunit/phpunit
       - run: ./vendor/bin/phpunit
