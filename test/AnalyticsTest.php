@@ -12,6 +12,9 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     protected $analytics;
     protected $item;
 
+    /**
+     * Setting up each test enviroment variables
+     */
     protected function setUp(): void
     {
         $this->prefill = [
@@ -24,7 +27,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             'currency' => 'EUR',
         ];
 
-        $this->analytics = Analytics::new($this->prefill['measurement_id'], $this->prefill['api_secret'], true)
+        $this->analytics = Analytics::new($this->prefill['measurement_id'], $this->prefill['api_secret'], /* DEBUG */ true)
             ->setClientId($this->prefill['client_id'])
             ->setUserId($this->prefill['user_id']);
 
@@ -36,11 +39,17 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             ->setQuantity(2);
     }
 
+    /**
+     * Testing that we can send request to Google Analytics with 200 response
+     */
     public function testAnalytics()
     {
         $this->assertTrue($this->analytics->post());
     }
 
+    /**
+     * Testing that out item is properly build
+     */
     public function testItem()
     {
         $this->assertInstanceOf(Item::class, $this->item);
@@ -54,6 +63,9 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
+    /**
+     * Testing that we can send a User Property
+     */
     public function testUserProperty()
     {
         $userProperty = UserProperty::new()
