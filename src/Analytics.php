@@ -51,21 +51,25 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     public function allowPersonalisedAds(bool $allow)
     {
         $this->non_personalized_ads = !$allow;
+        return $this;
     }
 
     public function setClientId(string $id)
     {
         $this->client_id = $id;
+        return $this;
     }
 
     public function setUserId(string $id)
     {
         $this->user_id = $id;
+        return $this;
     }
 
     public function setTimestamp(int|float $microOrUnix)
     {
         $this->timestamp_micros = floor($microOrUnix * 1000);
+        return $this;
     }
 
     /**
@@ -85,7 +89,7 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         $catch = $prop->toArray();
 
         $this->user_properties[$catch['name']] = $catch['value'];
-        return count($this->user_properties);
+        return $this;
     }
 
     /**
@@ -103,7 +107,7 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
         }
 
         $this->events[] = $event->toArray();
-        return count($this->events);
+        return $this;
     }
 
     /**
@@ -169,5 +173,10 @@ class Analytics extends Model\ToArray implements Interface\Analytics, Interface\
     public function toArray(bool $isParent = false, $childErrors = null): array
     {
         return parent::toArray($isParent, $childErrors);
+    }
+
+    public static function new(string $measurementId, string $apiSecret, bool $debug = false)
+    {
+        return new static($measurementId, $apiSecret, $debug);
     }
 }
