@@ -113,6 +113,12 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             throw new GA4Exception("Can't add more than 25 events");
         }
 
+        $arr = $event->toArray();
+        if (isset($arr['items'])) {
+            var_dump($arr);
+            exit;
+        }
+
         $this->events[] = $event->toArray();
         return $this;
     }
@@ -120,11 +126,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     /**
      * Push your current stack to Google Analytics
      *
-     * @param boolean $validate Same as debug but outputs request and response
      * @return bool Whether the request returned status 200
      * @throws AlexWestergaard\PhpGa4\GA4Exception
      */
-    public function post(bool $validate = false)
+    public function post()
     {
         $errorStack = null;
 
@@ -163,11 +168,6 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             foreach ($data['validationMessages'] as $msg) {
                 $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], $errorStack);
             }
-        }
-
-        if ($validate) {
-            echo "Request \\ ", $url, "\r\n", json_encode($reqBody, JSON_PRETTY_PRINT), "\r\n\r\n";
-            echo "Response \\ ", $resCode, "\r\n", json_encode($data, JSON_PRETTY_PRINT), "\r\n\r\n";
         }
 
         if ($errorStack instanceof GA4Exception) {

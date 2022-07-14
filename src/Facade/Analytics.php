@@ -59,7 +59,7 @@ interface Analytics
     /**
      * Validate params and send it to Google Analytics
      *
-     * @return void
+     * @return bool
      */
-    public function post(bool $validate = false);
+    public function post();
 }
