@@ -11,7 +11,7 @@ abstract class ToArray implements Interface\Export
 
     abstract public function getRequiredParams(): array;
 
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false, ?GA4Exception $childErrors = null): array
     {
         $return = [];
         $errorStack = null;
