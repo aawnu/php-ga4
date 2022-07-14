@@ -172,11 +172,13 @@ class ExampleEvent extends Model\Event
     public function setMyVariable(string $value)
     {
         $this->my_variable = $value;
+        return $this; // Allows chained events
     }
 
     public function setMyRequiredVariable(string $value)
     {
         $this->my_required_variable = $value;
+        return $this; // Allows chained events
     }
 }
 ```
