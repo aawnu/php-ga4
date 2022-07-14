@@ -42,7 +42,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing that we can send request to Google Analytics with 200 response
      */
-    public function testAnalytics()
+    public function testAnalytics(): void
     {
         $this->assertTrue($this->analytics->post());
     }
@@ -50,7 +50,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing that out item is properly build
      */
-    public function testItem()
+    public function testItem(): void
     {
         $this->assertInstanceOf(Item::class, $this->item);
 
@@ -66,7 +66,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Testing that we can send a User Property
      */
-    public function testUserProperty()
+    public function testUserProperty(): void
     {
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
