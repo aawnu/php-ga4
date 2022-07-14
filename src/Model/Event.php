@@ -3,9 +3,9 @@
 namespace AlexWestergaard\PhpGa4\Model;
 
 use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Interface;
+use AlexWestergaard\PhpGa4\Facade;
 
-abstract class Event extends ToArray implements Interface\Export
+abstract class Event extends ToArray implements Facade\Export
 {
     /**
      * Return the name of the event
