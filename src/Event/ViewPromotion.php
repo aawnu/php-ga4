@@ -69,7 +69,7 @@ class ViewPromotion extends Model\Event implements Facade\ViewPromotion
 
     public function addItem(Item $item)
     {
-        $this->items = $item->toArray();
+        $this->items[] = $item->toArray();
         return $this;
     }
 }
