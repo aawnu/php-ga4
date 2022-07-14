@@ -32,7 +32,7 @@ class PostScore extends Model\Event implements Facade\PostScore
 
     public function setScore(int $score)
     {
-        $this->level = $score;
+        $this->score = $score;
         return $this;
     }
 

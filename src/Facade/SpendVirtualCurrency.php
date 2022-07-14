@@ -24,7 +24,7 @@ interface SpendVirtualCurrency
      * The name of the item the virtual currency is being used for.
      *
      * @var value
-     * @param integer $name eg. Starter Boost
+     * @param string $name eg. Starter Boost
      */
-    public function setItemName(int $name);
+    public function setItemName(string $name);
 }

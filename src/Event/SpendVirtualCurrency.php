@@ -45,7 +45,7 @@ class SpendVirtualCurrency extends Model\Event implements Facade\SpendVirtualCur
         return $this;
     }
 
-    public function setItemName(int $name)
+    public function setItemName(string $name)
     {
         $this->item_name = $name;
         return $this;

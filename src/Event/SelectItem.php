@@ -45,7 +45,7 @@ class SelectItem extends Model\Event implements Facade\SelectItem
 
     public function setItem(Item $item)
     {
-        $this->items = $item->toArray();
+        $this->items = [$item->toArray()];
         return $this;
     }
 }
