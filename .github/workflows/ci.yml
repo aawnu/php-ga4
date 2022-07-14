@@ -22,7 +22,6 @@ jobs:
       - run: |
           git merge origin/master --no-commit --ff-only
       - uses: php-actions/composer@v6
-      - uses: php-actions/phpunit@v3
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
