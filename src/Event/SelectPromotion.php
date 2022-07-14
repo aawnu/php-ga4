@@ -13,7 +13,7 @@ class SelectPromotion extends Model\Event implements Facade\SelectPromotion
     protected $location_id;
     protected $promotion_id;
     protected $promotion_name;
-    protected $items;
+    protected $items = [];
 
     public function getName(): string
     {
@@ -69,7 +69,7 @@ class SelectPromotion extends Model\Event implements Facade\SelectPromotion
 
     public function addItem(Item $item)
     {
-        $this->items = $item->toArray();
+        $this->items[] = $item->toArray();
         return $this;
     }
 }

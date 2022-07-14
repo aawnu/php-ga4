@@ -10,7 +10,7 @@ class SelectItem extends Model\Event implements Facade\SelectItem
 {
     protected $item_list_id;
     protected $item_list_name;
-    protected $items;
+    protected $items = [];
 
     public function getName(): string
     {
