@@ -22,7 +22,7 @@ interface RemoveFromCart
      * @var value
      * @param integer|float $val eg. 7.77
      */
-    public function setValue(int|float $val);
+    public function setValue($val);
 
     /**
      * The items for the event.
