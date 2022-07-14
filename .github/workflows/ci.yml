@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        operating-system: ["ubuntu-latest"]
-        php-versions: ["7.0", "7.4", "8.0"]
+        operating-system: ["ubuntu-latest", "windows-latest"]
+        php-versions: ["7.0", "7.4", "8.0", "8.1"]
         phpunit-versions: ["latest"]
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +27,6 @@ jobs:
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
-      - run: echo "${{ matrix.php-versions }}"
       - if: ${{ matrix.php-versions == 7.0 }}
         name: "PHP 7.0"
         run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit 6.0
@@ -36,6 +35,7 @@ jobs:
         run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit 8.0
       - if: ${{ matrix.php-versions >= 8.0 }}
         name: "PHP >8.0"
-        run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit
+        run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit latest
+      - run: composer update --no-install --with-all-dependencies
       - run: composer install
       - run: ./vendor/bin/phpunit
