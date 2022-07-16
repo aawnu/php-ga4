@@ -43,9 +43,17 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
     public function getRequiredParams(): array
     {
-        return [
-            'client_id'
-        ];
+        $return = [];
+
+        // Either client_id OR user_id MUST to be set
+        if (
+            (!isset($this->client_id) || empty($this->client_id))
+            && (!isset($this->user_id) || empty($this->user_id))
+        ) {
+            $return[] = 'client_id';
+        }
+
+        return $return;
     }
 
     public function allowPersonalisedAds(bool $allow)
