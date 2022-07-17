@@ -11,7 +11,7 @@ class Search extends Model\Event implements Facade\Search
 
     public function getName(): string
     {
-        return 'search_term';
+        return 'search';
     }
 
     public function getParams(): array
