@@ -6,6 +6,11 @@ use GuzzleHttp\Client as Guzzle;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
 
+/**
+ * Foundation class to collect all information and events to send to Google Analytics \
+ * Make sure to get you Measurement ID and a API Secret
+ * @link https://analytics.google.com/ -> Settings -> Data stream -> API Secrets & Measurement Protocol -> Create
+ */
 class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 {
     const URL_LIVE = 'https://www.google-analytics.com/mp/collect';
