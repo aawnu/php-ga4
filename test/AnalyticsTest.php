@@ -106,6 +106,12 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             $params = array_unique(array_merge($event->getParams(), $required));
 
             try {
+                $this->assertEquals(
+                    strtolower(basename($file, '.php')),
+                    strtolower(strtr($event->getName(), ['_' => ''])),
+                    strtolower(basename($file, '.php')) . ' is not equal to ' . strtolower(strtr($event->getName(), ['_' => '']))
+                );
+
                 if (in_array('currency', $params)) {
                     $event->setCurrency($this->prefill['currency']);
                     if (in_array('value', $params)) {

@@ -15,7 +15,7 @@ class RemoveFromCart extends Model\Event implements Facade\RemoveFromCart
 
     public function getName(): string
     {
-        return 'remove_to_cart';
+        return 'remove_from_cart';
     }
 
     public function getParams(): array
