@@ -80,7 +80,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     }
 
     /**
-     * @param int|float $microOrUnix
+     * @param int|float $microOrUnix time() or microtime(true)
      */
     public function setTimestamp($microOrUnix)
     {
@@ -88,7 +88,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             throw new GA4Exception("setTimestamp value must be numeric");
         }
 
-        $this->timestamp_micros = floor($microOrUnix * 1000);
+        $this->timestamp_micros = floor($microOrUnix * 1000000);
         return $this;
     }
 
