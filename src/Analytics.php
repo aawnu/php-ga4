@@ -29,6 +29,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
     public function __construct(string $measurementId, string $apiSecret, bool $debug = false)
     {
+        if (substr($measurementId, 0, 2) != 'G-') {
+            throw new GA4Exception("Measurement id must be valid, eg G-99999999");
+        }
+
         $this->measurement_id = $measurementId;
         $this->api_secret = $apiSecret;
         $this->debug = $debug;

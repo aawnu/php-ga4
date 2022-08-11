@@ -1,64 +1,77 @@
 <?php
 
+use PHPUnit\Framework\TestCase;
 use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\UserProperty;
 
-class AnalyticsTest extends \PHPUnit\Framework\TestCase
+final class AnalyticsTest extends TestCase
 {
-    protected $prefill;
-    protected $analytics;
-    protected $item;
+    private Analytics $analytics;
+    private int $itemInt = 0;
+    private $faker;
 
-    /**
-     * Setting up each test enviroment variables
-     */
-    protected function prepareSituation()
+    protected function setUp(): void
     {
-        $this->prefill = [
-            // Analytics
-            'measurement_id' => 'G-XXXXXXXX',
-            'api_secret' => 'gDS1gs423dDSH34sdfa',
-            'client_id' => 'GA0.43535.234234',
-            'user_id' => 'm6435',
-            // Default Vars
-            'currency' => 'EUR',
-            'currency_virtual' => 'GA4Coins',
-        ];
+        $this->itemInt = 0;
+        $this->faker = Faker\Factory::create();
 
-        $this->analytics = Analytics::new($this->prefill['measurement_id'], $this->prefill['api_secret'], /* DEBUG */ true)
-            ->setClientId($this->prefill['client_id'])
-            ->setUserId($this->prefill['user_id']);
-
-        $this->item = Item::new()
-            ->setItemId('1')
-            ->setItemName('First Product')
-            ->setCurrency($this->prefill['currency'])
-            ->setPrice(7.39)
-            ->setQuantity(2);
+        $this->analytics = Analytics::new(
+            'G-XXX',
+            $this->faker->md5,
+            true
+        )->setClientId($this->faker->md5)
+            ->setUserId($this->faker->md5);
     }
 
-    /**
-     * Testing that we can send request to Google Analytics with 200 response
-     */
-    public function testAnalytics()
+    public function testAnalyticsThrowOnWrongMeasurementFormat()
     {
-        $this->prepareSituation();
+        $this->expectException(GA4Exception::class);
 
+        new Analytics(
+            'WRONG-ID',
+            $this->faker->md5,
+            true
+        );
+    }
+
+    public function testAnalyticsDebugResponse()
+    {
         $this->assertTrue($this->analytics->post());
     }
 
-    /**
-     * Testing that out item is properly build
-     */
-    public function testItem()
+    public function testAnalyticsUnixTimeFormat()
     {
-        $this->prepareSituation();
+        $time = time();
+        $microtime = $time * 1_000_000;
+        $analytics = $this->analytics->setTimestamp($time)->toArray();
 
-        $this->assertInstanceOf(Item::class, $this->item);
+        $this->assertIsArray($analytics);
+        $this->assertArrayHasKey('timestamp_micros', $analytics);
+        $this->assertEquals($microtime, $analytics['timestamp_micros']);
+        $this->assertTrue($microtime <= $analytics['timestamp_micros']);
+    }
 
-        $arr = $this->item->toArray();
-        $this->assertTrue(is_array($arr));
+    public function testAnalyticsMicroTimeFormat()
+    {
+        $time = microtime(true);
+        $microtime = $time * 1_000_000;
+        $analytics = $this->analytics->setTimestamp($time)->toArray();
+
+        $this->assertIsArray($analytics);
+        $this->assertArrayHasKey('timestamp_micros', $analytics);
+        $this->assertEquals($microtime, $analytics['timestamp_micros']);
+    }
+
+    public function testRandomItemFill()
+    {
+        $item = $this->getItem();
+
+        $this->assertInstanceOf(Item::class, $item);
+
+        $arr = $item->toArray();
+        $this->assertIsArray($arr);
         $this->assertArrayHasKey('item_id', $arr);
         $this->assertArrayHasKey('item_name', $arr);
         $this->assertArrayHasKey('currency', $arr);
@@ -66,13 +79,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
-    /**
-     * Testing that we can send a User Property
-     */
-    public function testUserProperty()
+    public function testExampleUserProperty()
     {
-        $this->prepareSituation();
-
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -91,10 +99,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->analytics->post());
     }
 
-    public function testPrebuildEvents()
+    public function testAllRecommendedEvents()
     {
-        $this->prepareSituation();
-
         $eventCount = 0;
         foreach (glob(__DIR__ . '/../src/Event/*.php') as $file) {
             $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
@@ -113,7 +119,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                 );
 
                 if (in_array('currency', $params)) {
-                    $event->setCurrency($this->prefill['currency']);
+                    $event->setCurrency($this->faker->currencyCode);
                     if (in_array('value', $params)) {
                         $event->setValue(9.99);
                     }
@@ -137,14 +143,14 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
                 if (in_array('items', $params)) {
                     if (method_exists($event, 'addItem')) {
-                        $event->addItem($this->item);
+                        $event->addItem($this->getItem());
                     } elseif (method_exists($event, 'setItem')) {
-                        $event->setItem($this->item);
+                        $event->setItem($this->getItem());
                     }
                 }
 
                 if (in_array('virtual_currency_name', $params)) {
-                    $event->setVirtualCurrencyName($this->prefill['currency_virtual']);
+                    $event->setVirtualCurrencyName('gamecoins');
 
                     if (in_array('value', $params)) {
                         $event->setValue(9.99);
@@ -194,7 +200,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                     $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
                 } finally {
                     $eventCount = 1;
-                    $this->prepareSituation();
+                    $this->setup();
                 }
             }
         }
@@ -206,5 +212,15 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                 $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
             }
         }
+    }
+
+    private function getItem()
+    {
+        return Item::new()
+            ->setItemId((string)($this->itemInt += 1))
+            ->setItemName($this->faker->title())
+            ->setCurrency($this->faker->currencyCode())
+            ->setPrice($this->faker->numberBetween(500) / 100)
+            ->setQuantity($this->faker->numberBetween(1, 15));
     }
 }

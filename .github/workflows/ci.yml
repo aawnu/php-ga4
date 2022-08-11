@@ -1,11 +1,9 @@
 name: PHP CI
-
 on:
   pull_request:
     branches:
       - "master"
   workflow_dispatch:
-
 jobs:
   render-php:
     runs-on: ${{ matrix.operating-system }}
@@ -17,28 +15,21 @@ jobs:
         php-versions: ["7.0", "7.4", "8.0", "8.1"]
         phpunit-versions: ["latest"]
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: git merge origin/master --no-commit --ff-only
-      - uses: shivammathur/setup-php@v2
+      - name: Validate up to date with Master
+        run: git merge origin/master --no-commit --ff-only
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
-      - if: ${{ matrix.php-versions == 7.0 }}
-        name: "PHP 7.0"
-        run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit 6.0
-      - if: ${{ matrix.php-versions == 7.4 }}
-        name: "PHP 7.4"
-        run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit 8.0
-      - if: ${{ matrix.php-versions >= 8.0 }}
-        name: "PHP >8.0"
-        run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit
-      - name: "Install & Test"
-        run: |
-          composer update --no-install --with-all-dependencies
-          composer install
-          ./vendor/bin/phpunit
+      - name: "Composer update and install"
+        run: composer install
+      - name: "PHPUnit tests"
+        run: ./vendor/bin/phpunit
