@@ -30,6 +30,8 @@ jobs:
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
       - name: "Composer update and install"
-        run: composer install
+        run: |
+          composer update --no-progress --no-install --no-progress
+          composer install
       - name: "PHPUnit tests"
         run: ./vendor/bin/phpunit
