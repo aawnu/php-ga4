@@ -13,7 +13,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Setting up each test enviroment variables
      */
-    protected function setUp(): void
+    protected function prepareSituation()
     {
         $this->prefill = [
             // Analytics
@@ -43,6 +43,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testAnalytics()
     {
+        $this->prepareSituation();
+        
         $this->assertTrue($this->analytics->post());
     }
 
@@ -51,6 +53,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testItem()
     {
+        $this->prepareSituation();
+        
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
@@ -67,6 +71,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testUserProperty()
     {
+        $this->prepareSituation();
+        
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -87,6 +93,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPrebuildEvents()
     {
+        $this->prepareSituation();
+        
         $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
         foreach (array_chunk($getDefaultEventsByFile, 25) as $chunk) {
