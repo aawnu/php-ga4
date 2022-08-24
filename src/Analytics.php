@@ -88,7 +88,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             throw new GA4Exception("setTimestamp value must be numeric");
         }
 
-        $this->timestamp_micros = floor($microOrUnix * 1000000);
+        $this->timestamp_micros = floor($microOrUnix * 1_000_000);
         return $this;
     }
 
