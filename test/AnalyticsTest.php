@@ -58,9 +58,14 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     {
         $this->prepareSituation();
 
-        $this->expectException(GA4Exception::class);
-
-        $this->analytics->setTimestamp(strtotime('-1 week'));
+        try {
+            $this->analytics->setTimestamp(strtotime('-1 week'));
+            $this->assertTrue(false, "Did not receive correct Exception");
+        } catch (GA4Exception $e) {
+            $this->assertTrue(true);
+        } catch (Exception $e) {
+            $this->assertTrue(false, "Did not receive correct Exception");
+        }
     }
 
     public function testItem()
