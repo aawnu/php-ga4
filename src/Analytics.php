@@ -19,6 +19,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     private $debug;
     private $measurement_id;
     private $api_secret;
+    private $postOnEventLimit = false;
 
     protected $non_personalized_ads;
     protected $timestamp_micros;
@@ -84,11 +85,25 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      */
     public function setTimestamp($microOrUnix)
     {
+        $secondInMicro = intval('1_000_000');
+        $offsetLimit = strtotime('-3 days') * $secondInMicro;
+
         if (!is_numeric($microOrUnix)) {
             throw new GA4Exception("setTimestamp value must be numeric");
         }
 
-        $this->timestamp_micros = floor($microOrUnix * 1000000);
+        $formattedTime =  floor($microOrUnix * $secondInMicro);
+        if ($formattedTime < $offsetLimit) {
+            throw new GA4Exception("Timestamp can not be older than 3 days");
+        }
+
+        $this->timestamp_micros = $formattedTime;
+        return $this;
+    }
+
+    public function postOnEventLimit(bool $push = true)
+    {
+        $this->postOnEventLimit = $push;
         return $this;
     }
 
@@ -133,16 +148,22 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         }
 
         $this->events[] = $event->toArray();
+
+        if (count($this->events) >= 25 && $this->postOnEventLimit === true) {
+            $this->post();
+        }
         return $this;
     }
 
     /**
-     * Push your current stack to Google Analytics
+     * Push your current stack to Google Analytics \
+     * Will reset the events list on success
      *
+     * @var bool $skipReset Avoid resetting events list on success, default: false
      * @return bool Whether the request returned status 200
      * @throws AlexWestergaard\PhpGa4\GA4Exception
      */
-    public function post()
+    public function post($skipReset = false)
     {
         $errorStack = null;
 
@@ -185,6 +206,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
+        }
+
+        if (!$skipReset) {
+            $this->events = [];
         }
 
         return $resCode === 200;
