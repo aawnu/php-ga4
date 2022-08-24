@@ -19,7 +19,6 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     private $debug;
     private $measurement_id;
     private $api_secret;
-    private $postOnEventLimit = false;
 
     protected $non_personalized_ads;
     protected $timestamp_micros;
@@ -101,12 +100,6 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         return $this;
     }
 
-    public function postOnEventLimit(bool $push = true)
-    {
-        $this->postOnEventLimit = $push;
-        return $this;
-    }
-
     /**
      * Add user property to your analytics request \
      * Maximum is 25 per request
@@ -137,21 +130,8 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      */
     public function addEvent(Model\Event $event)
     {
-        if (count($this->events) >= 25) {
-            throw new GA4Exception("Can't add more than 25 events");
-        }
-
-        $arr = $event->toArray();
-        if (isset($arr['items'])) {
-            var_dump($arr);
-            exit;
-        }
-
         $this->events[] = $event->toArray();
 
-        if (count($this->events) >= 25 && $this->postOnEventLimit === true) {
-            $this->post();
-        }
         return $this;
     }
 
@@ -159,11 +139,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      * Push your current stack to Google Analytics \
      * Will reset the events list on success
      *
-     * @var bool $skipReset Avoid resetting events list on success, default: false
      * @return bool Whether the request returned status 200
      * @throws AlexWestergaard\PhpGa4\GA4Exception
      */
-    public function post($skipReset = false)
+    public function post()
     {
         $errorStack = null;
 
@@ -174,33 +153,40 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         $errorStack = $catch['error'];
         $reqBody = $catch['data'];
 
-        $kB = 1024;
-        if (mb_strlen(json_encode($reqBody)) > ($kB * 130)) {
-            $errorStack = new GA4Exception("Request body exceeds 130kB", $errorStack);
-        }
 
-        if ($errorStack instanceof GA4Exception) {
-            throw $errorStack;
-        }
+        $eventsList = array_chunk($reqBody['events'] ?? [], 25);
 
-        $guzzle = new Guzzle();
-        $res = $guzzle->request('POST', $url, ['json' => $reqBody]);
+        foreach ($eventsList as $events) {
+            $reqBody['events'] = $events;
 
-        $resCode = $res->getStatusCode() ?? 0;
-        if ($resCode !== 200) {
-            $errorStack = new GA4Exception("Request received code {$resCode}", $errorStack);
-        }
+            $kB = 1024;
+            if (mb_strlen(json_encode($reqBody)) > ($kB * 130)) {
+                $errorStack = new GA4Exception("Request body exceeds 130kB", $errorStack);
+            }
 
-        $resBody = $res->getBody()->getContents();
-        $data = @json_decode($resBody, true);
+            if ($errorStack instanceof GA4Exception) {
+                throw $errorStack;
+            }
 
-        if (empty($resBody)) {
-            $errorStack = new GA4Exception("Received not body", $errorStack);
-        } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
-            $errorStack = new GA4Exception("Could not parse response", $errorStack);
-        } elseif (!empty($data['validationMessages'])) {
-            foreach ($data['validationMessages'] as $msg) {
-                $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], $errorStack);
+            $guzzle = new Guzzle();
+            $res = $guzzle->request('POST', $url, ['json' => $reqBody]);
+
+            $resCode = $res->getStatusCode() ?? 0;
+            if ($resCode !== 200) {
+                $errorStack = new GA4Exception("Request received code {$resCode}", $errorStack);
+            }
+
+            $resBody = $res->getBody()->getContents();
+            $data = @json_decode($resBody, true);
+
+            if (empty($resBody)) {
+                $errorStack = new GA4Exception("Received not body", $errorStack);
+            } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
+                $errorStack = new GA4Exception("Could not parse response", $errorStack);
+            } elseif (!empty($data['validationMessages'])) {
+                foreach ($data['validationMessages'] as $msg) {
+                    $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], $errorStack);
+                }
             }
         }
 
@@ -208,11 +194,9 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             throw $errorStack;
         }
 
-        if (!$skipReset) {
-            $this->events = [];
-        }
+        $this->events = []; // Reset events list
 
-        return $resCode === 200;
+        return true;
     }
 
     public function toArray(bool $isParent = false, $childErrors = null): array

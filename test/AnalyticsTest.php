@@ -110,96 +110,93 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
         $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
-        foreach (array_chunk($getDefaultEventsByFile, 25) as $chunk) {
+        foreach ($getDefaultEventsByFile as $file) {
+            $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
 
-            foreach ($chunk as $file) {
-                $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
+            $this->assertTrue(class_exists($eventName), $eventName);
 
-                $this->assertTrue(class_exists($eventName), $eventName);
+            $event = new $eventName;
+            $required = $event->getRequiredParams();
+            $params = array_unique(array_merge($event->getParams(), $required));
 
-                $event = new $eventName;
-                $required = $event->getRequiredParams();
-                $params = array_unique(array_merge($event->getParams(), $required));
+            $this->assertEquals(
+                strtolower(basename($file, '.php')),
+                strtolower(strtr($event->getName(), ['_' => ''])),
+                strtolower(basename($file, '.php')) . ' is not equal to ' . strtolower(strtr($event->getName(), ['_' => '']))
+            );
 
-                $this->assertEquals(
-                    strtolower(basename($file, '.php')),
-                    strtolower(strtr($event->getName(), ['_' => ''])),
-                    strtolower(basename($file, '.php')) . ' is not equal to ' . strtolower(strtr($event->getName(), ['_' => '']))
-                );
-
-                if (in_array('currency', $params)) {
-                    $event->setCurrency($this->prefill['currency']);
-                    if (in_array('value', $params)) {
-                        $event->setValue(9.99);
-                    }
+            if (in_array('currency', $params)) {
+                $event->setCurrency($this->prefill['currency']);
+                if (in_array('value', $params)) {
+                    $event->setValue(9.99);
                 }
-
-                if (in_array('price', $params)) {
-                    $event->setPrice(9.99);
-                }
-
-                if (in_array('quantity', $params)) {
-                    $event->setQuantity(9.99);
-                }
-
-                if (in_array('payment_type', $params)) {
-                    $event->setPaymentType('credit card');
-                }
-
-                if (in_array('shipping_tier', $params)) {
-                    $event->setShippingTier('ground');
-                }
-
-                if (in_array('items', $params)) {
-                    if (method_exists($event, 'addItem')) {
-                        $event->addItem($this->item);
-                    } elseif (method_exists($event, 'setItem')) {
-                        $event->setItem($this->item);
-                    }
-                }
-
-                if (in_array('virtual_currency_name', $params)) {
-                    $event->setVirtualCurrencyName($this->prefill['currency_virtual']);
-
-                    if (in_array('value', $params)) {
-                        $event->setValue(9.99);
-                    }
-
-                    if (in_array('item_name', $params)) {
-                        $event->setItemName('CookieBite');
-                    }
-                }
-
-                if (in_array('character', $params)) {
-                    $event->setCharacter('AlexWestergaard');
-
-                    if (in_array('level', $params)) {
-                        $event->setLEvel(3);
-                    }
-
-                    if (in_array('score', $params)) {
-                        $event->setScore(500);
-                    }
-                }
-
-                if (in_array('location_id', $params)) {
-                    $event->setLocationId('ChIJeRpOeF67j4AR9ydy_PIzPuM');
-                }
-
-                if (in_array('transaction_id', $params)) {
-                    $event->setTransactionId('O6435DK');
-                }
-
-                if (in_array('achievement_id', $params)) {
-                    $event->setAchievementId('achievement_buy_5_items');
-                }
-
-                $this->assertTrue(is_array($event->toArray()), $eventName);
-
-                $this->analytics->addEvent($event);
             }
 
-            $this->assertTrue($this->analytics->post());
+            if (in_array('price', $params)) {
+                $event->setPrice(9.99);
+            }
+
+            if (in_array('quantity', $params)) {
+                $event->setQuantity(9.99);
+            }
+
+            if (in_array('payment_type', $params)) {
+                $event->setPaymentType('credit card');
+            }
+
+            if (in_array('shipping_tier', $params)) {
+                $event->setShippingTier('ground');
+            }
+
+            if (in_array('items', $params)) {
+                if (method_exists($event, 'addItem')) {
+                    $event->addItem($this->item);
+                } elseif (method_exists($event, 'setItem')) {
+                    $event->setItem($this->item);
+                }
+            }
+
+            if (in_array('virtual_currency_name', $params)) {
+                $event->setVirtualCurrencyName($this->prefill['currency_virtual']);
+
+                if (in_array('value', $params)) {
+                    $event->setValue(9.99);
+                }
+
+                if (in_array('item_name', $params)) {
+                    $event->setItemName('CookieBite');
+                }
+            }
+
+            if (in_array('character', $params)) {
+                $event->setCharacter('AlexWestergaard');
+
+                if (in_array('level', $params)) {
+                    $event->setLEvel(3);
+                }
+
+                if (in_array('score', $params)) {
+                    $event->setScore(500);
+                }
+            }
+
+            if (in_array('location_id', $params)) {
+                $event->setLocationId('ChIJeRpOeF67j4AR9ydy_PIzPuM');
+            }
+
+            if (in_array('transaction_id', $params)) {
+                $event->setTransactionId('O6435DK');
+            }
+
+            if (in_array('achievement_id', $params)) {
+                $event->setAchievementId('achievement_buy_5_items');
+            }
+
+            $this->assertTrue(is_array($event->toArray()), $eventName);
+
+            $this->analytics->addEvent($event);
         }
+
+        $this->assertTrue($this->analytics->post());
     }
 }
