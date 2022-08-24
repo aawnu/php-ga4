@@ -1,6 +1,7 @@
 <?php
 
 use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\UserProperty;
 
@@ -10,9 +11,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     protected $analytics;
     protected $item;
 
-    /**
-     * Setting up each test enviroment variables
-     */
     protected function prepareSituation()
     {
         $this->prefill = [
@@ -38,23 +36,37 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             ->setQuantity(2);
     }
 
-    /**
-     * Testing that we can send request to Google Analytics with 200 response
-     */
     public function testAnalytics()
     {
         $this->prepareSituation();
-        
+
         $this->assertTrue($this->analytics->post());
     }
 
-    /**
-     * Testing that out item is properly build
-     */
+    public function testTimeIsMicrotime()
+    {
+        $this->prepareSituation();
+
+        $this->analytics->setTimestamp(microtime(true));
+
+        $arr = $this->analytics->toArray();
+
+        $this->assertTrue($arr['timestamp_micros'] > intval('1_000_000'));
+    }
+
+    public function testExceptionIfTimeOlderThanOffsetLimit()
+    {
+        $this->prepareSituation();
+
+        $this->expectException(GA4Exception::class);
+
+        $this->analytics->setTimestamp(strtotime('-1 week'));
+    }
+
     public function testItem()
     {
         $this->prepareSituation();
-        
+
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
@@ -66,13 +78,10 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
-    /**
-     * Testing that we can send a User Property
-     */
     public function testUserProperty()
     {
         $this->prepareSituation();
-        
+
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -94,7 +103,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     public function testPrebuildEvents()
     {
         $this->prepareSituation();
-        
+
         $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
         foreach (array_chunk($getDefaultEventsByFile, 25) as $chunk) {

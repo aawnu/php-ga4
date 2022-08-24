@@ -84,11 +84,19 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      */
     public function setTimestamp($microOrUnix)
     {
+        $secondInMicro = intval('1_000_000');
+        $offsetLimit = strtotime('-3 days') * $secondInMicro;
+
         if (!is_numeric($microOrUnix)) {
             throw new GA4Exception("setTimestamp value must be numeric");
         }
 
-        $this->timestamp_micros = floor($microOrUnix * intval('1_000_000'));
+        $formattedTime =  floor($microOrUnix * $secondInMicro);
+        if ($formattedTime < $offsetLimit) {
+            throw new GA4Exception("Timestamp can not be older than 3 days");
+        }
+
+        $this->timestamp_micros = $formattedTime;
         return $this;
     }
 
