@@ -19,6 +19,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     private $debug;
     private $measurement_id;
     private $api_secret;
+    private $postOnEventLimit = false;
 
     protected $non_personalized_ads;
     protected $timestamp_micros;
@@ -100,6 +101,12 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         return $this;
     }
 
+    public function postOnEventLimit(bool $push = true)
+    {
+        $this->postOnEventLimit = $push;
+        return $this;
+    }
+
     /**
      * Add user property to your analytics request \
      * Maximum is 25 per request
@@ -141,6 +148,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         }
 
         $this->events[] = $event->toArray();
+
+        if (count($this->events) >= 25 && $this->postOnEventLimit === true) {
+            $this->post();
+        }
         return $this;
     }
 
