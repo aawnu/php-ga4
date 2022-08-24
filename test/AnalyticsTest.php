@@ -1,9 +1,9 @@
 <?php
 
 use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\UserProperty;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 class AnalyticsTest extends \PHPUnit\Framework\TestCase
 {
@@ -60,7 +60,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
         try {
             $this->analytics->setTimestamp(strtotime('-1 week'));
-            $this->assertTrue(false, "Did not receive correct Exception");
         } catch (GA4Exception $e) {
             $this->assertTrue(true);
         } catch (Exception $e) {
