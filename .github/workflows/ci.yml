@@ -37,8 +37,9 @@ jobs:
       - if: ${{ matrix.php-versions >= 8.0 }}
         name: "PHP >8.0"
         run: composer require --dev --with-all-dependencies --no-install phpunit/phpunit
-      - name: "Install & Test"
+      - name: "Install"
         run: |
           composer update --no-install --with-all-dependencies
           composer install
-          ./vendor/bin/phpunit
+      - name: "PHPUnit Tests"
+        run: ./vendor/bin/phpunit
