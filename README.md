@@ -75,7 +75,7 @@ try {
             ->setItemId($item['id'])
             ->setItemName($item['name'])
             ->setQuantity($item['qty'])
-            ->setPrice(round($item['price_total'] / $item['qty'], 2)) // unit pric
+            ->setPrice(round($item['price_total'] / $item['qty'], 2)) // unit price
             ->setItemVariant($item['colorName']);
 
         $viewCart->addItem($product);
@@ -96,7 +96,7 @@ try {
 }
 ```
 
-### Request
+### Request Format
 ```json
 {
     "client_id": "GA0.43535.234234",
@@ -129,13 +129,6 @@ try {
 }
 ```
 
-### Response
-```json
-{
-    "validationMessages": []
-}
-```
-
 ## Custom Events
 You can build your own custom events by extending on the Model\Event abstraction class; example
 
@@ -158,7 +151,6 @@ class ExampleEvent extends Model\Event
     {
         return [
             'my_variable',
-            'my_required_variable',
         ];
     }
 
@@ -188,10 +180,6 @@ It's important that you extend the Model\Event class because Analytics checks in
 Property name and value will be used as parameter name and value.
 
 Just make sure not to use any [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
-
-## Dependencies
-- [GuzzleHttp/Guzzle: 6.x](https://packagist.org/packages/guzzlehttp/guzzle)
-  - Please update [composer.json](composer.json) Guzzle to version 7.x for PHP 8.0+
 
 ## Source Documentation
 - [Measurement Protocol](https://developers.google.com/analytics/devguides/collection/protocol/ga4)
