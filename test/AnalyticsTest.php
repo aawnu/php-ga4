@@ -13,7 +13,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     /**
      * Setting up each test enviroment variables
      */
-    protected function prepareSituation()
+    protected function setUp(): void
     {
         $this->prefill = [
             // Analytics
@@ -43,8 +43,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testAnalytics()
     {
-        $this->prepareSituation();
-
         $this->assertTrue($this->analytics->post());
     }
 
@@ -53,8 +51,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testItem()
     {
-        $this->prepareSituation();
-
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
@@ -71,8 +67,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
      */
     public function testUserProperty()
     {
-        $this->prepareSituation();
-
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -93,8 +87,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPrebuildEvents()
     {
-        $this->prepareSituation();
-
         $eventCount = 0;
         foreach (glob(__DIR__ . '/../src/Event/*.php') as $file) {
             $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
@@ -194,7 +186,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                     $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
                 } finally {
                     $eventCount = 1;
-                    $this->prepareSituation();
                 }
             }
         }
