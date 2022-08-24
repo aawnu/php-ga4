@@ -87,17 +87,19 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPrebuildEvents()
     {
-        $eventCount = 0;
-        foreach (glob(__DIR__ . '/../src/Event/*.php') as $file) {
-            $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
+        $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
-            $this->assertTrue(class_exists($eventName), $eventName);
+        foreach (array_chunk($getDefaultEventsByFile, 25) as $chunk) {
 
-            $event = new $eventName;
-            $required = $event->getRequiredParams();
-            $params = array_unique(array_merge($event->getParams(), $required));
+            foreach ($chunk as $file) {
+                $eventName = 'AlexWestergaard\\PhpGa4\\Event\\' . basename($file, '.php');
 
-            try {
+                $this->assertTrue(class_exists($eventName), $eventName);
+
+                $event = new $eventName;
+                $required = $event->getRequiredParams();
+                $params = array_unique(array_merge($event->getParams(), $required));
+
                 $this->assertEquals(
                     strtolower(basename($file, '.php')),
                     strtolower(strtr($event->getName(), ['_' => ''])),
@@ -174,28 +176,9 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                 $this->assertTrue(is_array($event->toArray()), $eventName);
 
                 $this->analytics->addEvent($event);
-                $eventCount += 1;
-            } catch (throwable $t) {
-                $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
             }
 
-            if ($eventCount >= 25) {
-                try {
-                    $this->assertTrue($this->analytics->post());
-                } catch (throwable $t) {
-                    $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
-                } finally {
-                    $eventCount = 1;
-                }
-            }
-        }
-
-        if ($eventCount > 0) {
-            try {
-                $this->assertTrue($this->analytics->post());
-            } catch (throwable $t) {
-                $this->assertTrue(false, $t->getFile() . ':' . $t->getLine() . ' > ' . $t->getMessage());
-            }
+            $this->assertTrue($this->analytics->post());
         }
     }
 }
