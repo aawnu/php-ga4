@@ -137,12 +137,14 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
     }
 
     /**
-     * Push your current stack to Google Analytics
+     * Push your current stack to Google Analytics \
+     * Will reset the events list on success
      *
+     * @var bool $skipReset Avoid resetting events list on success, default: false
      * @return bool Whether the request returned status 200
      * @throws AlexWestergaard\PhpGa4\GA4Exception
      */
-    public function post()
+    public function post($skipReset = false)
     {
         $errorStack = null;
 
@@ -185,6 +187,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
         if ($errorStack instanceof GA4Exception) {
             throw $errorStack;
+        }
+
+        if (!$skipReset) {
+            $this->events = [];
         }
 
         return $resCode === 200;
