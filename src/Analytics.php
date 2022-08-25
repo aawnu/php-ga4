@@ -84,7 +84,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      */
     public function setTimestamp($microOrUnix)
     {
-        $secondInMicro = intval('1_000_000');
+        $secondInMicro = intval(strtr('1_000_000', ['_' => '']));
         $offsetLimit = strtotime('-3 days') * $secondInMicro;
 
         if (!is_numeric($microOrUnix)) {

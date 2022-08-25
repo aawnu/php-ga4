@@ -51,7 +51,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
         $arr = $this->analytics->toArray();
 
-        $this->assertTrue($arr['timestamp_micros'] > intval('1_000_000'));
+        $this->assertTrue($arr['timestamp_micros'] > intval(strtr('1_000_000', ['_' => ''])));
     }
 
     public function testExceptionIfTimeOlderThanOffsetLimit()
