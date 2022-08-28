@@ -17,24 +17,20 @@ abstract class Event extends ToArray implements Facade\Export
     /**
      * @param GA4Exception $childErrors
      */
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false): array
     {
-        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
-            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
-        }
         $return = [];
-        $errorStack = null;
 
         if (!method_exists($this, 'getName')) {
-            $errorStack = new GA4Exception("'self::getName()' does not exist", $errorStack);
+            GA4Exception::push("'self::getName()' does not exist");
         } else {
             $name = $this->getName();
             if (empty($name)) {
-                $errorStack = new GA4Exception("Name '{$name}' can not be empty", $errorStack);
+                GA4Exception::push("Name '{$name}' can not be empty");
             } elseif (strlen($name) > 40) {
-                $errorStack = new GA4Exception("Name '{$name}' can not be longer than 40 characters", $errorStack);
+                GA4Exception::push("Name '{$name}' can not be longer than 40 characters");
             } elseif (preg_match('/[^\w\d\-]/', $name)) {
-                $errorStack = new GA4Exception("Name '{$name}' can only be letters, numbers, underscores and dashes", $errorStack);
+                GA4Exception::push("Name '{$name}' can only be letters, numbers, underscores and dashes");
             } elseif (in_array($name, [
                 'ad_activeview',
                 'ad_click',
@@ -59,21 +55,20 @@ abstract class Event extends ToArray implements Facade\Export
                 'session_start',
                 'user_engagement',
             ])) {
-                $errorStack = new GA4Exception("Name '{$name}' is reserved", $errorStack);
+                GA4Exception::push("Name '{$name}' is reserved");
             } else {
                 $return['name'] = $name;
             }
         }
 
-        $catch = parent::toArray(true, $errorStack);
-        $errorStack = $catch['error'];
+        $parent = parent::toArray(true);
 
-        if (is_array($catch['data']) && !empty($catch['data'])) {
-            $return['params'] = $catch['data'];
+        if (!$isParent && GA4Exception::hasStack()) {
+            throw GA4Exception::getFinalStack();
         }
 
-        if ($errorStack instanceof GA4Exception) {
-            throw $errorStack;
+        if (!empty($parent)) {
+            $return['params'] = $parent;
         }
 
         return $return;

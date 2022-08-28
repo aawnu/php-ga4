@@ -14,59 +14,45 @@ abstract class ToArray implements Facade\Export
     /**
      * @param GA4Exception $childErrors
      */
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false): array
     {
-        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
-            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
-        }
-
         $return = [];
-        $errorStack = null;
-
-        if ($isParent !== null) {
-            $errorStack = $childErrors;
-        }
 
         $required = $this->getRequiredParams();
         $params = array_unique(array_merge($this->getParams(), $required));
 
         foreach ($params as $param) {
             if (!property_exists($this, $param)) {
-                $errorStack = new GA4Exception("Param '{$param}' is not defined", $errorStack);
+                GA4Exception::push("Param '{$param}' is not defined");
                 continue;
             } elseif (!isset($this->{$param})) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("Param '{$param}' is required but not set", $errorStack);
+                    GA4Exception::push("Param '{$param}' is required but not set");
                 }
                 continue;
             } elseif (empty($this->{$param}) && (is_array($this->{$param}) || strval($this->{$param}) !== '0')) {
                 if (in_array($param, $required)) {
-                    $errorStack = new GA4Exception("Param '{$param}' is required but empty", $errorStack);
+                    GA4Exception::push("Param '{$param}' is required but empty");
                 }
                 continue;
             }
 
             if (strlen($param) > 40) {
-                $errorStack = new GA4Exception("Param '{$param}' is too long, maximum is 40 characters", $errorStack);
+                GA4Exception::push("Param '{$param}' is too long, maximum is 40 characters");
             }
 
             $value = $this->{$param};
 
             // Array values be handled and validated within setter, fx addItem/setItem
             if (!is_array($value) && mb_strlen($value) > 100) {
-                $errorStack = new GA4Exception("Value '{$value}' is too long, maximum is 100 characters", $errorStack);
+                GA4Exception::push("Value '{$value}' is too long, maximum is 100 characters");
             }
 
             $return[$param] = $value;
         }
 
-        if ($isParent) {
-            return [
-                'data' => $return,
-                'error' => $errorStack
-            ];
-        } elseif ($errorStack instanceof GA4Exception) {
-            throw $errorStack;
+        if (!$isParent && GA4Exception::hasStack()) {
+            throw GA4Exception::getFinalStack();
         }
 
         return $return;
