@@ -157,6 +157,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             $kB = 1024;
             if (mb_strlen(json_encode($reqBody)) > ($kB * 130)) {
                 GA4Exception::push("Request body exceeds 130kB");
+                continue;
             }
 
             $guzzle = new Guzzle();
@@ -194,9 +195,9 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         return true;
     }
 
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false): array
     {
-        return parent::toArray($isParent, $childErrors);
+        return parent::toArray($isParent);
     }
 
     public static function new(string $measurementId, string $apiSecret, bool $debug = false)
