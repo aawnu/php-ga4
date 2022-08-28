@@ -186,11 +186,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
         }
 
         if (GA4Exception::hasStack()) {
-            throw GA4Exception::getStack();
+            throw GA4Exception::getFinalStack();
         }
 
         $this->events = [];
-        GA4Exception::resetStack();
 
         return true;
     }

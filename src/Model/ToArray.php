@@ -52,7 +52,7 @@ abstract class ToArray implements Facade\Export
         }
 
         if (!$isParent && GA4Exception::hasStack()) {
-            throw GA4Exception::getStack();
+            throw GA4Exception::getFinalStack();
         }
 
         return $return;

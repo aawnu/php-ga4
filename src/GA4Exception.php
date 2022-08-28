@@ -4,13 +4,11 @@ namespace AlexWestergaard\PhpGa4;
 
 class GA4Exception extends \Exception
 {
-    private static ?GA4Exception $GA4ExceptionStack = null;
+    private static GA4Exception $GA4ExceptionStack;
 
     public function __construct(string $message = "", int $code = 0)
     {
-        $previous = isset(static::$GA4ExceptionStack) ? static::$GA4ExceptionStack : null;
-
-        parent::__construct($message, $code, $previous);
+        parent::__construct($message, $code, static::getStack());
     }
 
     public function add()
@@ -25,12 +23,21 @@ class GA4Exception extends \Exception
 
     public static function hasStack()
     {
-        return isset(self::$GA4ExceptionStack) && self::$GA4ExceptionStack !== null;
+        return static::getStack() !== null;
     }
 
     public static function getStack()
     {
-        return self::$GA4ExceptionStack;
+        return isset(static::$GA4ExceptionStack) ? static::$GA4ExceptionStack : null;
+    }
+
+    public static function getFinalStack()
+    {
+        $stack = isset(static::$GA4ExceptionStack) ? static::$GA4ExceptionStack : null;
+
+        static::resetStack();
+
+        return $stack;
     }
 
     public static function resetStack()
