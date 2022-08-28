@@ -42,7 +42,7 @@ class GA4Exception extends \Exception
      * Add new GA4Exception to stack without further action
      *
      * @param string $message
-     * @param integer $code
+     * @param int $code
      * @return void
      */
     public static function push(string $message, int $code = 0)
@@ -53,7 +53,7 @@ class GA4Exception extends \Exception
     /**
      * Check if the stack has any instances
      *
-     * @return boolean
+     * @return bool
      */
     public static function hasStack()
     {
@@ -63,7 +63,7 @@ class GA4Exception extends \Exception
     /**
      * Return unmodified stack
      *
-     * @return void
+     * @return AlexWestergaard\PhpGa4\GA4Exception|null
      */
     public static function getStack()
     {
@@ -74,7 +74,7 @@ class GA4Exception extends \Exception
      * Returns stack and resets/cleans the stack; this one should be used when throwing \
      * to avoid future try-catch blocks will hit the stack build during current run.
      *
-     * @return void
+     * @return AlexWestergaard\PhpGa4\GA4Exception|null
      */
     public static function getFinalStack()
     {
