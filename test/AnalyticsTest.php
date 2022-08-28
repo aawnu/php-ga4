@@ -192,6 +192,10 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                 $event->setAchievementId('achievement_buy_5_items');
             }
 
+            if (in_array('group_id', $params)) {
+                $event->setGroupId('999');
+            }
+
             $this->assertTrue(is_array($event->toArray()), $eventName);
 
             $this->analytics->addEvent($event);
