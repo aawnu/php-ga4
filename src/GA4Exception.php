@@ -28,12 +28,12 @@ class GA4Exception extends \Exception
 
     public static function getStack()
     {
-        return isset(static::$GA4ExceptionStack) ? static::$GA4ExceptionStack : null;
+        return isset(self::$GA4ExceptionStack) ? self::$GA4ExceptionStack : null;
     }
 
     public static function getFinalStack()
     {
-        $stack = isset(static::$GA4ExceptionStack) ? static::$GA4ExceptionStack : null;
+        $stack = isset(self::$GA4ExceptionStack) ? self::$GA4ExceptionStack : null;
 
         static::resetStack();
 
@@ -42,6 +42,6 @@ class GA4Exception extends \Exception
 
     public static function resetStack()
     {
-        static::$GA4ExceptionStack = null;
+        self::$GA4ExceptionStack = null;
     }
 }
