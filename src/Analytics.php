@@ -144,15 +144,10 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
      */
     public function post()
     {
-        $errorStack = null;
-
         $url = $this->debug ? $this::URL_DEBUG : $this::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
-        $catch = parent::toArray(true, $errorStack);
-        $errorStack = $catch['error'];
-        $reqBody = $catch['data'];
-
+        $reqBody = parent::toArray(true);
 
         $eventsList = array_chunk($reqBody['events'] ?? [], 25);
 
@@ -161,11 +156,7 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
             $kB = 1024;
             if (mb_strlen(json_encode($reqBody)) > ($kB * 130)) {
-                $errorStack = new GA4Exception("Request body exceeds 130kB", $errorStack);
-            }
-
-            if ($errorStack instanceof GA4Exception) {
-                throw $errorStack;
+                GA4Exception::push("Request body exceeds 130kB");
             }
 
             $guzzle = new Guzzle();
@@ -173,28 +164,33 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 
             $resCode = $res->getStatusCode() ?? 0;
             if ($resCode !== 200) {
-                $errorStack = new GA4Exception("Request received code {$resCode}", $errorStack);
+                GA4Exception::push("Request received code {$resCode}");
             }
 
             $resBody = $res->getBody()->getContents();
             $data = @json_decode($resBody, true);
 
             if (empty($resBody)) {
-                $errorStack = new GA4Exception("Received not body", $errorStack);
+                GA4Exception::push("Received not body");
             } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
-                $errorStack = new GA4Exception("Could not parse response", $errorStack);
+                GA4Exception::push("Could not parse response");
             } elseif (!empty($data['validationMessages'])) {
                 foreach ($data['validationMessages'] as $msg) {
-                    $errorStack = new GA4Exception('Validation Message: ' . $msg['validationCode'] . '[' . $msg['fieldPath'] . ']: ' . $msg['description'], $errorStack);
+                    GA4Exception::push(
+                        'Validation Message: ' . $msg['validationCode']
+                            . (isset($msg['fieldPath']) ? '[' . $msg['fieldPath'] . ']: ' : ':')
+                            . $msg['description']
+                    );
                 }
             }
         }
 
-        if ($errorStack instanceof GA4Exception) {
-            throw $errorStack;
+        if (GA4Exception::hasStack()) {
+            throw GA4Exception::getStack();
         }
 
-        $this->events = []; // Reset events list
+        $this->events = [];
+        GA4Exception::resetStack();
 
         return true;
     }
