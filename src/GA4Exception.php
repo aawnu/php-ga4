@@ -4,7 +4,7 @@ namespace AlexWestergaard\PhpGa4;
 
 class GA4Exception extends \Exception
 {
-    private static GA4Exception $GA4ExceptionStack;
+    private static $GA4ExceptionStack;
 
     public function __construct(string $message = "", int $code = 0)
     {
