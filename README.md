@@ -1,55 +1,60 @@
 # php-ga4
-PHP Wrapper for Google Analytics 4
+PHP Wrapper for Google Analytics 4 Server Side Tracking of Events.
+Pageviews and Cookies [`Cookie._ga` / `Cookie._gid`] are triggered by JavaScript (gtag.js).
 
 ```sh
 # Add library to your codebase
 composer require alexwestergaard/php-ga4
 ```
 
-## Pre-built Events
+![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)
+![GitHub Code Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)
+![Packagist Stars](https://img.shields.io/packagist/stars/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)
+![Packagist Downloads](https://img.shields.io/packagist/dt/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)
+![GitHub issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)
+
+## Default Events
 List of all pre-defined events ready to be used as recommended by the Google Analytics Measurement Protocol.
 
-- Share
-- Signup
-- Login
-- Search
-- SelectContent
-- SelectItem
-- SelectPromotion
-- ViewItem
-- ViewItemList
-- ViewPromotion
-- ViewSearchResults
+![Share](https://shields.io/badge/Share-informational)
+![Signup](https://shields.io/badge/Signup-informational)
+![Login](https://shields.io/badge/Login-informational)
+![Search](https://shields.io/badge/Search-informational)
+![SelectContent](https://shields.io/badge/SelectContent-informational)
+![SelectItem](https://shields.io/badge/SelectItem-informational)
+![SelectPromotion](https://shields.io/badge/SelectPromotion-informational)
+![ViewItem](https://shields.io/badge/ViewItem-informational)
+![ViewItemList](https://shields.io/badge/ViewItemList-informational)
+![ViewPromotion](https://shields.io/badge/ViewPromotion-informational)
+![ViewSearchResults](https://shields.io/badge/ViewSearchResults-informational)
 
 ### E-commerce
-- GenerateLead
-- AddToWishlist
-- AddToCart
-- ViewCart
-- RemoveFromCart
-- BeginCheckout
-- AddPaymentInfo
-- AddShippingInfo
-- Purchase
-- Refund
+
+![GenerateLead](https://shields.io/badge/GenerateLead-informational)
+![AddToWishlist](https://shields.io/badge/AddToWishlist-informational)
+![AddToCart](https://shields.io/badge/AddToCart-informational)
+![ViewCart](https://shields.io/badge/ViewCart-informational)
+![RemoveFromCart](https://shields.io/badge/RemoveFromCart-informational)
+![BeginCheckout](https://shields.io/badge/BeginCheckout-informational)
+![AddPaymentInfo](https://shields.io/badge/AddPaymentInfo-informational)
+![AddShippingInfo](https://shields.io/badge/AddShippingInfo-informational)
+![Purchase](https://shields.io/badge/Purchase-informational)
+![Refund](https://shields.io/badge/Refund-informational)
 
 ### Engagement (Gaming?)
-- EarnVirtualCurrency
-- SpendVirtualCurrency
-- LevelUp
-- PostScore
-- TutorialBegin
-- TutorialComplete
-- UnlockAchievement
-- JoinGroup
+
+![EarnVirtualCurrency](https://shields.io/badge/EarnVirtualCurrency-informational)
+![SpendVirtualCurrency](https://shields.io/badge/SpendVirtualCurrency-informational)
+![LevelUp](https://shields.io/badge/LevelUp-informational)
+![PostScore](https://shields.io/badge/PostScore-informational)
+![TutorialBegin](https://shields.io/badge/TutorialBegin-informational)
+![TutorialComplete](https://shields.io/badge/TutorialComplete-informational)
+![UnlockAchievement](https://shields.io/badge/UnlockAchievement-informational)
+![JoinGroup](https://shields.io/badge/JoinGroup-informational)
 
 ## Example
 ```php
 <?php
-
-/**
- * This is psuedo code for visual representation.
- */
 
 use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Analytics;
@@ -85,14 +90,10 @@ try {
 
     $analytics->addEvent($viewCart);
 
-    if (!$analytics->post()) {
-        // Handling if post was unsuccessfull
-    }
-
-    // Handling if post was successfull
-} catch (GA4Exception $gErr) {
+    $analytics->post(); // Errors are served as exceptions on pre-exit
+} catch (GA4Exception $e) {
     // Handle exception
-    // Exceptions might be stacked, make sure to check $gErr->getPrevious();
+    // Exceptions might be stacked, check: $e->getPrevious();
 }
 ```
 
@@ -130,7 +131,7 @@ try {
 ```
 
 ## Custom Events
-You can build your own custom events by extending on the Model\Event abstraction class; example
+You can build your own custom events by extending `AlexWestergaard\PhpGa4\Model\Event`
 
 ```php
 <?php
@@ -177,13 +178,10 @@ class ExampleEvent extends Model\Event
 
 It's important that you extend the Model\Event class because Analytics checks inheritance towards that class to ensure we grap all parameters and ensures required parameters.
 
-Property name and value will be used as parameter name and value.
-
-Just make sure not to use any [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
-
 ## Source Documentation
 - [Measurement Protocol](https://developers.google.com/analytics/devguides/collection/protocol/ga4)
 - [Measurement Protocol: Reference](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag)
 - [Measurement Protocol: User Properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties?client_type=gtag)
 - [Measurement Protocol: Events](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
+  - [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
 - [Measurement Protocol: Validation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag)
