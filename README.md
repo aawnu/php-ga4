@@ -7,11 +7,11 @@ Pageviews and Cookies [`Cookie._ga` / `Cookie._gid`] are triggered by JavaScript
 composer require alexwestergaard/php-ga4
 ```
 
-![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)
-![GitHub Code Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)
-![Packagist Stars](https://img.shields.io/packagist/stars/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)
-![Packagist Downloads](https://img.shields.io/packagist/dt/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)
-![GitHub issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)
+[![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://www.php.net/releases/)
+[![GitHub Code Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
+[![Packagist Stars](https://img.shields.io/packagist/stars/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/stargazers)
+[![Packagist Downloads](https://img.shields.io/packagist/dt/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)](https://packagist.org/packages/alexwestergaard/php-ga4/stats)
+[![GitHub issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/issues)
 
 ## Default Events
 List of all pre-defined events ready to be used as recommended by the Google Analytics Measurement Protocol.
