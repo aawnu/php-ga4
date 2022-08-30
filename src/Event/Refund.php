@@ -18,6 +18,21 @@ class Refund extends Model\Event implements Facade\Refund
     protected $tax;
     protected $items = [];
 
+    private $isFullRefund = false;
+
+    /**
+     * Full refunds does not require items to be passed. \
+     * This will skip the items check if true
+     *
+     * @param boolean $is
+     * @return static
+     */
+    public function isFullRefund(bool $is)
+    {
+        $this->isFullRefund = $is;
+        return $this;
+    }
+
     public function getName(): string
     {
         return 'refund';
@@ -52,7 +67,11 @@ class Refund extends Model\Event implements Facade\Refund
         }
 
         $return[] = 'transaction_id';
-        $return[] = 'items';
+
+        if (!$this->isFullRefund) {
+            $return[] = 'items';
+        }
+
         return $return;
     }
 

@@ -1,6 +1,7 @@
 <?php
 
 use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\Event\Refund;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\GA4Exception;
@@ -102,6 +103,45 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('customer_tier', $arr);
 
         $this->assertTrue($this->analytics->post());
+    }
+
+    public function testFullRefundNoItems()
+    {
+        $this->prepareSituation();
+
+        $refund = Refund::new()->setTransactionId(1)->isFullRefund(true);
+
+        $this->analytics->addEvent($refund);
+
+        $this->assertTrue($this->analytics->post());
+    }
+
+    public function testPartialRefundWithItems()
+    {
+        $this->prepareSituation();
+
+        $refund = Refund::new()->setTransactionId(1)->addItem($this->item);
+
+        $this->analytics->addEvent($refund);
+
+        $arr = $this->analytics->toArray();
+        $this->assertTrue(is_array($arr));
+
+        $arr = $refund->toArray();
+        $this->assertArrayHasKey('params', $arr);
+        $arr = $arr['params'];
+        $this->assertArrayHasKey('items', $arr);
+    }
+
+    public function testPartialRefundNoItemsThrows()
+    {
+        $this->prepareSituation();
+
+        $refund = Refund::new()->setTransactionId(1);
+
+        $this->expectException(GA4Exception::class);
+
+        $this->analytics->addEvent($refund);
     }
 
     public function testPrebuildEvents()
