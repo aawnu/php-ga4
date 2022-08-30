@@ -1,8 +1,21 @@
 {
     "name": "alexwestergaard/php-ga4",
     "description": "PHP Wrapper for Google Analytics 4",
+    "keywords": "anayltics, google analytics, ga4, server side tracking, sst",
+    "homepage": "https://github.com/AlexWestergaard/php-ga4",
     "type": "library",
     "license": "MIT",
+    "authors": [
+        {
+            "name": "Alex Westergaard",
+            "homepage": "https://aaw.nu",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/AlexWestergaard/php-ga4/issues",
+        "source": "https://github.com/AlexWestergaard/php-ga4/releases/latest"
+    },
     "autoload": {
         "psr-4": {
             "AlexWestergaard\\PhpGa4\\": "src/"
