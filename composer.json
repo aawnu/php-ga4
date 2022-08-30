@@ -1,6 +1,6 @@
 {
     "name": "alexwestergaard/php-ga4",
-    "description": "PHP Wrapper for Google Analytics 4",
+    "description": "PHP Wrapper for Google Analytics 4 Events with Server Side Tracking",
     "keywords": [
         "anayltics",
         "google analytics",
