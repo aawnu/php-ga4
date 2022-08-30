@@ -1,7 +1,13 @@
 {
     "name": "alexwestergaard/php-ga4",
     "description": "PHP Wrapper for Google Analytics 4",
-    "keywords": "anayltics, google analytics, ga4, server side tracking, sst",
+    "keywords": [
+        "anayltics",
+        "google analytics",
+        "ga4",
+        "server side tracking",
+        "sst"
+    ],
     "homepage": "https://github.com/AlexWestergaard/php-ga4",
     "type": "library",
     "license": "MIT",
