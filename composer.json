@@ -8,7 +8,7 @@
         "server side tracking",
         "sst"
     ],
-    "homepage": "https://github.com/AlexWestergaard/php-ga4",
+    "homepage": "https://github.com/aawnu/php-ga4",
     "type": "library",
     "license": "MIT",
     "authors": [
@@ -19,8 +19,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/AlexWestergaard/php-ga4/issues",
-        "source": "https://github.com/AlexWestergaard/php-ga4/releases/latest"
+        "issues": "https://github.com/aawnu/php-ga4/issues",
+        "source": "https://github.com/aawnu/php-ga4/releases/latest"
     },
     "autoload": {
         "psr-4": {
