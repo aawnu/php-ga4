@@ -93,13 +93,13 @@ class Purchase extends Model\Event implements Facade\Purchase
         return $this;
     }
 
-    public function setShipping(int $cost)
+    public function setShipping(float $cost)
     {
         $this->shipping = 0 + $cost;
         return $this;
     }
 
-    public function setTax(int $tax)
+    public function setTax(float $tax)
     {
         $this->tax = $tax;
         return $this;

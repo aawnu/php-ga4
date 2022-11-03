@@ -56,17 +56,17 @@ interface Purchase
      * Shipping cost associated with a transaction.
      *
      * @var shipping
-     * @param string $cost eg. 3.33
+     * @param float $cost eg. 3.33
      */
-    public function setShipping(int $cost);
+    public function setShipping(float $cost);
 
     /**
      * Tax cost associated with a transaction.
      *
      * @var tax
-     * @param string $tax eg. 1.11
+     * @param float $tax eg. 1.11
      */
-    public function setTax(int $tax);
+    public function setTax(float $tax);
 
     /**
      * The items for the event.
