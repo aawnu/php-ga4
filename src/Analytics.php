@@ -3,8 +3,8 @@
 namespace AlexWestergaard\PhpGa4;
 
 use GuzzleHttp\Client as Guzzle;
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 /**
  * Foundation class to collect all information and events to send to Google Analytics \
@@ -15,6 +15,8 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
 {
     const URL_LIVE = 'https://www.google-analytics.com/mp/collect';
     const URL_DEBUG = 'https://www.google-analytics.com/debug/mp/collect';
+
+    const ALLOW_RESPONSE_HEADERS = [200, 204];
 
     private $debug;
     private $measurement_id;
@@ -164,11 +166,11 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             $res = $guzzle->request('POST', $url, ['json' => $reqBody]);
 
             $resCode = $res->getStatusCode() ?? 0;
-            if ($resCode !== 200 && $resCode !== 204) {
+            if (!in_array($resCode, static::ALLOW_RESPONSE_HEADERS)) {
                 GA4Exception::push("Request received code {$resCode}");
             }
 
-            if($resCode !== 204) {
+            if ($resCode !== 204) {
                 $resBody = $res->getBody()->getContents();
                 $data = @json_decode($resBody, true);
 
