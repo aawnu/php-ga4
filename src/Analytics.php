@@ -164,24 +164,26 @@ class Analytics extends Model\ToArray implements Facade\Analytics, Facade\Export
             $res = $guzzle->request('POST', $url, ['json' => $reqBody]);
 
             $resCode = $res->getStatusCode() ?? 0;
-            if ($resCode !== 200) {
+            if ($resCode !== 200 && $resCode !== 204) {
                 GA4Exception::push("Request received code {$resCode}");
             }
 
-            $resBody = $res->getBody()->getContents();
-            $data = @json_decode($resBody, true);
+            if($resCode !== 204) {
+                $resBody = $res->getBody()->getContents();
+                $data = @json_decode($resBody, true);
 
-            if (empty($resBody)) {
-                GA4Exception::push("Received not body");
-            } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
-                GA4Exception::push("Could not parse response");
-            } elseif (!empty($data['validationMessages'])) {
-                foreach ($data['validationMessages'] as $msg) {
-                    GA4Exception::push(
-                        'Validation Message: ' . $msg['validationCode']
-                            . (isset($msg['fieldPath']) ? '[' . $msg['fieldPath'] . ']: ' : ':')
-                            . $msg['description']
-                    );
+                if (empty($resBody)) {
+                    GA4Exception::push("Received not body");
+                } elseif (json_last_error() != JSON_ERROR_NONE || $data === null) {
+                    GA4Exception::push("Could not parse response");
+                } elseif (!empty($data['validationMessages'])) {
+                    foreach ($data['validationMessages'] as $msg) {
+                        GA4Exception::push(
+                            'Validation Message: ' . $msg['validationCode']
+                                . (isset($msg['fieldPath']) ? '[' . $msg['fieldPath'] . ']: ' : ':')
+                                . $msg['description']
+                        );
+                    }
                 }
             }
         }
