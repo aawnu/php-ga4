@@ -158,7 +158,6 @@ use AlexWestergaard\PhpGa4\Event;
 
 try {
     $addToCart = Event\AddToCart::fromArray($_POST['addToCart']);
-
     Analytics::new($measurementId, $apiSecret)
         ->addEvent($addToCart)
         ->post();
@@ -221,3 +220,4 @@ class ExampleEvent extends Model\Event
 - [Measurement Protocol: Events](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
   - [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
 - [Measurement Protocol: Validation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag)
+git 
