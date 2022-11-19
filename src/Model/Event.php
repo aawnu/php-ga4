@@ -25,7 +25,7 @@ abstract class Event extends ToArray implements Facade\Export
                 continue;
             }
 
-            $callableName = implode(',', array_map('ucfirst', explode('_', $insertable)));
+            $callableName = implode('', array_map('ucfirst', explode('_', $insertable)));
 
             if (is_array($param)) {
                 $callableName = substr($callableName, -1) === 's' ? substr($callableName, 0, -1) : $callableName;

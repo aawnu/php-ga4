@@ -83,6 +83,29 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
+    public function testItemFromArray()
+    {
+        $this->prepareSituation();
+
+        $item = Item::fromArray([
+            'item_id' => '2',
+            'item_name' => 'Second Product',
+            'currency' => $this->prefill['currency'],
+            'price' => 9.99,
+            'quantity' => 4,
+        ]);
+
+        $this->assertInstanceOf(Item::class, $item);
+
+        $arr = $item->toArray();
+        $this->assertTrue(is_array($arr));
+        $this->assertArrayHasKey('item_id', $arr);
+        $this->assertArrayHasKey('item_name', $arr);
+        $this->assertArrayHasKey('currency', $arr);
+        $this->assertArrayHasKey('price', $arr);
+        $this->assertArrayHasKey('quantity', $arr);
+    }
+
     public function testUserProperty()
     {
         $this->prepareSituation();

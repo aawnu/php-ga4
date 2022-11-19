@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 /**
  * @requires One of item_id or item_name must be present and valid
@@ -166,6 +166,29 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         }
 
         return $return;
+    }
+
+    public static function fromArray(array $params = [])
+    {
+        $item = static::new();
+
+        $insertables = array_unique(array_merge($item->getParams(), $item->getRequiredParams()));
+
+        foreach ($insertables as $insertable) {
+            if (!in_array($insertable, array_keys($params)) || is_null($param = $params[$insertable])) {
+                continue;
+            }
+
+            $callableName = implode('', array_map('ucfirst', explode('_', $insertable)));
+
+            if (method_exists($item, ($method = 'add' . $callableName))) {
+                $item->$method($param);
+            } elseif (method_exists($item, ($method = 'set' . $callableName))) {
+                $item->$method($param);
+            }
+        }
+
+        return $item;
     }
 
     /**
