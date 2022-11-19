@@ -1,61 +1,84 @@
-# php-ga4
-PHP Wrapper for Google Analytics 4 Server Side Tracking of Events.
-Pageviews and Cookies [`Cookie._ga` / `Cookie._gid`] are triggered by JavaScript (gtag.js).
+<h1 style="text-align:center">PHP GA4</h1>
 
-```sh
-# Add library to your codebase
-composer require alexwestergaard/php-ga4
-```
+<p style="text-align:center">PHP Wrapper for Google Analytics 4 Server Side Tracking of events.</p>
 
-[![Packagist PHP Version Support](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://www.php.net/releases/)
-[![GitHub Code Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
-[![Packagist Stars](https://img.shields.io/packagist/stars/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/stargazers)
-[![Packagist Downloads](https://img.shields.io/packagist/dt/alexwestergaard/php-ga4?color=yellow&style=for-the-badge)](https://packagist.org/packages/alexwestergaard/php-ga4/stats)
-[![GitHub issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/issues)
+<p style="text-align:center">
+    <a href="https://www.php.net/releases/" target="_blank">
+        <img src="https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge"></a>
+    <a href="https://github.com/AlexWestergaard/php-ga4/releases/latest" target="_blank">
+        <img src="https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge"></a>
+    <a href="https://github.com/AlexWestergaard/php-ga4/issues" target="_blank">
+        <img src="https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge"></a>
+</p>
 
-## Default Events
-List of all pre-defined events ready to be used as recommended by the Google Analytics Measurement Protocol.
+<p style="text-align:center">
+    <code>composer require alexwestergaard/php-ga4</code>
+</p>
 
-![Share](https://shields.io/badge/Share-informational)
-![Signup](https://shields.io/badge/Signup-informational)
-![Login](https://shields.io/badge/Login-informational)
-![Search](https://shields.io/badge/Search-informational)
-![SelectContent](https://shields.io/badge/SelectContent-informational)
-![SelectItem](https://shields.io/badge/SelectItem-informational)
-![SelectPromotion](https://shields.io/badge/SelectPromotion-informational)
-![ViewItem](https://shields.io/badge/ViewItem-informational)
-![ViewItemList](https://shields.io/badge/ViewItemList-informational)
-![ViewPromotion](https://shields.io/badge/ViewPromotion-informational)
-![ViewSearchResults](https://shields.io/badge/ViewSearchResults-informational)
+<br>
 
-### E-commerce
+<h2 style="text-align:center">Events</h2>
 
-![GenerateLead](https://shields.io/badge/GenerateLead-informational)
-![AddToWishlist](https://shields.io/badge/AddToWishlist-informational)
-![AddToCart](https://shields.io/badge/AddToCart-informational)
-![ViewCart](https://shields.io/badge/ViewCart-informational)
-![RemoveFromCart](https://shields.io/badge/RemoveFromCart-informational)
-![BeginCheckout](https://shields.io/badge/BeginCheckout-informational)
-![AddPaymentInfo](https://shields.io/badge/AddPaymentInfo-informational)
-![AddShippingInfo](https://shields.io/badge/AddShippingInfo-informational)
-![Purchase](https://shields.io/badge/Purchase-informational)
-![Refund](https://shields.io/badge/Refund-informational)
+<p style="text-align:center">
+    This is a list of prebuilt events as shown in the documentation |
+    <a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events" target="_blank">Measurement Protocol: Events</a><br>
+</p>
 
-### Engagement (Gaming?)
+<h3 style="text-align:center">Default</h3>
 
-![EarnVirtualCurrency](https://shields.io/badge/EarnVirtualCurrency-informational)
-![SpendVirtualCurrency](https://shields.io/badge/SpendVirtualCurrency-informational)
-![LevelUp](https://shields.io/badge/LevelUp-informational)
-![PostScore](https://shields.io/badge/PostScore-informational)
-![TutorialBegin](https://shields.io/badge/TutorialBegin-informational)
-![TutorialComplete](https://shields.io/badge/TutorialComplete-informational)
-![UnlockAchievement](https://shields.io/badge/UnlockAchievement-informational)
-![JoinGroup](https://shields.io/badge/JoinGroup-informational)
+<p style="text-align:center">
+    <img src="https://shields.io/badge/Share-informational">
+    <img src="https://shields.io/badge/Signup-informational">
+    <img src="https://shields.io/badge/Login-informational">
+    <img src="https://shields.io/badge/Search-informational">
+    <img src="https://shields.io/badge/SelectContent-informational">
+    <img src="https://shields.io/badge/SelectItem-informational">
+    <img src="https://shields.io/badge/SelectPromotion-informational">
+    <img src="https://shields.io/badge/ViewItem-informational">
+    <img src="https://shields.io/badge/ViewItemList-informational">
+    <img src="https://shields.io/badge/ViewPromotion-informational">
+    <img src="https://shields.io/badge/ViewSearchResults-informational">
+</p>
 
-## Example
+<h3 style="text-align:center">E-commerce</h3>
+
+<p style="text-align:center">
+    <img src="https://shields.io/badge/GenerateLead-informational">
+    <img src="https://shields.io/badge/AddToWishlist-informational">
+    <img src="https://shields.io/badge/AddToCart-informational">
+    <img src="https://shields.io/badge/ViewCart-informational">
+    <img src="https://shields.io/badge/RemoveFromCart-informational">
+    <img src="https://shields.io/badge/BeginCheckout-informational">
+    <img src="https://shields.io/badge/AddPaymentInfo-informational">
+    <img src="https://shields.io/badge/AddShippingInfo-informational">
+    <img src="https://shields.io/badge/Purchase-informational">
+    <img src="https://shields.io/badge/Refund-informational">
+</p>
+  
+<h3 style="text-align:center">Engagement / Gaming</h3>
+
+<p style="text-align:center">
+    <img src="https://shields.io/badge/EarnVirtualCurrency-informational">
+    <img src="https://shields.io/badge/SpendVirtualCurrency-informational">
+    <img src="https://shields.io/badge/LevelUp-informational">
+    <img src="https://shields.io/badge/PostScore-informational">
+    <img src="https://shields.io/badge/TutorialBegin-informational">
+    <img src="https://shields.io/badge/TutorialComplete-informational">
+    <img src="https://shields.io/badge/UnlockAchievement-informational">
+    <img src="https://shields.io/badge/JoinGroup-informational">
+</p>
+
+<br>
+
+<h2 style="text-align:center">Frontend & Backend Communication</h2>
+
+<p style="text-align:center">
+    This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets. There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
+</p>
+  
+<h3 style="text-align:center">Logged/Queued Events</h3>
+
 ```php
-<?php
-
 use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
@@ -64,78 +87,106 @@ use AlexWestergaard\PhpGa4\Item;
 require_once __DIR__ . '/vendor/autoload.php';
 
 try {
-    $analytics = new Analytics('G-XXXXXXXX', 'gDS1gs423dDSH34sdfa');
-    $analytics->setClientId($_COOKIE['_ga'] ?? $_COOKIE['_gid'] ?? $fallback);
-    if ($loggedIn) {
-        $analytics->setUserId($uniqueUserId);
+    $analytics = Analytics::new('G-XXXXX', 'secret_api_key')
+        ->setClientId('session_id');
+        // ^ If gtag.js, this can be the _ga or _gid cookie
+    
+    if ($user) {
+        $analytics->setUserId($user->id);
+        // ^ This can be any kind of identifier, readable is easier for you
     }
 
-    $viewCart = Event\ViewCart::new()
-        ->setCurrency('EUR');
-
-    $totalPrice = 0;
-    foreach ($cartItems as $item) {
-        $totalPrice += $item['price_total'];
-        $product = Item::new()
-            ->setItemId($item['id'])
-            ->setItemName($item['name'])
-            ->setQuantity($item['qty'])
-            ->setPrice(round($item['price_total'] / $item['qty'], 2)) // unit price
-            ->setItemVariant($item['colorName']);
-
-        $viewCart->addItem($product);
+    $addToCart = Event\AddToCart::new()
+        ->setCurrency($cart->currency)
+        ->setValue($cart->total);
+    
+    foreach($cart->products as $product) {
+        $addToCart->addItem(
+            Item::new()
+                ->setItemId($product['id'])
+                ->setItemName($product['name'])
+                ->setQuantity($product['quantity'])
+                ->setPrice($product['price_total'])
+                ->setItemVariant($product['colorName'])
+        );
     }
 
-    $viewCart->setValue($totalPrice);
+    $analytics->addEvent($addToCart);
 
-    $analytics->addEvent($viewCart);
-
-    $analytics->post(); // Errors are served as exceptions on pre-exit
-} catch (GA4Exception $e) {
+    // Errors are served as exceptions on pre-exit
+    $analytics->post();
+} catch (GA4Exception $exception) {
     // Handle exception
-    // Exceptions might be stacked, check: $e->getPrevious();
+    // Exceptions might be stacked, check: $exception->getPrevious();
 }
+
+//// ==============================================================
+// You can instanciate events with 'fromArray' method as of v1.0.9
+// This allows for quick-events by recursive instanciation
+$analytics->addEvent(
+    Event\AddToCart::fromEvent([
+        'currency' => $cart->currency,
+        'value' => $cart->total,
+        // Items must be array of Items models
+        'items' => array_map(
+            function ($product) {
+                return Item::fromArray([
+                    'item_id' => $product->id,
+                    'item_name' => $product->name,
+                    'quantity' => $product->quantity,
+                    'price' => $product->price,
+                ])
+            },
+            $cart->products
+        ),
+    ])
+);
+//// ==============================================================
 ```
 
-### Request Format
-```json
-{
-    "client_id": "GA0.43535.234234",
-    "user_id": "m6435",
-    "events": [
-        {
-            "name": "view_cart",
-            "params": {
-                "currency": "EUR",
-                "value": 50.55,
-                "items": [
-                    {
-                        "item_id": "1",
-                        "item_name": "product name",
-                        "item_variant": "white",
-                        "price": 17.79,
-                        "quantity": 2
-                    },
-                    {
-                        "item_id": "2",
-                        "item_name": "another product name",
-                        "item_variant": "gold",
-                        "price": 4.99,
-                        "quantity": 3
-                    }
-                ]
+<h3 style="text-align:center">Frontend to Backend communication</h3>
+
+```js
+axios.post('/api/ga4', {
+    addToCart: {
+        currency: 'EUR',
+        value: 13.37,
+        items: [
+            {
+                'item_id': 1,
+                'item_name': 'Cup',
+                'price': 13.37,
+                'quantity': 1
             }
-        }
-    ]
-}
+        ]
+    }
+})
 ```
-
-## Custom Events
-You can build your own custom events by extending `AlexWestergaard\PhpGa4\Model\Event`
 
 ```php
-<?php
+use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\Event;
 
+try {
+    $addToCart = Event\AddToCart::fromArray($_POST['addToCart']);
+    
+    Analytics::new($measurementId, $apiSecret)
+        ->addEvent($addToCart)
+        ->post();
+} catch (GA4Exception $exception) {
+    // Handle exception
+    // Exceptions might be stacked, check: $exception->getPrevious();
+}
+```
+
+<h2 style="text-align:center">Custom Events</h2>
+
+<p style="text-align:center">
+    You can build your own custom events, but be careful to follow this structure.
+    It is important that you extend the Model\Event class because Analytics checks inheritance towards that class on addEvent.
+</p>
+
+```php
 use AlexWestergaard\PhpGa4\Model;
 
 class ExampleEvent extends Model\Event
@@ -176,12 +227,15 @@ class ExampleEvent extends Model\Event
 }
 ```
 
-It's important that you extend the Model\Event class because Analytics checks inheritance towards that class to ensure we grap all parameters and ensures required parameters.
+<h2 style="text-align:center">Documentation</h2>
 
-## Source Documentation
-- [Measurement Protocol](https://developers.google.com/analytics/devguides/collection/protocol/ga4)
-- [Measurement Protocol: Reference](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag)
-- [Measurement Protocol: User Properties](https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties?client_type=gtag)
-- [Measurement Protocol: Events](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
-  - [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
-- [Measurement Protocol: Validation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag)
+<ul>
+    <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4" target="_blank">Measurement Protocol</a></li>
+    <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag" target="_blank">Measurement Protocol: Reference</a></li>
+    <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/user-properties?client_type=gtag" target="_blank">Measurement Protocol: User Properties</a></li>
+    <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events" target="_blank">Measurement Protocol: Events</a></li>
+    <ul>
+        <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names" target="_blank">Reserved Event Names</a></li>
+    </ul>
+    <li><a href="https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag" target="_blank">Measurement Protocol: Validation</a></li>
+</ul>

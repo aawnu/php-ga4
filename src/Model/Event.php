@@ -29,7 +29,6 @@ abstract class Event extends ToArray implements Facade\Export
 
             if (is_array($param)) {
                 $callableName = substr($callableName, -1) === 's' ? substr($callableName, 0, -1) : $callableName;
-                var_dump($callableName);
                 foreach ($param as $paramRow) {
                     if (method_exists($event, ($method = 'add' . $callableName))) {
                         $event->$method($paramRow);
