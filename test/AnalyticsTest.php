@@ -254,7 +254,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             'items' => [$this->item],
         ]);
 
-        $this->assertTrue(is_array($event->toArray()), $event::class);
+        $this->assertTrue(is_array($event->toArray()), get_class($event));
 
         $this->analytics->addEvent($event);
         $this->assertTrue($this->analytics->post());
