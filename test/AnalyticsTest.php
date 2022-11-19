@@ -1,10 +1,10 @@
 <?php
 
-use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\Event\Refund;
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\UserProperty;
+use AlexWestergaard\PhpGa4\Event;
+use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\GA4Exception;
+use AlexWestergaard\PhpGa4\UserProperty;
 
 class AnalyticsTest extends \PHPUnit\Framework\TestCase
 {
@@ -109,7 +109,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     {
         $this->prepareSituation();
 
-        $refund = Refund::new()->setTransactionId(1)->isFullRefund(true);
+        $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
         $this->analytics->addEvent($refund);
 
@@ -120,7 +120,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     {
         $this->prepareSituation();
 
-        $refund = Refund::new()->setTransactionId(1)->addItem($this->item);
+        $refund = Event\Refund::new()->setTransactionId(1)->addItem($this->item);
 
         $this->analytics->addEvent($refund);
 
@@ -137,7 +137,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     {
         $this->prepareSituation();
 
-        $refund = Refund::new()->setTransactionId(1);
+        $refund = Event\Refund::new()->setTransactionId(1);
 
         $this->expectException(GA4Exception::class);
 
@@ -241,6 +241,22 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             $this->analytics->addEvent($event);
         }
 
+        $this->assertTrue($this->analytics->post());
+    }
+
+    public function testBuildEventFromArray()
+    {
+        $this->prepareSituation();
+
+        $event = Event\AddToCart::fromArray([
+            'currency' => $this->prefill['currency'],
+            'value' => rand(1000, 10000) / 100,
+            'items' => [$this->item],
+        ]);
+
+        $this->assertTrue(is_array($event->toArray()), $event::class);
+
+        $this->analytics->addEvent($event);
         $this->assertTrue($this->analytics->post());
     }
 }

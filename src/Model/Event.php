@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4\Model;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 abstract class Event extends ToArray implements Facade\Export
 {
@@ -13,6 +13,40 @@ abstract class Event extends ToArray implements Facade\Export
      * @return string
      */
     abstract public function getName(): string;
+
+    public static function fromArray(array $params = [])
+    {
+        $event = static::new();
+
+        $insertables = array_unique(array_merge($event->getParams(), $event->getRequiredParams()));
+
+        foreach ($insertables as $insertable) {
+            if (!in_array($insertable, array_keys($params)) || is_null($param = $params[$insertable])) {
+                continue;
+            }
+
+            $callableName = implode(',', array_map('ucfirst', explode('_', $insertable)));
+
+            if (is_array($param)) {
+                $callableName = substr($callableName, -1) === 's' ? substr($callableName, 0, -1) : $callableName;
+                var_dump($callableName);
+                foreach ($param as $paramRow) {
+                    if (method_exists($event, ($method = 'add' . $callableName))) {
+                        $event->$method($paramRow);
+                    } elseif (method_exists($event, ($method = 'set' . $callableName))) {
+                        $event->$method($paramRow);
+                    }
+                }
+            } else {
+                if (method_exists($event, ($method = 'add' . $callableName))) {
+                    $event->$method($param);
+                } elseif (method_exists($event, ($method = 'set' . $callableName))) {
+                    $event->$method($param);
+                }
+            }
+        }
+        return $event;
+    }
 
     /**
      * @param GA4Exception $childErrors
