@@ -267,6 +267,16 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($this->analytics->post());
     }
 
+    public function testEventCanAddDebugParameter()
+    {
+        $this->prepareSituation();
+
+        $event = Event\Refund::new()->setTransactionId(1)->addItem($this->item)->debug()->toArray();
+
+        $this->assertArrayHasKey('debug_mode', $event['params']);
+        $this->assertTrue($event['params']['debug_mode']);
+    }
+
     public function testBuildEventFromArray()
     {
         $this->prepareSituation();
