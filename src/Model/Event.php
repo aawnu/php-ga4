@@ -7,7 +7,7 @@ use AlexWestergaard\PhpGa4\GA4Exception;
 
 abstract class Event extends ToArray implements Facade\Export
 {
-    private bool $debug = false;
+    private $debug = false;
 
     /**
      * Return the name of the event
@@ -16,9 +16,9 @@ abstract class Event extends ToArray implements Facade\Export
      */
     abstract public function getName(): string;
 
-    public function debug(bool $on = true)
+    public function debug($on = true)
     {
-        $this->debug = true;
+        $this->debug = boolval($on);
         
         return $this;
     }
