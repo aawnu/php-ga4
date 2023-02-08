@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 class AddPaymentInfo extends Model\Event implements Facade\AddPaymentInfo
 {
@@ -55,16 +55,9 @@ class AddPaymentInfo extends Model\Event implements Facade\AddPaymentInfo
         return $this;
     }
 
-    /**
-     * @param int|float $bal
-     */
-    public function setValue($val)
+    public function setValue(int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setDiscount value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 

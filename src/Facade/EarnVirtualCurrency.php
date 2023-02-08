@@ -18,5 +18,5 @@ interface EarnVirtualCurrency
      * @var value
      * @param integer $num eg. 5
      */
-    public function setValue(int $num);
+    public function setValue(int|float $num);
 }

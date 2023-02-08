@@ -22,7 +22,7 @@ interface Purchase
      * The transaction_id parameter helps you avoid getting duplicate events for a purchase.
      *
      * @var transaction_id
-     * @param integer|float $id eg. T_12345
+     * @param string $id eg. T_12345
      */
     public function setTransactionId(string $id);
 
@@ -32,7 +32,7 @@ interface Purchase
      * @var value
      * @param integer|float $val eg. 7.77
      */
-    public function setValue($val);
+    public function setValue(int|float $val);
 
     /**
      * A product affiliation to designate a supplying company or brick and mortar store location. \

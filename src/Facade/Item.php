@@ -56,7 +56,7 @@ interface Item
      * @var discount
      * @param string $amount eg. 2.22
      */
-    public function setDiscount($amount);
+    public function setDiscount(int|float $amount);
 
     /**
      * The index/position of the item in a list.
@@ -127,7 +127,7 @@ interface Item
      * @var price
      * @param string $amount eg. 9.99
      */
-    public function setPrice($amount);
+    public function setPrice(int|float $amount);
 
     /**
      * Item quantity.

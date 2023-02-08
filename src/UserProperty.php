@@ -32,12 +32,8 @@ class UserProperty implements Facade\Export
         return $this;
     }
 
-    public function setValue($value)
+    public function setValue(int|float|string $value)
     {
-        if (!is_string($value) && !is_numeric($value)) {
-            throw new GA4Exception("Value '{$value}' should be a string or number");
-        }
-
         $this->value = $value;
         return $this;
     }

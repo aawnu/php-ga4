@@ -22,7 +22,7 @@ interface Refund
      * The transaction_id parameter helps you avoid getting duplicate events for a purchase.
      *
      * @var transaction_id
-     * @param integer|float $id eg. T_12345
+     * @param string $id eg. T_12345
      */
     public function setTransactionId(string $id);
 
@@ -32,7 +32,7 @@ interface Refund
      * @var value
      * @param integer|float $val eg. 7.77
      */
-    public function setValue($val);
+    public function setValue(int|float $val);
 
     /**
      * A product affiliation to designate a supplying company or brick and mortar store location. \
@@ -58,7 +58,7 @@ interface Refund
      * @var shipping
      * @param string $cost eg. 3.33
      */
-    public function setShipping(int $cost);
+    public function setShipping(int|float $cost);
 
     /**
      * Tax cost associated with a transaction.
@@ -66,7 +66,7 @@ interface Refund
      * @var tax
      * @param string $tax eg. 1.11
      */
-    public function setTax(int $tax);
+    public function setTax(int|float $tax);
 
     /**
      * The items for the event. \

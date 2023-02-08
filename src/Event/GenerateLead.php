@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 class GenerateLead extends Model\Event implements Facade\GenerateLead
 {
@@ -47,16 +47,9 @@ class GenerateLead extends Model\Event implements Facade\GenerateLead
         return $this;
     }
 
-    /**
-     * @param int|float $val
-     */
-    public function setValue($val)
+    public function setValue(int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setValue value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 }

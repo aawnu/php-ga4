@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 class Refund extends Model\Event implements Facade\Refund
 {
@@ -87,16 +87,9 @@ class Refund extends Model\Event implements Facade\Refund
         return $this;
     }
 
-    /**
-     * @param int|float $val
-     */
-    public function setValue($val)
+    public function setValue(int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setValue value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 
@@ -112,13 +105,13 @@ class Refund extends Model\Event implements Facade\Refund
         return $this;
     }
 
-    public function setShipping(int $cost)
+    public function setShipping(int|float $cost)
     {
         $this->shipping = $cost;
         return $this;
     }
 
-    public function setTax(int $tax)
+    public function setTax(int|float $tax)
     {
         $this->tax = $tax;
         return $this;
