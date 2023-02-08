@@ -19,32 +19,13 @@ jobs:
       - name: "Validate Mergable"
         run: git merge origin/master --no-commit --ff-only
 
-  render-artifact:
+  render-php:
     needs: validate-mergable
     if: github.event_name != 'push'
-    runs-on: ubuntu-latest
-    steps:
-      - name: "Checkout"
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: "Run Composer"
-        run: |
-          composer install
-
-      - name: "Upload Composer Artifacts"
-        uses: actions/upload-artifact@v3
-        with:
-          name: dist-vendor
-          path: vendor
-
-  render-php:
-    needs: render-artifact
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
-      max-parallel: 3
+      max-parallel: 2
       fail-fast: true
       matrix:
         operating-system: ["ubuntu-latest", "windows-latest"]
@@ -66,17 +47,30 @@ jobs:
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
 
-      - name: "Download Composer Artifacts"
-        uses: actions/download-artifact@v3
-        with:
-          name: dist-vendor
-          path: vendor
+      - name: "Composer Cache Directory"
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
 
-      - name: "CHMOD & Adjust Composer"
+      - name: "Adjust Composer"
+        run: composer update --no-install --with-all-dependencies
+
+      - name: "Cache dependencies"
+        id: cache-dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
+            ${{ runner.os }}-composer-
+
+      - name: "Restore Executable Composer"
         if: matrix.operating-system == 'ubuntu-latest'
-        run: |
-          chmod -R 0755 vendor
-          composer update --with-all-dependencies
+        run: chmod -R 0755 vendor
+
+      - name: "Update Composer"
+        if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
+        run: composer install
 
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
