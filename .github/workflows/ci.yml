@@ -47,27 +47,22 @@ jobs:
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
 
-      - name: "Composer Cache Directory"
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
-
       - name: "Adjust Composer"
         run: composer update --no-install --with-all-dependencies
 
-      - name: "Cache dependencies"
+      - name: "Caching"
         id: cache-dependencies
         uses: actions/cache@v3
         with:
-          path: ${{ steps.composer-cache.outputs.dir }}
+          path: vendor
           key: composer-${{ matrix.operating-system }}-${{ hashFiles('composer.json') }}
-          restore-keys: |
-            composer-${{ matrix.operating-system }}-${{ hashFiles('composer.json') }}
+          restore-keys: composer-${{ matrix.operating-system }}-${{ hashFiles('composer.json') }}
 
-      - name: "Update Composer"
+      - name: "Install Dependencies"
         if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
         run: composer install
 
-      - name: "Restore Executable Composer"
+      - name: "Restore Vendor Executable"
         if: matrix.operating-system == 'ubuntu-latest'
         run: chmod -R 0755 vendor
 
