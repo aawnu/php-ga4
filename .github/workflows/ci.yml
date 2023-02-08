@@ -64,13 +64,13 @@ jobs:
             ${{ runner.os }}-composer-${{ hashFiles('composer.json') }}
             ${{ runner.os }}-composer-
 
-      - name: "Restore Executable Composer"
-        if: matrix.operating-system == 'ubuntu-latest'
-        run: chmod -R 0755 vendor
-
       - name: "Update Composer"
         if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
         run: composer install
+
+      - name: "Restore Executable Composer"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: chmod -R 0755 vendor
 
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
