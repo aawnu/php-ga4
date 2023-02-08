@@ -1,36 +1,79 @@
 name: PHP CI
 
 on:
+  push:
+    branches:
+      - "!master"
   pull_request:
     branches:
       - "master"
   workflow_dispatch:
 
 jobs:
-  render-php:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      max-parallel: 3
-      fail-fast: false
-      matrix:
-        operating-system: ["ubuntu-latest", "windows-latest"]
-        php-versions: ["7.0", "7.1", "7.4", "8.0", "8.1"]
-        phpunit-versions: ["latest"]
+  validate-mergable:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: git merge origin/master --no-commit --ff-only
-      - uses: shivammathur/setup-php@v2
+
+      - name: "Validate Mergable"
+        run: git merge origin/master --no-commit --ff-only
+
+  render-artifact:
+    needs: validate-mergable
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Run Composer"
+        run: |
+          composer update --no-install --with-all-dependencies
+          composer install
+
+      - name: "Upload Composer Artifacts"
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-vendor
+          path: vendor
+
+  render-php:
+    needs: render-artifact
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      max-parallel: 3
+      fail-fast: true
+      matrix:
+        operating-system: ["ubuntu-latest", "windows-latest"]
+        php-versions: ["8.0", "8.1", "8.2"]
+        phpunit-versions: ["latest"]
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
           tools: phpunit:${{ matrix.phpunit-versions }}
-      - name: "Install"
-        run: |
-          composer update --no-install --with-all-dependencies
-          composer install
-      - name: "PHPUnit Tests"
+
+      - name: "Download Composer Artifacts"
+        uses: actions/download-artifact@v3
+        with:
+          name: dist-vendor
+          path: vendor
+
+      - name: "PHPUnit"
         run: ./vendor/bin/phpunit
