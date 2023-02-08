@@ -51,9 +51,7 @@ jobs:
         id: composer-hash
         uses: KEINOS/gh-action-hash-for-cache@main
         with:
-          path: |
-            ./composer.json
-            ./composer.lock
+          path: ./composer.lock
 
       - name: "Caching"
         id: cache-composer
