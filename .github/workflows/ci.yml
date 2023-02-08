@@ -62,7 +62,6 @@ jobs:
           key: composer-${{ matrix.operating-system }}-${{ hashFiles('composer.json') }}
           restore-keys: |
             composer-${{ matrix.operating-system }}-${{ hashFiles('composer.json') }}
-            composer-${{ matrix.operating-system }}-
 
       - name: "Update Composer"
         if: ${{ steps.cache-dependencies.outputs.cache-hit != 'true' }}
