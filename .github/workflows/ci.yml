@@ -31,7 +31,6 @@ jobs:
 
       - name: "Run Composer"
         run: |
-          composer update --no-install --with-all-dependencies
           composer install
 
       - name: "Upload Composer Artifacts"
@@ -73,9 +72,11 @@ jobs:
           name: dist-vendor
           path: vendor
 
-      - name: "Enable vendor executables"
+      - name: "CHMOD & Adjust Composer"
         if: matrix.operating-system == 'ubuntu-latest'
-        run: chmod -R 0755 vendor
+        run: |
+          chmod -R 0755 vendor
+          composer update --with-all-dependencies
 
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
