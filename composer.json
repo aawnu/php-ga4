@@ -13,7 +13,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Alex Westergaard",
+            "name": "Alex Ahlgreen Westergaard",
             "homepage": "https://aaw.nu",
             "role": "Developer"
         }
@@ -28,10 +28,10 @@
         }
     },
     "require": {
-        "php": "^7.0|^8.0",
-        "guzzlehttp/guzzle": "^6.0|^7.0"
+        "php": "^8.0",
+        "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0"
+        "phpunit/phpunit": "^9.0|^10.0"
     }
 }
