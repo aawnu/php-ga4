@@ -12,7 +12,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
     protected $analytics;
     protected $item;
 
-    protected function prepareSituation()
+    protected function setUp(): void
     {
         $this->prefill = [
             // Analytics
@@ -39,15 +39,11 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testAnalytics()
     {
-        $this->prepareSituation();
-
         $this->assertTrue($this->analytics->post());
     }
 
     public function testTimeIsMicrotime()
     {
-        $this->prepareSituation();
-
         $this->analytics->setTimestamp(microtime(true));
 
         $arr = $this->analytics->toArray();
@@ -57,8 +53,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testExceptionIfTimeOlderThanOffsetLimit()
     {
-        $this->prepareSituation();
-
         try {
             $this->analytics->setTimestamp(strtotime('-1 week'));
         } catch (GA4Exception $e) {
@@ -70,8 +64,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testItem()
     {
-        $this->prepareSituation();
-
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
@@ -85,8 +77,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testItemFromArray()
     {
-        $this->prepareSituation();
-
         $item = Item::fromArray([
             'item_id' => '2',
             'item_name' => 'Second Product',
@@ -108,8 +98,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testUserProperty()
     {
-        $this->prepareSituation();
-
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -130,8 +118,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testFullRefundNoItems()
     {
-        $this->prepareSituation();
-
         $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
         $this->analytics->addEvent($refund);
@@ -141,8 +127,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPartialRefundWithItems()
     {
-        $this->prepareSituation();
-
         $refund = Event\Refund::new()->setTransactionId(1)->addItem($this->item);
 
         $this->analytics->addEvent($refund);
@@ -158,8 +142,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPartialRefundNoItemsThrows()
     {
-        $this->prepareSituation();
-
         $refund = Event\Refund::new()->setTransactionId(1);
 
         $this->expectException(GA4Exception::class);
@@ -169,8 +151,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testPrebuildEvents()
     {
-        $this->prepareSituation();
-
         $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
         foreach ($getDefaultEventsByFile as $file) {
@@ -269,8 +249,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testEventCanAddDebugParameter()
     {
-        $this->prepareSituation();
-
         $event = Event\Refund::new()->setTransactionId(1)->addItem($this->item)->debug()->toArray();
 
         $this->assertArrayHasKey('debug_mode', $event['params']);
@@ -279,8 +257,6 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testBuildEventFromArray()
     {
-        $this->prepareSituation();
-
         $event = Event\AddToCart::fromArray([
             'currency' => $this->prefill['currency'],
             'value' => rand(1000, 10000) / 100,
