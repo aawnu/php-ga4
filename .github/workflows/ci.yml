@@ -74,8 +74,8 @@ jobs:
           path: vendor
 
       - name: "Enable vendor executables"
-        if: matrix.os == 'ubuntu-latest'
-        run: sudo chmod -R 0755 vendor
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: chmod -R 0755 vendor
 
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
