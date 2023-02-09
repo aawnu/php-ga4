@@ -22,9 +22,6 @@ class Refund extends Model\Event implements Facade\Refund
     /**
      * Full refunds does not require items to be passed. \
      * This will skip the items check if true
-     *
-     * @param boolean $is
-     * @return static
      */
     public function isFullRefund(bool $is)
     {

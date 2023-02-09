@@ -67,7 +67,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Item::class, $this->item);
 
         $arr = $this->item->toArray();
-        $this->assertTrue(is_array($arr));
+        $this->assertIsArray($arr);
         $this->assertArrayHasKey('item_id', $arr);
         $this->assertArrayHasKey('item_name', $arr);
         $this->assertArrayHasKey('currency', $arr);
@@ -88,7 +88,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertInstanceOf(Item::class, $item);
 
         $arr = $item->toArray();
-        $this->assertTrue(is_array($arr));
+        $this->assertIsArray($arr);
         $this->assertArrayHasKey('item_id', $arr);
         $this->assertArrayHasKey('item_name', $arr);
         $this->assertArrayHasKey('currency', $arr);
@@ -103,7 +103,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             ->setValue('premium');
 
         $this->assertInstanceOf(UserProperty::class, $userProperty);
-        $this->assertTrue(is_array($userProperty->toArray()));
+        $this->assertIsArray($userProperty->toArray());
 
         $this->analytics->addUserProperty($userProperty);
 
@@ -132,7 +132,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->analytics->addEvent($refund);
 
         $arr = $this->analytics->toArray();
-        $this->assertTrue(is_array($arr));
+        $this->assertIsArray($arr);
 
         $arr = $refund->toArray();
         $this->assertArrayHasKey('params', $arr);
@@ -239,7 +239,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
                 $event->setGroupId('999');
             }
 
-            $this->assertTrue(is_array($event->toArray()), $eventName);
+            $this->assertIsArray($event->toArray(), $eventName);
 
             $this->analytics->addEvent($event);
         }
@@ -263,9 +263,24 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             'items' => [$this->item],
         ]);
 
-        $this->assertTrue(is_array($event->toArray()), get_class($event));
+        $this->assertIsArray($event->toArray(), get_class($event));
 
         $this->analytics->addEvent($event);
         $this->assertTrue($this->analytics->post());
+    }
+
+    public function testEventArrayable()
+    {
+        $event = new Event\AddToCart();
+        $event['currency'] = $this->prefill['currency'];
+        $event['value'] = ($value = rand(1000, 10000) / 100);
+
+        $this->assertArrayHasKey('currency', $event);
+        $this->assertArrayHasKey('value', $event);
+        $this->assertArrayHasKey('items', $event);
+
+        $this->assertEquals($this->prefill['currency'], $event['currency']);
+        $this->assertEquals($value, $event['value']);
+        $this->assertIsArray($event['items']);
     }
 }

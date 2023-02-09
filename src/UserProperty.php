@@ -3,6 +3,7 @@
 namespace AlexWestergaard\PhpGa4;
 
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Helper\Helper;
 
 class UserProperty implements Facade\Export
 {
@@ -12,13 +13,7 @@ class UserProperty implements Facade\Export
     public function setName(string $name)
     {
         if (
-            in_array($name, [
-                'first_open_time',
-                'first_visit_time',
-                'last_deep_link_referrer',
-                'user_id',
-                'first_open_after_install',
-            ])
+            in_array($name, Helper::RESERVED_USER_PROPERTY_NAMES)
             || substr($name, 0, 9) == 'firebase_'
             || substr($name, 0, 7) == 'google_'
             || substr($name, 0, 4) == 'ga_'

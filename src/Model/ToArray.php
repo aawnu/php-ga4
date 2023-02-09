@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4\Model;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\GA4Exception;
 
 abstract class ToArray implements Facade\Export
 {
@@ -11,9 +11,6 @@ abstract class ToArray implements Facade\Export
 
     abstract public function getRequiredParams(): array;
 
-    /**
-     * @param GA4Exception $childErrors
-     */
     public function toArray(bool $isParent = false): array
     {
         $return = [];
