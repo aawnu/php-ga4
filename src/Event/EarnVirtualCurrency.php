@@ -7,8 +7,8 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class EarnVirtualCurrency extends Model\Event implements Facade\EarnVirtualCurrency
 {
-    protected $virtual_currency_name;
-    protected $value;
+    protected null|string $virtual_currency_name;
+    protected null|int|float $value;
 
     public function getName(): string
     {
@@ -28,13 +28,13 @@ class EarnVirtualCurrency extends Model\Event implements Facade\EarnVirtualCurre
         return [];
     }
     
-    public function setVirtualCurrencyName(string $name)
+    public function setVirtualCurrencyName(null|string $name)
     {
         $this->virtual_currency_name = $name;
         return $this;
     }
     
-    public function setValue(int|float $num)
+    public function setValue(null|int|float $num)
     {
         $this->value = $num;
         return $this;

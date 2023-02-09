@@ -8,10 +8,10 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class BeginCheckout extends Model\Event implements Facade\BeginCheckout
 {
-    protected $currency;
-    protected $value;
-    protected $coupon;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|int|float $value;
+    protected null|string $coupon;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -46,19 +46,19 @@ class BeginCheckout extends Model\Event implements Facade\BeginCheckout
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setValue(int|float $val)
+    public function setValue(null|int|float $val)
     {
         $this->value = $val;
         return $this;
     }
 
-    public function setCoupon(string $code)
+    public function setCoupon(null|string $code)
     {
         $this->coupon = 0 + $code;
         return $this;

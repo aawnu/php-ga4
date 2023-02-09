@@ -8,14 +8,14 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class Refund extends Model\Event implements Facade\Refund
 {
-    protected $currency;
-    protected $transaction_id;
-    protected $value;
-    protected $affiliation;
-    protected $coupon;
-    protected $shipping;
-    protected $tax;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|string $transaction_id;
+    protected null|int|float $value;
+    protected null|string $affiliation;
+    protected null|string $coupon;
+    protected null|int|float $shipping;
+    protected null|int|float $tax;
+    protected array $items = [];
 
     private $isFullRefund = false;
 
@@ -71,43 +71,43 @@ class Refund extends Model\Event implements Facade\Refund
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setTransactionId(string $id)
+    public function setTransactionId(null|string $id)
     {
         $this->transaction_id = $id;
         return $this;
     }
 
-    public function setValue(int|float $val)
+    public function setValue(null|int|float $val)
     {
         $this->value = $val;
         return $this;
     }
 
-    public function setAffiliation(string $affiliation)
+    public function setAffiliation(null|string $affiliation)
     {
         $this->affiliation = $affiliation;
         return $this;
     }
 
-    public function setCoupon(string $code)
+    public function setCoupon(null|string $code)
     {
         $this->coupon = $code;
         return $this;
     }
 
-    public function setShipping(int|float $cost)
+    public function setShipping(null|int|float $cost)
     {
         $this->shipping = $cost;
         return $this;
     }
 
-    public function setTax(int|float $tax)
+    public function setTax(null|int|float $tax)
     {
         $this->tax = $tax;
         return $this;

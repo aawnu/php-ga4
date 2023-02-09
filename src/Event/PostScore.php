@@ -2,14 +2,14 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class PostScore extends Model\Event implements Facade\PostScore
 {
-    protected $score;
-    protected $level;
-    protected $character;
+    protected null|int $score;
+    protected null|int $level;
+    protected null|string $character;
 
     public function getName(): string
     {
@@ -30,19 +30,19 @@ class PostScore extends Model\Event implements Facade\PostScore
         return ['score'];
     }
 
-    public function setScore(int $score)
+    public function setScore(null|int $score)
     {
         $this->score = $score;
         return $this;
     }
 
-    public function setLevel(int $lvl)
+    public function setLevel(null|int $lvl)
     {
         $this->level = $lvl;
         return $this;
     }
 
-    public function setCharacter(string $char)
+    public function setCharacter(null|string $char)
     {
         $this->character = $char;
         return $this;

@@ -8,11 +8,11 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class AddPaymentInfo extends Model\Event implements Facade\AddPaymentInfo
 {
-    protected $currency;
-    protected $value;
-    protected $coupon;
-    protected $payment_type;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|int|float $value;
+    protected null|string $coupon;
+    protected null|string $payment_type;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -48,25 +48,25 @@ class AddPaymentInfo extends Model\Event implements Facade\AddPaymentInfo
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setValue(int|float $val)
+    public function setValue(null|int|float $val)
     {
         $this->value = $val;
         return $this;
     }
 
-    public function setCoupon(string $code)
+    public function setCoupon(null|string $code)
     {
         $this->coupon = $code;
         return $this;
     }
 
-    public function setPaymentType(string $type)
+    public function setPaymentType(null|string $type)
     {
         $this->payment_type = $type;
         return $this;

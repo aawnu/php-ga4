@@ -8,9 +8,9 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class ViewCart extends Model\Event implements Facade\ViewCart
 {
-    protected $currency;
-    protected $value;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|int|float $value;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -44,13 +44,13 @@ class ViewCart extends Model\Event implements Facade\ViewCart
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setValue(int|float $val)
+    public function setValue(null|int|float $val)
     {
         $this->value = $val;
         return $this;

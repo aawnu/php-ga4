@@ -7,9 +7,9 @@ use AlexWestergaard\PhpGa4\Facade;
 
 class SpendVirtualCurrency extends Model\Event implements Facade\SpendVirtualCurrency
 {
-    protected $virtual_currency_name;
-    protected $value;
-    protected $item_name;
+    protected null|string $virtual_currency_name;
+    protected null|int|float $value;
+    protected null|string $item_name;
 
     public function getName(): string
     {
@@ -33,19 +33,19 @@ class SpendVirtualCurrency extends Model\Event implements Facade\SpendVirtualCur
         ];
     }
 
-    public function setVirtualCurrencyName(string $name)
+    public function setVirtualCurrencyName(null|string $name)
     {
         $this->virtual_currency_name = $name;
         return $this;
     }
 
-    public function setValue(int|float $num)
+    public function setValue(null|int|float $num)
     {
         $this->value = $num;
         return $this;
     }
 
-    public function setItemName(string $name)
+    public function setItemName(null|string $name)
     {
         $this->item_name = $name;
         return $this;

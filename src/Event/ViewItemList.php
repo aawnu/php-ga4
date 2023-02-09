@@ -2,15 +2,15 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class ViewItemList extends Model\Event implements Facade\ViewItemList
 {
-    protected $item_list_id;
-    protected $item_list_name;
-    protected $items = [];
+    protected null|string $item_list_id;
+    protected null|string $item_list_name;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -31,13 +31,13 @@ class ViewItemList extends Model\Event implements Facade\ViewItemList
         return ['items'];
     }
 
-    public function setItemListId(string $id)
+    public function setItemListId(null|string $id)
     {
         $this->item_list_id = $id;
         return $this;
     }
 
-    public function setItemListName(string $name)
+    public function setItemListName(null|string $name)
     {
         $this->item_list_name = $name;
         return $this;

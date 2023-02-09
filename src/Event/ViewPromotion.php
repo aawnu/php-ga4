@@ -2,18 +2,18 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class ViewPromotion extends Model\Event implements Facade\ViewPromotion
 {
-    protected $creative_name;
-    protected $creative_slot;
-    protected $location_id;
-    protected $promotion_id;
-    protected $promotion_name;
-    protected $items = [];
+    protected null|string $creative_name;
+    protected null|string $creative_slot;
+    protected null|string $location_id;
+    protected null|string $promotion_id;
+    protected null|string $promotion_name;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -37,31 +37,31 @@ class ViewPromotion extends Model\Event implements Facade\ViewPromotion
         return ['items'];
     }
 
-    public function setCreativeName(string $name)
+    public function setCreativeName(null|string $name)
     {
         $this->creative_name = $name;
         return $this;
     }
 
-    public function setCreativeSlot(string $slot)
+    public function setCreativeSlot(null|string $slot)
     {
         $this->creative_slot = $slot;
         return $this;
     }
 
-    public function setLocationId(string $id)
+    public function setLocationId(null|string $id)
     {
         $this->location_id = $id;
         return $this;
     }
 
-    public function setPromotionId(string $id)
+    public function setPromotionId(null|string $id)
     {
         $this->promotion_id = $id;
         return $this;
     }
 
-    public function setPromotionName(string $name)
+    public function setPromotionName(null|string $name)
     {
         $this->promotion_name = $name;
         return $this;

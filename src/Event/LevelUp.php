@@ -2,13 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class LevelUp extends Model\Event implements Facade\LevelUp
 {
-    protected $level;
-    protected $character;
+    protected null|int $level;
+    protected null|string $character;
 
     public function getName(): string
     {
@@ -28,13 +28,13 @@ class LevelUp extends Model\Event implements Facade\LevelUp
         return [];
     }
 
-    public function setLevel(int $lvl)
+    public function setLevel(null|int $lvl)
     {
         $this->level = $lvl;
         return $this;
     }
 
-    public function setCharacter(string $char)
+    public function setCharacter(null|string $char)
     {
         $this->character = $char;
         return $this;
