@@ -49,7 +49,7 @@ abstract class Event extends ToArray implements Facade\Export, ArrayAccess
 
             if (is_array($value)) {
                 $callable = substr($callable, -1) === 's' ? substr($callable, 0, -1) : $callable;
-                
+
                 foreach ($value as $paramRow) {
                     if (method_exists($this, ($method = 'add' . $callable))) {
                         $this->$method($paramRow);
@@ -127,26 +127,9 @@ abstract class Event extends ToArray implements Facade\Export, ArrayAccess
                 continue;
             }
 
-            $callableName = Helper::camel($insertable);
-
-            if (is_array($param)) {
-                $callableName = substr($callableName, -1) === 's' ? substr($callableName, 0, -1) : $callableName;
-                foreach ($param as $paramRow) {
-                    if (method_exists($event, ($method = 'add' . $callableName))) {
-                        $event->$method($paramRow);
-                    } elseif (method_exists($event, ($method = 'set' . $callableName))) {
-                        $event->$method($paramRow);
-                    }
-                }
-            } else {
-                if (method_exists($event, ($method = 'add' . $callableName))) {
-                    $event->$method($param);
-                } elseif (method_exists($event, ($method = 'set' . $callableName))) {
-                    $event->$method($param);
-                }
-            }
+            $event[$insertable] = $param;
         }
-        
+
         return $event;
     }
 
