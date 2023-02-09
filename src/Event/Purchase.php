@@ -5,7 +5,6 @@ namespace AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\GA4Exception;
 
 class Purchase extends Model\Event implements Facade\Purchase
 {
