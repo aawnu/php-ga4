@@ -13,11 +13,14 @@ PHP Wrapper for Google Analytics 4 Server Side Tracking of events.
     - [Default](#default)
     - [E-commerce](#e-commerce)
     - [Engagement / Gaming](#engagement--gaming)
-  - [Frontend & Backend Communication](#frontend--backend-communication)
+  - [Frontend \& Backend Communication](#frontend--backend-communication)
     - [Logged/Queued Events](#loggedqueued-events)
     - [Frontend to Backend communication](#frontend-to-backend-communication)
   - [Custom Events](#custom-events)
   - [Documentation](#documentation)
+
+**LEGACY WARNING**
+- `PHP 7` should only use `1.0.*` versions of this library
 
 ## Events
 
