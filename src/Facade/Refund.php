@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface Refund
+interface Refund extends hasItems
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -67,13 +65,4 @@ interface Refund
      * @param string $tax eg. 1.11
      */
     public function setTax(int|float $tax);
-
-    /**
-     * The items for the event. \
-     * \* items is required for partial refunds but it can be omitted for full refunds.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }

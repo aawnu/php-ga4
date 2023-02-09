@@ -61,4 +61,9 @@ class AddToWishlist extends Model\Event implements Facade\AddToWishlist
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

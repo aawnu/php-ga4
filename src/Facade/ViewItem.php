@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface ViewItem
+interface ViewItem extends hasItems
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -23,12 +21,4 @@ interface ViewItem
      * @param integer|float $val eg. 7.77
      */
     public function setValue(int|float $val);
-
-    /**
-     * The items for the event.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }

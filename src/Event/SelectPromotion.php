@@ -72,4 +72,9 @@ class SelectPromotion extends Model\Event implements Facade\SelectPromotion
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

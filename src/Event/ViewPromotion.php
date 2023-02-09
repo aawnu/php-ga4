@@ -72,4 +72,9 @@ class ViewPromotion extends Model\Event implements Facade\ViewPromotion
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

@@ -69,4 +69,9 @@ class BeginCheckout extends Model\Event implements Facade\BeginCheckout
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

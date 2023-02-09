@@ -48,4 +48,9 @@ class ViewItemList extends Model\Event implements Facade\ViewItemList
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

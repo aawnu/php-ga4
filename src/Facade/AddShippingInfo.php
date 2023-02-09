@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface AddShippingInfo
+interface AddShippingInfo extends hasItems
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -40,12 +38,4 @@ interface AddShippingInfo
      * @param string $tier eg. Ground
      */
     public function setShippingTier(string $tier);
-
-    /**
-     * The items for the event.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }

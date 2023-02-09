@@ -77,4 +77,9 @@ class AddShippingInfo extends Model\Event implements Facade\AddShippingInfo
         $this->items[] = $item->toArray();
         return $this;
     }
+
+    public function resetItems()
+    {
+        $this->items = [];
+    }
 }

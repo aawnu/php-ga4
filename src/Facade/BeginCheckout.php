@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface BeginCheckout
+interface BeginCheckout extends hasItems
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -32,12 +30,4 @@ interface BeginCheckout
      * @param string $code eg. SUMMER_FUN
      */
     public function setCoupon(string $code);
-
-    /**
-     * The items for the event.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }
