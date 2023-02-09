@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface ViewItemList
+interface ViewItemList extends hasItems
 {
     /**
      * The ID of the list in which the item was presented to the user. \
@@ -22,13 +20,4 @@ interface ViewItemList
      * @param string $name eg. related_products
      */
     public function setItemListName(string $name);
-
-    /**
-     * The items for the event. \
-     * \* The items array is expected to have a single element, representing the selected item. If multiple elements are provided, only the first element in items will be used.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }

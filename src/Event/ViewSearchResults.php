@@ -2,14 +2,14 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class ViewSearchResults extends Model\Event implements Facade\ViewSearchResults
 {
-    protected $search_term;
-    protected $items = [];
+    protected null|string $search_term;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -31,7 +31,7 @@ class ViewSearchResults extends Model\Event implements Facade\ViewSearchResults
         ];
     }
 
-    public function setSearchTerm(string $term)
+    public function setSearchTerm(null|string $term)
     {
         $this->search_term = $term;
         return $this;
@@ -41,5 +41,10 @@ class ViewSearchResults extends Model\Event implements Facade\ViewSearchResults
     {
         $this->items[] = $item->toArray();
         return $this;
+    }
+
+    public function resetItems()
+    {
+        $this->items = [];
     }
 }

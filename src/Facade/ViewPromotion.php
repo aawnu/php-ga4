@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface ViewPromotion
+interface ViewPromotion extends hasItems
 {
     /**
      * The name of the promotional creative. \
@@ -51,12 +49,4 @@ interface ViewPromotion
      * @param string $name eg. Summer Sale
      */
     public function setPromotionName(string $name);
-
-    /**
-     * The items for the event.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }

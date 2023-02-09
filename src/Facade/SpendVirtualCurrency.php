@@ -18,7 +18,7 @@ interface SpendVirtualCurrency
      * @var value
      * @param integer $num eg. 5
      */
-    public function setValue(int $num);
+    public function setValue(int|float $num);
 
     /**
      * The name of the item the virtual currency is being used for.

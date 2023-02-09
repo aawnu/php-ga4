@@ -56,15 +56,8 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $this;
     }
 
-    /**
-     * @param int|float $amount
-     */
-    public function setDiscount($amount)
+    public function setDiscount(int|float $amount)
     {
-        if (!is_numeric($amount)) {
-            throw new GA4Exception("setDiscount value must be numeric");
-        }
-
         $this->discount = $amount;
         return $this;
     }
@@ -111,15 +104,8 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $this;
     }
 
-    /**
-     * @param int|float $amount
-     */
-    public function setPrice($amount)
+    public function setPrice(int|float $amount)
     {
-        if (!is_numeric($amount)) {
-            throw new GA4Exception("setPrice value must be numeric");
-        }
-
         $this->price = 0 + $amount;
         return $this;
     }
@@ -191,14 +177,12 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $item;
     }
 
-    /**
-     * @param GA4Exception $childErrors
-     */
-    public function toArray(bool $isParent = false, $childErrors = null): array
+    public function toArray(bool $isParent = false, GA4Exception|null $childErrors = null): array
     {
         if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
             throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
         }
+        
         $return = parent::toArray($isParent, $childErrors);
 
         if (isset($return['item_category'])) {

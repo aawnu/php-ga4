@@ -20,5 +20,5 @@ interface GenerateLead
      * @var value
      * @param integer|float $val eg. 7.77
      */
-    public function setValue($val);
+    public function setValue(int|float $val);
 }

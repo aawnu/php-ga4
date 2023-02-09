@@ -2,10 +2,12 @@
 
 namespace AlexWestergaard\PhpGa4\Model;
 
+use ArrayAccess;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\GA4Exception;
+use AlexWestergaard\PhpGa4\Helper\Helper;
 
-abstract class Event extends ToArray implements Facade\Export
+abstract class Event extends ToArray implements Facade\Export, ArrayAccess
 {
     private $debug = false;
 
@@ -19,8 +21,58 @@ abstract class Event extends ToArray implements Facade\Export
     public function debug($on = true)
     {
         $this->debug = boolval($on);
-        
+
         return $this;
+    }
+
+    public function offsetExists(mixed $offset): bool
+    {
+        return property_exists($this, Helper::snake($offset));
+    }
+
+    public function offsetGet(mixed $offset): mixed
+    {
+        $callable = Helper::snake($offset);
+        return $this->offsetExists($callable) ? $this->$callable : null;
+    }
+
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $callable = Helper::camel($offset);
+        if ($this->offsetExists($offset)) {
+            $this->$callable = $value;
+            if (method_exists($this, ($method = 'add' . $callable))) {
+                $this->$method($value);
+            } elseif (method_exists($this, ($method = 'set' . $callable))) {
+                $this->$method($value);
+            }
+
+            if (is_array($value)) {
+                $callable = substr($callable, -1) === 's' ? substr($callable, 0, -1) : $callable;
+
+                foreach ($value as $paramRow) {
+                    if (method_exists($this, ($method = 'add' . $callable))) {
+                        $this->$method($paramRow);
+                    } elseif (method_exists($this, ($method = 'set' . $callable))) {
+                        $this->$method($paramRow);
+                    }
+                }
+            } else {
+                if (method_exists($this, ($method = 'add' . $callable))) {
+                    $this->$method($value);
+                } elseif (method_exists($this, ($method = 'set' . $callable))) {
+                    $this->$method($value);
+                }
+            }
+        }
+    }
+
+    public function offsetUnset(mixed $offset): void
+    {
+        $var = Helper::snake($offset);
+        if ($this->offsetExists($offset)) {
+            $this->$var = null;
+        }
     }
 
     /**
@@ -31,7 +83,7 @@ abstract class Event extends ToArray implements Facade\Export
         $return = [];
 
         if (!method_exists($this, 'getName')) {
-            GA4Exception::push("'self::getName()' does not exist");
+            GA4Exception::push("'getName()' does not exist");
         } else {
             $name = $this->getName();
             if (empty($name)) {
@@ -40,30 +92,7 @@ abstract class Event extends ToArray implements Facade\Export
                 GA4Exception::push("Name '{$name}' can not be longer than 40 characters");
             } elseif (preg_match('/[^\w\d\-]/', $name)) {
                 GA4Exception::push("Name '{$name}' can only be letters, numbers, underscores and dashes");
-            } elseif (in_array($name, [
-                'ad_activeview',
-                'ad_click',
-                'ad_exposure',
-                'ad_impression',
-                'ad_query',
-                'adunit_exposure',
-                'app_clear_data',
-                'app_install',
-                'app_update',
-                'app_remove',
-                'error',
-                'first_open',
-                'first_visit',
-                'in_app_purchase',
-                'notification_dismiss',
-                'notification_foreground',
-                'notification_open',
-                'notification_receive',
-                'os_update',
-                'screen_view',
-                'session_start',
-                'user_engagement',
-            ])) {
+            } elseif (in_array($name, Helper::RESERVED_EVENT_NAMES)) {
                 GA4Exception::push("Name '{$name}' is reserved");
             } else {
                 $return['name'] = $name;
@@ -98,25 +127,9 @@ abstract class Event extends ToArray implements Facade\Export
                 continue;
             }
 
-            $callableName = implode('', array_map('ucfirst', explode('_', $insertable)));
-
-            if (is_array($param)) {
-                $callableName = substr($callableName, -1) === 's' ? substr($callableName, 0, -1) : $callableName;
-                foreach ($param as $paramRow) {
-                    if (method_exists($event, ($method = 'add' . $callableName))) {
-                        $event->$method($paramRow);
-                    } elseif (method_exists($event, ($method = 'set' . $callableName))) {
-                        $event->$method($paramRow);
-                    }
-                }
-            } else {
-                if (method_exists($event, ($method = 'add' . $callableName))) {
-                    $event->$method($param);
-                } elseif (method_exists($event, ($method = 'set' . $callableName))) {
-                    $event->$method($param);
-                }
-            }
+            $event[$insertable] = $param;
         }
+
         return $event;
     }
 

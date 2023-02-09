@@ -2,14 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class GenerateLead extends Model\Event implements Facade\GenerateLead
 {
-    protected $currency;
-    protected $value;
+    protected null|string $currency;
+    protected null|int|float $value;
 
     public function getName(): string
     {
@@ -41,22 +40,15 @@ class GenerateLead extends Model\Event implements Facade\GenerateLead
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    /**
-     * @param int|float $val
-     */
-    public function setValue($val)
+    public function setValue(null|int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setValue value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 }

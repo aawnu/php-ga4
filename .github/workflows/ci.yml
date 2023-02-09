@@ -4,33 +4,74 @@ on:
   pull_request:
     branches:
       - "master"
-  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
 
 jobs:
-  render-php:
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      max-parallel: 3
-      fail-fast: false
-      matrix:
-        operating-system: ["ubuntu-latest", "windows-latest"]
-        php-versions: ["7.0", "7.1", "7.4", "8.0", "8.1"]
-        phpunit-versions: ["latest"]
+  validate-mergable:
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: "Checkout"
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - run: git merge origin/master --no-commit --ff-only
-      - uses: shivammathur/setup-php@v2
+
+      - name: "Validate Mergable"
+        run: git merge origin/master --no-commit --ff-only
+
+  render-php:
+    needs: validate-mergable
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      max-parallel: 3
+      fail-fast: true
+      matrix:
+        operating-system: ["ubuntu-latest", "windows-latest"]
+        php-versions: ["8.0", "8.1", "8.2"]
+        phpunit-versions: ["latest"]
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-versions }}
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
-          coverage: xdebug
+          coverage: none
           tools: phpunit:${{ matrix.phpunit-versions }}
-      - name: "Install"
-        run: |
-          composer update --no-install --with-all-dependencies
-          composer install
-      - name: "PHPUnit Tests"
-        run: ./vendor/bin/phpunit
+
+      - name: "Composer State"
+        run: composer update --no-install --with-all-dependencies
+
+      - name: "Composer Name Hash"
+        id: composer-hash
+        uses: KEINOS/gh-action-hash-for-cache@main
+        with:
+          path: ./composer.lock
+
+      - name: "Caching"
+        id: cache-composer
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: composer-${{ steps.composer-hash.outputs.hash }}
+          restore-keys: composer-${{ steps.composer-hash.outputs.hash }}
+
+      - name: "Install Dependencies"
+        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
+        run: composer install
+
+      - name: "Linux: Restore Vendor Executable"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: chmod -R 0755 vendor
+
+      - name: "PHPUnit"
+        run: ./vendor/bin/phpunit --testdox

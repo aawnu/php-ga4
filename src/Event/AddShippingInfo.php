@@ -2,18 +2,17 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class AddShippingInfo extends Model\Event implements Facade\AddShippingInfo
 {
-    protected $currency;
-    protected $value;
-    protected $coupon;
-    protected $shipping_tier;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|int|float $value;
+    protected null|string $coupon;
+    protected null|string $shipping_tier;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -49,32 +48,25 @@ class AddShippingInfo extends Model\Event implements Facade\AddShippingInfo
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    /**
-     * @param int|float $val
-     */
-    public function setValue($val)
+    public function setValue(null|int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setValue value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 
-    public function setCoupon(string $code)
+    public function setCoupon(null|string $code)
     {
         $this->coupon = $code;
         return $this;
     }
 
-    public function setShippingTier(string $tier)
+    public function setShippingTier(null|string $tier)
     {
         $this->shipping_tier = $tier;
         return $this;
@@ -84,5 +76,10 @@ class AddShippingInfo extends Model\Event implements Facade\AddShippingInfo
     {
         $this->items[] = $item->toArray();
         return $this;
+    }
+
+    public function resetItems()
+    {
+        $this->items = [];
     }
 }

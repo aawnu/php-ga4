@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\UserProperty;
 
 interface Analytics
 {
@@ -30,7 +30,7 @@ interface Analytics
      * @var timestamp_micros
      * @param integer|float $microOrUnix microtime(true) or time()
      */
-    public function setTimestamp($microOrUnix);
+    public function setTimestamp(int|float $microOrUnix);
 
     /**
      * Indicate if these events should be used for personalized ads.

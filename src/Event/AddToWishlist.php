@@ -2,16 +2,15 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Facade;
 
 class AddToWishlist extends Model\Event implements Facade\AddToWishlist
 {
-    protected $currency;
-    protected $value;
-    protected $items = [];
+    protected null|string $currency;
+    protected null|int|float $value;
+    protected array $items = [];
 
     public function getName(): string
     {
@@ -45,22 +44,15 @@ class AddToWishlist extends Model\Event implements Facade\AddToWishlist
         return $return;
     }
 
-    public function setCurrency(string $iso)
+    public function setCurrency(null|string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    /**
-     * @param int|float $val
-     */
-    public function setValue($val)
+    public function setValue(null|int|float $val)
     {
-        if (!is_numeric($val)) {
-            throw new GA4Exception("setValue value must be numeric");
-        }
-
-        $this->value = 0 + $val;
+        $this->value = $val;
         return $this;
     }
 
@@ -68,5 +60,10 @@ class AddToWishlist extends Model\Event implements Facade\AddToWishlist
     {
         $this->items[] = $item->toArray();
         return $this;
+    }
+
+    public function resetItems()
+    {
+        $this->items = [];
     }
 }

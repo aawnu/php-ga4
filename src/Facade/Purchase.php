@@ -2,9 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade;
 
-use AlexWestergaard\PhpGa4\Item;
-
-interface Purchase
+interface Purchase extends hasItems
 {
     /**
      * Currency of the items associated with the event, in 3-letter ISO 4217 format. \
@@ -22,7 +20,7 @@ interface Purchase
      * The transaction_id parameter helps you avoid getting duplicate events for a purchase.
      *
      * @var transaction_id
-     * @param integer|float $id eg. T_12345
+     * @param string $id eg. T_12345
      */
     public function setTransactionId(string $id);
 
@@ -32,7 +30,7 @@ interface Purchase
      * @var value
      * @param integer|float $val eg. 7.77
      */
-    public function setValue($val);
+    public function setValue(int|float $val);
 
     /**
      * A product affiliation to designate a supplying company or brick and mortar store location. \
@@ -67,12 +65,4 @@ interface Purchase
      * @param float $tax eg. 1.11
      */
     public function setTax(float $tax);
-
-    /**
-     * The items for the event.
-     *
-     * @var items
-     * @param AlexWestergaard\PhpGa4\Module\Item $item
-     */
-    public function addItem(Item $item);
 }
