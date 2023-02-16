@@ -1,6 +1,4 @@
-# PHP GA4 | PHP 8+
-
-PHP Wrapper for Google Analytics 4 Server Side Tracking of events.
+PHP Wrapper for Google Analytics 4 with Server Side Tracking
 
 [![PHP Version](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://www.php.net/releases/)
 [![Release Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
@@ -21,6 +19,12 @@ PHP Wrapper for Google Analytics 4 Server Side Tracking of events.
 
 **LEGACY WARNING**
 - `PHP 7` should only use `1.0.*` versions of this library
+
+## GDPR Notice
+
+*European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe. This includes the use of 'GTAG.js' as JavaScript pushes the request from visitors device including IP-Address. Server Side Tracking, however, does only send information specified inside the body and of your server. Relying solely on Google Analytics 4 Events - that is not pushed through the GTAG.js script - can be scraped of GDPR-related information.*
+
+- Source: Europe, GDPR, Schrems II
 
 ## Events
 
