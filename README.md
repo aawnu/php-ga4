@@ -25,6 +25,7 @@ PHP Wrapper for Google Analytics 4 with Server Side Tracking
 *European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe. This includes the use of 'GTAG.js' as JavaScript pushes the request from visitors device including IP-Address. Server Side Tracking, however, does only send information specified inside the body and of your server. Relying solely on Google Analytics 4 Events - that is not pushed through the GTAG.js script - can be scraped of GDPR-related information.*
 
 - Source: Europe, GDPR, Schrems II
+- https://support.google.com/analytics/answer/9019185?hl=en
 
 ## Events
 
