@@ -2,11 +2,19 @@
     "name": "alexwestergaard/php-ga4",
     "description": "PHP Wrapper for Google Analytics 4 with Server Side Tracking",
     "keywords": [
-        "anayltics",
+        "php",
+        "php8",
+        "php80",
+        "php81",
+        "php82",
+        "analytics",
+        "analytics 4",
         "google analytics",
-        "ga4",
         "server side tracking",
-        "sst"
+        "tracking",
+        "ga4",
+        "sst",
+        "gdpr"
     ],
     "homepage": "https://github.com/aawnu/php-ga4",
     "type": "library",
