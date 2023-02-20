@@ -35,6 +35,11 @@
             "AlexWestergaard\\PhpGa4\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AlexWestergaard\\PhpGa4Test\\": "test/"
+        }
+    },
     "require": {
         "php": "^8.0",
         "guzzlehttp/guzzle": "^7.0"

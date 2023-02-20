@@ -4,8 +4,8 @@
     colors="true"
     stopOnFailure="false">
     <testsuites>
-        <testsuite name="Analytics">
-            <directory>test</directory>
+        <testsuite name="Units">
+            <directory>test/Unit</directory>
         </testsuite>
     </testsuites>
 </phpunit>

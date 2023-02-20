@@ -1,11 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4;
+namespace AlexWestergaard\PhpGa4Test\Class;
 
 use AlexWestergaard\PhpGa4\Helper\AbstractUserProperty;
-use AlexWestergaard\PhpGa4\Facade\Type\UserProperty as TypeUserProperty;
 
-class UserProperty extends AbstractUserProperty implements TypeUserProperty
+class TestAbstractUserProperty extends AbstractUserProperty
 {
     protected string $name;
     protected int|float|string $value;
@@ -25,4 +24,4 @@ class UserProperty extends AbstractUserProperty implements TypeUserProperty
     {
         return ['name', 'value'];
     }
-}
+};

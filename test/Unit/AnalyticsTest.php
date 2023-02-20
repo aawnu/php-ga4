@@ -1,11 +1,16 @@
 <?php
 
+namespace AlexWestergaard\PhpGa4Test\Unit;
+
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\UserProperty;
 
+/**
+ * @test
+ */
 class AnalyticsTest extends \PHPUnit\Framework\TestCase
 {
     protected $prefill;
@@ -57,7 +62,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             $this->analytics->setTimestamp(strtotime('-1 week'));
         } catch (GA4Exception $e) {
             $this->assertTrue(true);
-        } catch (Exception $e) {
+        } catch (\Exception $e) {
             $this->assertTrue(false, "Did not receive correct Exception");
         }
     }
