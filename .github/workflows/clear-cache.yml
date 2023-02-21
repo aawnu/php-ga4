@@ -1,11 +1,11 @@
 name: Clear all Github actions caches on sundays
 on:
   schedule:
-    - cron: "0 0 * * 0"
+    - cron: "30 2 1,15 * *"
   workflow_dispatch:
 
 jobs:
-  my-job:
+  remove-caches:
     name: Delete all caches
     runs-on: ubuntu-20.04
 
