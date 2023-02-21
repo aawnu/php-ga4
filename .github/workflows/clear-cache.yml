@@ -1,4 +1,4 @@
-name: Clear all Github actions caches on sundays
+name: Clear Caches
 on:
   schedule:
     - cron: "30 2 1,15 * *"
