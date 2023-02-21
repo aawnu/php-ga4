@@ -18,7 +18,7 @@ use AlexWestergaard\PhpGa4Test\Class\TestAbstractEvent;
 
 class AbstractTest extends TestCase
 {
-    public function testAbstractionIOCapabilities()
+    public function testAbstractionIoCapabilities()
     {
         $io = new TestAbstractIO();
 
@@ -48,7 +48,7 @@ class AbstractTest extends TestCase
         $this->assertArrayHasKey('test_required', $export);
     }
 
-    public function testAbstractionIOThrowsOnMissingRequiredParam()
+    public function testAbstractionIoThrowsOnMissingRequiredParam()
     {
         $io = new TestAbstractIO();
 
@@ -58,7 +58,7 @@ class AbstractTest extends TestCase
         $io->toArray();
     }
 
-    public function testAbstractionIOKeepsArrayOnUnset()
+    public function testAbstractionIoKeepsArrayOnUnset()
     {
         $io = new TestAbstractIO();
         $this->assertIsArray($io['test_array']);
@@ -140,7 +140,7 @@ class AbstractTest extends TestCase
         $userProperty->setValue($value = 'testvalue');
 
         $export = $userProperty->toArray();
-        
+
         $this->assertArrayHasKey($name, $export);
         $this->assertArrayHasKey('value', $export[$name]);
         $this->assertEquals($value, $export[$name]['value']);

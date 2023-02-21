@@ -46,12 +46,12 @@ class AnalyticsTest extends TestCase
             ->setQuantity(2);
     }
 
-    public function testAnalytics()
+    public function testAnalyticsCanPost()
     {
         $this->assertNull($this->analytics->post());
     }
 
-    public function testAnalyticsToArray()
+    public function testAnalyticsCanExportToArray()
     {
         $arr = $this->analytics
             ->addEvent(Event\JoinGroup::fromArray(['group_id' => 1]))
@@ -67,7 +67,7 @@ class AnalyticsTest extends TestCase
         $this->assertArrayHasKey('user_properties', $arr);
     }
 
-    public function testTimeIsMicrotime()
+    public function testAnalyticsTimestampIsMicrotime()
     {
         $this->analytics->setTimestampMicros(microtime(true));
 
@@ -76,7 +76,7 @@ class AnalyticsTest extends TestCase
         $this->assertTrue($arr['timestamp_micros'] > 1_000_000);
     }
 
-    public function testExceptionIfTimeOlderThanOffsetLimit()
+    public function testAnalyticsThrowsExceptionIfTimestampOlderThanOffsetLimit()
     {
         $this->expectException(Ga4Exception::class);
         $this->expectExceptionCode(TypeGa4Exception::MICROTIME_EXPIRED);
@@ -84,7 +84,7 @@ class AnalyticsTest extends TestCase
         $this->analytics->setTimestampMicros(strtotime('-1 week'));
     }
 
-    public function testItem()
+    public function testItemExportsToArray()
     {
         $this->assertInstanceOf(Item::class, $this->item);
 
@@ -97,7 +97,7 @@ class AnalyticsTest extends TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
-    public function testItemFromArray()
+    public function testItemBuildsFromArray()
     {
         $item = Item::fromArray([
             'item_id' => '2',
@@ -118,7 +118,7 @@ class AnalyticsTest extends TestCase
         $this->assertArrayHasKey('quantity', $arr);
     }
 
-    public function testUserProperty()
+    public function testAnalyticsExportsUserPropertyToArray()
     {
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
@@ -138,7 +138,7 @@ class AnalyticsTest extends TestCase
         $this->assertNull($this->analytics->post());
     }
 
-    public function testFullRefundNoItems()
+    public function testEventFullRefundRequiresNoItems()
     {
         $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
@@ -147,7 +147,7 @@ class AnalyticsTest extends TestCase
         $this->assertNull($this->analytics->post());
     }
 
-    public function testPartialRefundWithItems()
+    public function testEventPartialRefundWithItems()
     {
         $refund = Event\Refund::new()->setTransactionId(1)->addItem($this->item);
 
@@ -162,7 +162,7 @@ class AnalyticsTest extends TestCase
         $this->assertArrayHasKey('items', $arr);
     }
 
-    public function testPartialRefundNoItemsThrows()
+    public function testEventPartialRefundWithoutItemsThrows()
     {
         $refund = Event\Refund::new()->setTransactionId(1);
 
@@ -171,7 +171,7 @@ class AnalyticsTest extends TestCase
         $this->analytics->addEvent($refund);
     }
 
-    public function testPrebuildEvents()
+    public function testPrebuildEventsAreValidAndAcceptedByAnalytics()
     {
         $getDefaultEventsByFile = glob(__DIR__ . '/../src/Event/*.php');
 
@@ -284,7 +284,7 @@ class AnalyticsTest extends TestCase
         $this->assertNull($this->analytics->post());
     }
 
-    public function testEventArrayable()
+    public function testEventArrayableAccess()
     {
         $event = new Event\AddToCart();
         $event['currency'] = $this->prefill['currency'];
