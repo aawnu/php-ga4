@@ -6,7 +6,7 @@ PHP Wrapper for Google Analytics 4 with Server Side Tracking
 
 `composer require alexwestergaard/php-ga4`
 
-- [GDPR](#gdpr-notice)
+- [GDPR Notice](#gdpr-notice)
 - [Events](#events)
   - [Default](#default)
   - [E-commerce](#e-commerce)
@@ -76,7 +76,7 @@ This library is built for backend server side tracking, but you will probably tr
 ### Logged/Queued Events
 
 ```php
-use AlexWestergaard\PhpGa4\GA4Exception;
+use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
@@ -112,7 +112,7 @@ try {
 
     // Errors are served as exceptions on pre-exit
     $analytics->post();
-} catch (GA4Exception $exception) {
+} catch (Exception\Ga4Exception $exception) {
     // Handle exception
     // Exceptions might be stacked, check: $exception->getPrevious();
 }
@@ -177,15 +177,15 @@ try {
 
 ## Custom Events
 
-You can build your own custom events, but be careful to follow this structure. It is important that you extend the Model\Event class because Analytics checks inheritance towards that class on addEvent.
+You can build your own custom events, but be careful to follow this structure. It is important that you implement the `AlexWestergaard\PhpGa4\Facade\Type\TypeEvent` class because Analytics checks inheritance towards that class on addEvent.
 
 ```php
-use AlexWestergaard\PhpGa4\Model;
 
-class ExampleEvent extends Model\Event
+class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\AbstractEvent // AbstractEvent implements AlexWestergaard\PhpGa4\Facade\Type\TypeEvent
 {
-    protected $my_variable;
-    protected $my_required_variable;
+    protected null|mixed $my_variable; // variables should be nullable as unset() will set variable as null
+    protected array $my_array = []; // Arrays should always be instanciated empty
+    protected null|mixed $my_required_variable;
 
     public function getName(): string
     {
@@ -196,6 +196,7 @@ class ExampleEvent extends Model\Event
     {
         return [
             'my_variable',
+            'my_array',
         ];
     }
 
