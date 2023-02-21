@@ -32,7 +32,7 @@ interface Analytics extends IO
      * @var timestamp_micros
      * @param integer|float $microOrUnix microtime(true) or time()
      */
-    public function setTimestamp(int|float $microOrUnix);
+    public function setTimestampMicros(int|float $microOrUnix);
 
     /**
      * Indicate if these events should be used for personalized ads.
@@ -40,7 +40,7 @@ interface Analytics extends IO
      * @var non_personalized_ads
      * @param boolean $allow
      */
-    public function allowPersonalisedAds(bool $allow);
+    public function setNonPersonalizedAds(bool $allow);
 
     /**
      * The user properties for the measurement

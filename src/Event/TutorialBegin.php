@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 
-class TutorialBegin extends Model\Event
+class TutorialBegin extends AbstractEvent
 {
 
     public function getName(): string

@@ -23,6 +23,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
         private string $apiSecret,
         private bool $debug = false
     ) {
+        parent::__construct();
     }
 
     public function getParams(): array
@@ -52,7 +53,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $return;
     }
 
-    public function allowPersonalisedAds(bool $allow)
+    public function setNonPersonalizedAds(bool $allow)
     {
         $this->non_personalized_ads = !$allow;
         return $this;
@@ -70,7 +71,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $this;
     }
 
-    public function setTimestamp(int|float $microOrUnix)
+    public function setTimestampMicros(int|float $microOrUnix)
     {
         $secondInMicro = 1_000_000;
         $offsetLimit = (strtotime('-3 days') + 90) * $secondInMicro;
@@ -90,7 +91,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
 
     public function addUserProperty(UserProperty $prop)
     {
-        $this->user_properties = array_merge($this->user_properties, $prop->toArray());
+        $this->user_properties = array_replace($this->user_properties, $prop->toArray());
         return $this;
     }
 

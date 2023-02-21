@@ -265,7 +265,7 @@ abstract class AbstractIO implements IO
 
         $return = [];
         foreach ($this as $key => $val) {
-            if (empty($val)) continue;
+            if ($val === null || is_array($val) && count($val) === 0) continue;
             $return[$key] = $val;
         }
 
@@ -286,7 +286,13 @@ abstract class AbstractIO implements IO
         $importable = $importable instanceof IO ? $importable->toArray() : $importable;
 
         foreach ($importable as $key => $val) {
-            $static[$key] = $val;
+            if (is_array($val)) {
+                foreach ($val as $single) {
+                    $static[$key] = $single;
+                }
+            } else {
+                $static[$key] = $val;
+            }
         }
 
         return $static;

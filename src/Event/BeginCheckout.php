@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class BeginCheckout extends Model\Event implements Facade\BeginCheckout
+class BeginCheckout extends AbstractEvent implements Facade\Group\BeginCheckout
 {
     protected null|string $currency;
     protected null|int|float $value;

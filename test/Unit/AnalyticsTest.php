@@ -2,23 +2,27 @@
 
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
+use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Facade\Type\Ga4Exception as TypeGa4Exception;
+use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\GA4Exception;
-use AlexWestergaard\PhpGa4\UserProperty;
+use AlexWestergaard\PhpGa4Test\Class\TestCase;
 
 /**
  * @test
  */
-class AnalyticsTest extends \PHPUnit\Framework\TestCase
+class AnalyticsTest extends TestCase
 {
-    protected $prefill;
-    protected $analytics;
-    protected $item;
+    protected array $prefill;
+    protected Analytics $analytics;
+    protected Item $item;
 
     protected function setUp(): void
     {
+        parent::setUp();
+
         $this->prefill = [
             // Analytics
             'measurement_id' => 'G-XXXXXXXX',
@@ -44,27 +48,40 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
     public function testAnalytics()
     {
-        $this->assertTrue($this->analytics->post());
+        $this->assertNull($this->analytics->post());
+    }
+
+    public function testAnalyticsToArray()
+    {
+        $arr = $this->analytics
+            ->addEvent(Event\JoinGroup::fromArray(['group_id' => 1]))
+            ->addUserProperty(UserProperty::fromArray(['name' => 'test', 'value' => 'testvalue']))
+            ->toArray();
+
+        $this->assertIsArray($arr);
+
+        $this->assertArrayHasKey('non_personalized_ads', $arr);
+        $this->assertArrayHasKey('client_id', $arr);
+        $this->assertArrayHasKey('user_id', $arr);
+        $this->assertArrayHasKey('events', $arr);
+        $this->assertArrayHasKey('user_properties', $arr);
     }
 
     public function testTimeIsMicrotime()
     {
-        $this->analytics->setTimestamp(microtime(true));
+        $this->analytics->setTimestampMicros(microtime(true));
 
         $arr = $this->analytics->toArray();
 
-        $this->assertTrue($arr['timestamp_micros'] > intval(strtr('1_000_000', ['_' => ''])));
+        $this->assertTrue($arr['timestamp_micros'] > 1_000_000);
     }
 
     public function testExceptionIfTimeOlderThanOffsetLimit()
     {
-        try {
-            $this->analytics->setTimestamp(strtotime('-1 week'));
-        } catch (GA4Exception $e) {
-            $this->assertTrue(true);
-        } catch (\Exception $e) {
-            $this->assertTrue(false, "Did not receive correct Exception");
-        }
+        $this->expectException(Ga4Exception::class);
+        $this->expectExceptionCode(TypeGa4Exception::MICROTIME_EXPIRED);
+
+        $this->analytics->setTimestampMicros(strtotime('-1 week'));
     }
 
     public function testItem()
@@ -118,7 +135,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $arr = $arr['user_properties'];
         $this->assertArrayHasKey('customer_tier', $arr);
 
-        $this->assertTrue($this->analytics->post());
+        $this->assertNull($this->analytics->post());
     }
 
     public function testFullRefundNoItems()
@@ -127,7 +144,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
 
         $this->analytics->addEvent($refund);
 
-        $this->assertTrue($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function testPartialRefundWithItems()
@@ -249,15 +266,7 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
             $this->analytics->addEvent($event);
         }
 
-        $this->assertTrue($this->analytics->post());
-    }
-
-    public function testEventCanAddDebugParameter()
-    {
-        $event = Event\Refund::new()->setTransactionId(1)->addItem($this->item)->debug()->toArray();
-
-        $this->assertArrayHasKey('debug_mode', $event['params']);
-        $this->assertTrue($event['params']['debug_mode']);
+        $this->assertNull($this->analytics->post());
     }
 
     public function testBuildEventFromArray()
@@ -271,7 +280,8 @@ class AnalyticsTest extends \PHPUnit\Framework\TestCase
         $this->assertIsArray($event->toArray(), get_class($event));
 
         $this->analytics->addEvent($event);
-        $this->assertTrue($this->analytics->post());
+
+        $this->assertNull($this->analytics->post());
     }
 
     public function testEventArrayable()

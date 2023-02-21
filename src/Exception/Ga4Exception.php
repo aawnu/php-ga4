@@ -65,8 +65,8 @@ class Ga4Exception extends \Exception implements TypeGa4Exception
     public static function throwRequestInvalidBody(array $msg)
     {
         return new static(
-            'Validation Message: ' . $msg['validationCode']
-                . (isset($msg['fieldPath']) ? '[' . $msg['fieldPath'] . ']: ' : ':')
+            'Validation Message > ' . $msg['validationCode']
+                . (isset($msg['fieldPath']) ? ' [' . $msg['fieldPath'] . ']: ' : ': ')
                 . $msg['description'],
             static::REQUEST_INVALID_BODY
         );

@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class SelectItem extends Model\Event implements Facade\SelectItem
+class SelectItem extends AbstractEvent implements Facade\Group\SelectItem
 {
     protected null|string $item_list_id;
     protected null|string $item_list_name;

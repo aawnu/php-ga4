@@ -2,7 +2,6 @@
 
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
-use PHPUnit\Framework\TestCase;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Helper\AbstractIO;
 use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
@@ -12,6 +11,7 @@ use AlexWestergaard\PhpGa4\Facade\Type\Event;
 use AlexWestergaard\PhpGa4\Exception\Ga4UserPropertyException;
 use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
+use AlexWestergaard\PhpGa4Test\Class\TestCase;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractUserProperty;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractIO;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractEvent;

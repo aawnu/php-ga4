@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class Search extends Model\Event implements Facade\Search
+class Search extends AbstractEvent implements Facade\Group\Search
 {
     protected null|string $search_term;
 

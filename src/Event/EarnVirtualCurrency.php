@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class EarnVirtualCurrency extends Model\Event implements Facade\EarnVirtualCurrency
+class EarnVirtualCurrency extends AbstractEvent implements Facade\Group\EarnVirtualCurrency
 {
     protected null|string $virtual_currency_name;
     protected null|int|float $value;
