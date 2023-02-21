@@ -125,7 +125,10 @@ class Analytics extends AbstractIO implements TypeAnalytics
 
         for ($chunk = 0; $chunk < $chunkMax; $chunk++) {
             $body['user_properties'] = $chunkUserProperties[$chunk] ?? [];
+            if (empty($body['user_properties'])) unset($body['user_properties']);
+
             $body['events'] = $chunkEvents[$chunk] ?? [];
+            if (empty($body['events'])) unset($body['events']);
 
             $kB = 1024;
             if (($size = mb_strlen(json_encode($body))) > ($kB * 130)) {

@@ -144,7 +144,7 @@ class AnalyticsTest extends TestCase
 
         $this->analytics->addEvent($refund);
 
-        $this->analytics->post();
+        $this->assertNull($this->analytics->post());
     }
 
     public function testPartialRefundWithItems()
