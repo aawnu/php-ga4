@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Facade\Type;
 
+use JsonSerializable;
 use Iterator;
 use Countable;
 use ArrayAccess;
-use JsonSerializable;
 
 interface IO extends ArrayAccess, Iterator, Countable, JsonSerializable
 {

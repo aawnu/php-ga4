@@ -2,29 +2,26 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Trait\StaticNew;
 use AlexWestergaard\PhpGa4\Helper\AbstractIO;
 use AlexWestergaard\PhpGa4\Facade\Type\Item as TypeItem;
 
 class Item extends AbstractIO implements TypeItem
 {
-    use StaticNew;
-
-    protected $item_id;
-    protected $item_name;
-    protected $affiliation;
-    protected $coupon;
-    protected $currency;
-    protected $discount;
-    protected $index;
-    protected $item_brand;
-    protected $item_category = [];
-    protected $item_list_id;
-    protected $item_list_name;
-    protected $item_variant;
-    protected $location_id;
-    protected $price;
-    protected $quantity;
+    protected null|string $item_id;
+    protected null|string $item_name;
+    protected null|string $affiliation;
+    protected null|string $coupon;
+    protected null|string $currency;
+    protected null|string $item_brand;
+    protected null|string $item_list_id;
+    protected null|string $item_list_name;
+    protected null|string $item_variant;
+    protected null|string $location_id;
+    protected null|int|float $discount;
+    protected null|int|float $price;
+    protected null|int $quantity;
+    protected null|int $index;
+    protected array $item_category = [];
 
     public function setItemId(string $id)
     {
@@ -152,5 +149,10 @@ class Item extends AbstractIO implements TypeItem
         }
 
         return $return;
+    }
+
+    public static function new(): static
+    {
+        return new static();
     }
 }

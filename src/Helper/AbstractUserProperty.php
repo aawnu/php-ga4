@@ -2,14 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Helper;
 
-use AlexWestergaard\PhpGa4\Trait\StaticNew;
 use AlexWestergaard\PhpGa4\Facade\Type\UserProperty;
 use AlexWestergaard\PhpGa4\Exception\Ga4UserPropertyException;
 
 abstract class AbstractUserProperty extends AbstractIO implements UserProperty
 {
-    use StaticNew;
-
     public function setName(string $name): static
     {
         if (
@@ -38,5 +35,10 @@ abstract class AbstractUserProperty extends AbstractIO implements UserProperty
         }
 
         return $return;
+    }
+    
+    public static function new(): static
+    {
+        return new static();
     }
 }

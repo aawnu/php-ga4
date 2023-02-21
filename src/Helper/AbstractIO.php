@@ -107,7 +107,7 @@ abstract class AbstractIO implements IO
     {
         $offset = is_string($offset) ? Converter::snake($offset) : $offset;
 
-        return $this->offsetExists($offset) ? $this->$offset : null;
+        return $this->offsetExists($offset) && isset($this->$offset) ? $this->$offset : null;
     }
 
     /**
@@ -150,7 +150,11 @@ abstract class AbstractIO implements IO
 
         if (!$this->offsetExists($offset)) return;
 
-        $this->$offset = null;
+        if (gettype($this->$offset) == 'array') {
+            $this->$offset = [];
+        } else {
+            $this->$offset = null;
+        }
     }
 
     /**

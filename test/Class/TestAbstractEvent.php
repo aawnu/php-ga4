@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4Test\Class;
 
-use AlexWestergaard\PhpGa4\Facade\Type\Item;
 use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Facade\Type\Item;
 
 class TestAbstractEvent extends AbstractEvent
 {

@@ -6,32 +6,69 @@ use AlexWestergaard\PhpGa4\Facade\Type\Ga4Exception as TypeGa4Exception;
 
 class Ga4Exception extends \Exception implements TypeGa4Exception
 {
-    private static $exceptionStack = [];
+    private static ?Ga4Exception $exceptionStack = null;
 
-    public function toStack()
+    public function __construct(string $message = "", int $code = 0)
     {
-        static::$exceptionStack[] = $this;
-        return $this;
+        parent::__construct($message, $code, static::$exceptionStack);
+        static::$exceptionStack = $this;
     }
 
-    public static function addStack(TypeGa4Exception $ga4Exception): void
+    public static function hasThrowStack(): bool
     {
-        static::$exceptionStack[] = $ga4Exception;
+        return static::$exceptionStack !== null;
     }
 
-    public static function getStack(bool $reset = false): array
+    public static function getThrowStack(): ?Ga4Exception
     {
         $stack = static::$exceptionStack;
-
-        if ($reset) {
-            static::resetStack();
-        }
+        static::resetStack();
 
         return $stack;
     }
 
     public static function resetStack(): void
     {
-        static::$exceptionStack = [];
+        static::$exceptionStack = null;
+    }
+
+    public static function throwMicrotimeInvalidFormat()
+    {
+        return new static("Timestamp must be numeric", static::MICROTIME_INVALID_FORMAT);
+    }
+
+    public static function throwMicrotimeExpired()
+    {
+        return new static("Timestamp is too old, max 3 days", static::MICROTIME_EXPIRED);
+    }
+
+    public static function throwRequestTooLarge(int $kb)
+    {
+        return new static("Request body ({$kb}kB) exceeds maximum of 130kB", static::REQUEST_TOO_LARGE);
+    }
+
+    public static function throwRequestWrongResponceCode(int $code)
+    {
+        return new static("Request returned with invalid response code $code", static::REQUEST_WRONG_RESPONSE_CODE);
+    }
+
+    public static function throwRequestEmptyResponse()
+    {
+        return new static("Request returned empty body", static::REQUEST_EMPTY_RESPONSE);
+    }
+
+    public static function throwRequestInvalidResponse()
+    {
+        return new static("Request return invalid body format; expected json", static::REQUEST_INVALID_RESPONSE);
+    }
+
+    public static function throwRequestInvalidBody(array $msg)
+    {
+        return new static(
+            'Validation Message: ' . $msg['validationCode']
+                . (isset($msg['fieldPath']) ? '[' . $msg['fieldPath'] . ']: ' : ':')
+                . $msg['description'],
+            static::REQUEST_INVALID_BODY
+        );
     }
 }

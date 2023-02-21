@@ -7,8 +7,8 @@ use AlexWestergaard\PhpGa4\Facade\Type\UserProperty as TypeUserProperty;
 
 class UserProperty extends AbstractUserProperty implements TypeUserProperty
 {
-    protected string $name;
-    protected int|float|string $value;
+    protected null|string $name;
+    protected null|int|float|string $value;
 
     public function setValue(int|float|string $value): static
     {

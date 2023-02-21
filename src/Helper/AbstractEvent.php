@@ -2,14 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Helper;
 
-use AlexWestergaard\PhpGa4\Trait\StaticNew;
 use AlexWestergaard\PhpGa4\Facade\Type\Event;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 
 abstract class AbstractEvent extends AbstractIO implements Event
 {
-    use StaticNew;
-
     public function toArray(): array
     {
         $return = [];
@@ -35,5 +32,10 @@ abstract class AbstractEvent extends AbstractIO implements Event
         $return['params'] = parent::toArray();
 
         return $return;
+    }
+    
+    public static function new(): static
+    {
+        return new static();
     }
 }
