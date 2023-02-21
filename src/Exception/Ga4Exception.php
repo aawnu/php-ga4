@@ -32,6 +32,16 @@ class Ga4Exception extends \Exception implements TypeGa4Exception
         static::$exceptionStack = null;
     }
 
+    public static function throwMissingMeasurementId()
+    {
+        return new static("Timestamp must be numeric", static::REQUEST_MISSING_MEASUREMENT_ID);
+    }
+
+    public static function throwMissingApiSecret()
+    {
+        return new static("Timestamp must be numeric", static::REQUEST_MISSING_API_SECRET);
+    }
+
     public static function throwMicrotimeInvalidFormat()
     {
         return new static("Timestamp must be numeric", static::MICROTIME_INVALID_FORMAT);

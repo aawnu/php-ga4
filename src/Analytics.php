@@ -19,8 +19,8 @@ class Analytics extends AbstractIO implements TypeAnalytics
     protected array $events = [];
 
     public function __construct(
-        private string $measurementId,
-        private string $apiSecret,
+        private string $measurement_id,
+        private string $api_secret,
         private bool $debug = false
     ) {
         parent::__construct();
@@ -103,6 +103,13 @@ class Analytics extends AbstractIO implements TypeAnalytics
 
     public function post(): void
     {
+        if (empty($this->measurement_id)) {
+            throw Ga4Exception::throwMissingMeasurementId();
+        }
+        if (empty($this->api_secret)) {
+            throw Ga4Exception::throwMissingApiSecret();
+        }
+
         $url = $this->debug ? TypeAnalytics::URL_DEBUG : TypeAnalytics::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
