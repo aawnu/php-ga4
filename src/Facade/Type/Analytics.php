@@ -48,7 +48,7 @@ interface Analytics extends IO
      * @var user_properties
      * @param AlexWestergaard\PhpGa4\Facade\Type\UserProperty $prop
      */
-    public function addUserProperty(UserProperty $prop);
+    public function addUserProperty(UserProperty ...$props);
 
     /**
      * An array of event items. Up to 25 events can be sent per request
@@ -56,7 +56,7 @@ interface Analytics extends IO
      * @var events
      * @param AlexWestergaard\PhpGa4\Facade\Type\Event $event
      */
-    public function addEvent(Event $event);
+    public function addEvent(Event ...$events);
 
     /**
      * Validate params and send it to Google Analytics

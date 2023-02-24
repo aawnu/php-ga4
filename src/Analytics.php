@@ -53,9 +53,9 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $return;
     }
 
-    public function setNonPersonalizedAds(bool $allow)
+    public function setNonPersonalizedAds(bool $exclude)
     {
-        $this->non_personalized_ads = !$allow;
+        $this->non_personalized_ads = $exclude;
         return $this;
     }
 
@@ -89,15 +89,21 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $this;
     }
 
-    public function addUserProperty(UserProperty $prop)
+    public function addUserProperty(UserProperty ...$props)
     {
-        $this->user_properties = array_replace($this->user_properties, $prop->toArray());
+        foreach ($props as $prop) {
+            $this->user_properties = array_replace($this->user_properties, $prop->toArray());
+        }
+
         return $this;
     }
 
-    public function addEvent(Event $event)
+    public function addEvent(Event ...$events)
     {
-        $this->events[] = $event->toArray();
+        foreach ($events as $event) {
+            $this->events[] = $event->toArray();
+        }
+
         return $this;
     }
 
@@ -175,7 +181,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
     /** @deprecated 1.1.1 */
     public function allowPersonalisedAds(bool $allow)
     {
-        $this->setNonPersonalizedAds($allow);
+        $this->setNonPersonalizedAds(!$allow);
     }
 
     /** @deprecated 1.1.1 */

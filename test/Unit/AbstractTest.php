@@ -3,6 +3,7 @@
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Helper\Converter;
 use AlexWestergaard\PhpGa4\Helper\AbstractIO;
 use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade\Type\UserProperty;
@@ -11,6 +12,8 @@ use AlexWestergaard\PhpGa4\Facade\Type\Event;
 use AlexWestergaard\PhpGa4\Exception\Ga4UserPropertyException;
 use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
+use AlexWestergaard\PhpGa4\Event\UnlockAchievement;
+use AlexWestergaard\PhpGa4\Event\TutorialBegin;
 use AlexWestergaard\PhpGa4Test\Class\TestCase;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractUserProperty;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractIO;
@@ -154,5 +157,21 @@ final class AbstractTest extends TestCase
         $this->expectExceptionCode(Ga4Exception::PARAM_RESERVED);
 
         $userProperty->setName(UserProperty::RESERVED_NAMES[0]);
+    }
+
+    public function testConversionFromArrayToModels()
+    {
+        $list = Converter::parseEvents([
+            ['TutorialBegin' => []],
+            ['UnlockAchievement' => ['achievement_id' => '123']],
+        ]);
+
+        $this->assertIsArray($list);
+        $this->assertCount(2, $list);
+        $this->assertInstanceOf(TutorialBegin::class, $list[0]);
+        $this->assertInstanceOf(UnlockAchievement::class, $list[1]);
+
+        $this->analytics->addEvent(...$list);
+        $this->assertCount(2, $this->analytics['events']);
     }
 }
