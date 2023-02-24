@@ -167,4 +167,20 @@ class Analytics extends AbstractIO implements TypeAnalytics
     {
         return new static($measurementId, $apiSecret, $debug);
     }
+
+    /**
+     * Deprecated references
+     */
+
+    /** @deprecated 1.1.1 */
+    public function allowPersonalisedAds(bool $allow)
+    {
+        $this->setNonPersonalizedAds($allow);
+    }
+
+    /** @deprecated 1.1.1 */
+    public function setTimestamp(int|float $microOrUnix)
+    {
+        $this->setTimestampMicros($microOrUnix);
+    }
 }
