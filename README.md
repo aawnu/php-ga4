@@ -9,7 +9,18 @@ composer require alexwestergaard/php-ga4
 ```
 
 - [LEGACY](#legacy)
-
+- [GDPR Notice](#gdpr-notice)
+- [Events](#events)
+  - [Default](#default)
+  - [E-commerce](#e-commerce)
+  - [Engagement / Gaming](#engagement--gaming)
+- [Frontend \& Backend Communication](#frontend--backend-communication)
+  - [Logging / Queues](#logging--queues)
+  - [Frontend =\> Backend](#frontend--backend)
+    - [Frontend](#frontend)
+    - [Backend](#backend)
+- [Custom Events](#custom-events)
+- [Documentation](#documentation)
 
 ## LEGACY
 - `PHP 7` should only use `1.0.*` versions of this library
