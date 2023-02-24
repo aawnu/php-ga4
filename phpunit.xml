@@ -1,16 +1,29 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<phpunit
-    bootstrap="vendor/autoload.php"
-    colors="true"
-    stopOnFailure="false">
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
+    colors="true" stopOnFailure="false"
+    beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutTodoAnnotatedTests="true"
+    testdox="true"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
+    cacheDirectory=".phpunit.cache">
     <testsuites>
-        <testsuite name="Analytics">
-            <directory>test</directory>
+        <testsuite name="Units">
+            <directory>test/Unit</directory>
         </testsuite>
     </testsuites>
-  <coverage>
-    <include>
-      <directory suffix=".php">./src</directory>
-    </include>
-  </coverage>
+    <coverage includeUncoveredFiles="true" pathCoverage="true">
+        <include>
+            <directory suffix=".php">./src</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">./src/Facade</directory>
+        </exclude>
+        <report>
+            <text outputFile="./.phpunit/coverage.txt" showUncoveredFiles="true"
+                showOnlySummary="false" />
+        </report>
+    </coverage>
+    <php>
+        <env name="XDEBUG" value="coverage" />
+    </php>
 </phpunit>

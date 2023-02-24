@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class Signup extends Model\Event implements Facade\SignUp
+class Signup extends AbstractEvent implements Facade\Group\SignUp
 {
     protected null|string $method;
 

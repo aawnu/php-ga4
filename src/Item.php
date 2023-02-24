@@ -2,29 +2,26 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Model;
-use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Helper\AbstractIO;
+use AlexWestergaard\PhpGa4\Facade\Type\Item as TypeItem;
 
-/**
- * @requires One of item_id or item_name must be present and valid
- */
-class Item extends Model\ToArray implements Facade\Export, Facade\Item
+class Item extends AbstractIO implements TypeItem
 {
-    protected $item_id;
-    protected $item_name;
-    protected $affiliation;
-    protected $coupon;
-    protected $currency;
-    protected $discount;
-    protected $index;
-    protected $item_brand;
-    protected $item_category = [];
-    protected $item_list_id;
-    protected $item_list_name;
-    protected $item_variant;
-    protected $location_id;
-    protected $price;
-    protected $quantity;
+    protected null|string $item_id;
+    protected null|string $item_name;
+    protected null|string $affiliation;
+    protected null|string $coupon;
+    protected null|string $currency;
+    protected null|string $item_brand;
+    protected null|string $item_list_id;
+    protected null|string $item_list_name;
+    protected null|string $item_variant;
+    protected null|string $location_id;
+    protected null|int|float $discount;
+    protected null|int|float $price;
+    protected null|int $quantity;
+    protected null|int $index;
+    protected array $item_category = [];
 
     public function setItemId(string $id)
     {
@@ -154,51 +151,7 @@ class Item extends Model\ToArray implements Facade\Export, Facade\Item
         return $return;
     }
 
-    public static function fromArray(array $params = [])
-    {
-        $item = static::new();
-
-        $insertables = array_unique(array_merge($item->getParams(), $item->getRequiredParams()));
-
-        foreach ($insertables as $insertable) {
-            if (!in_array($insertable, array_keys($params)) || is_null($param = $params[$insertable])) {
-                continue;
-            }
-
-            $callableName = implode('', array_map('ucfirst', explode('_', $insertable)));
-
-            if (method_exists($item, ($method = 'add' . $callableName))) {
-                $item->$method($param);
-            } elseif (method_exists($item, ($method = 'set' . $callableName))) {
-                $item->$method($param);
-            }
-        }
-
-        return $item;
-    }
-
-    public function toArray(bool $isParent = false, GA4Exception|null $childErrors = null): array
-    {
-        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
-            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
-        }
-        
-        $return = parent::toArray($isParent, $childErrors);
-
-        if (isset($return['item_category'])) {
-            $cats = $return['item_category'];
-            unset($return['item_category']);
-
-            foreach ($cats as $i => $v) {
-                $id = $i > 0 ? $i + 1 : '';
-                $return['item_category' . $id] = $v;
-            }
-        }
-
-        return $return;
-    }
-
-    public static function new()
+    public static function new(): static
     {
         return new static();
     }

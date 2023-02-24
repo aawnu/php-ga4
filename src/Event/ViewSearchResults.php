@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class ViewSearchResults extends Model\Event implements Facade\ViewSearchResults
+class ViewSearchResults extends AbstractEvent implements Facade\Group\ViewSearchResults
 {
     protected null|string $search_term;
     protected array $items = [];

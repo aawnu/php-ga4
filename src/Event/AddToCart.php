@@ -2,11 +2,11 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Facade\Type\Item;
 use AlexWestergaard\PhpGa4\Facade;
 
-class AddToCart extends Model\Event implements Facade\AddToCart
+class AddToCart extends AbstractEvent implements Facade\Group\AddToCart
 {
     protected null|string $currency;
     protected null|int|float $value;

@@ -35,11 +35,18 @@
             "AlexWestergaard\\PhpGa4\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AlexWestergaard\\PhpGa4Test\\": "test/"
+        }
+    },
     "require": {
-        "php": "^8.0",
+        "php": "^8.0.0|8.1.0|8.2.0",
         "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.0|^10.0"
-    }
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
 }

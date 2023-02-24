@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class Refund extends Model\Event implements Facade\Refund
+class Refund extends AbstractEvent implements Facade\Group\Refund
 {
     protected null|string $currency;
     protected null|string $transaction_id;

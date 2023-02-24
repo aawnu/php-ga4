@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class ViewItem extends Model\Event implements Facade\ViewItem
+class ViewItem extends AbstractEvent implements Facade\Group\ViewItem
 {
     protected null|string $currency;
     protected null|int|float $value;

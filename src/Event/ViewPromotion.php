@@ -3,10 +3,10 @@
 namespace AlexWestergaard\PhpGa4\Event;
 
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade;
 
-class ViewPromotion extends Model\Event implements Facade\ViewPromotion
+class ViewPromotion extends AbstractEvent implements Facade\Group\ViewPromotion
 {
     protected null|string $creative_name;
     protected null|string $creative_slot;
