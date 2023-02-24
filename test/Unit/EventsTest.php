@@ -318,6 +318,9 @@ final class EventsTest extends TestCase
 
     protected function assertEventNaming($event)
     {
+        $this->assertInstanceOf(TypeEvent::class, $event);
+        $this->assertInstanceOf(AbstractEvent::class, $event);
+
         $reflection = new ReflectionClass($event);
         $filename = $reflection->getFileName();
 
