@@ -17,6 +17,8 @@ class LegacyAnalyticsTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
+        parent::setUp();
+        
         $this->prefill = [
             // Analytics
             'measurement_id' => 'G-XXXXXXXX',
