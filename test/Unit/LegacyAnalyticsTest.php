@@ -4,7 +4,6 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
@@ -17,6 +16,7 @@ class LegacyAnalyticsTest extends \PHPUnit\Framework\TestCase
 
     protected function setUp(): void
     {
+        Ga4Exception::resetStack();
         parent::setUp();
         
         $this->prefill = [
@@ -149,7 +149,7 @@ class LegacyAnalyticsTest extends \PHPUnit\Framework\TestCase
     {
         $refund = Event\Refund::new()->setTransactionId(1);
 
-        $this->expectException(Ga4IOException::class);
+        $this->expectException(Ga4Exception::class);
 
         $this->analytics->addEvent($refund);
     }
