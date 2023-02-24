@@ -60,7 +60,7 @@ class BeginCheckout extends AbstractEvent implements Facade\Group\BeginCheckout
 
     public function setCoupon(null|string $code)
     {
-        $this->coupon = 0 + $code;
+        $this->coupon = $code;
         return $this;
     }
 

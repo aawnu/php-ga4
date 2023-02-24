@@ -10,7 +10,7 @@ class SelectItem extends AbstractEvent implements Facade\Group\SelectItem
 {
     protected null|string $item_list_id;
     protected null|string $item_list_name;
-    protected array $items = [];
+    protected array $items;
 
     public function getName(): string
     {

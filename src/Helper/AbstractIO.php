@@ -13,6 +13,13 @@ use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
 abstract class AbstractIO implements IO
 {
     /**
+     * Used to determine if we care about Required params in ToArray
+     *
+     * @var bool
+     */
+    private bool $isCloning = false;
+
+    /**
      * Used to offset keyset of Iterator
      *
      * @var int
@@ -126,10 +133,15 @@ abstract class AbstractIO implements IO
 
         $set = Converter::camel('set_' . $offset);
         $add = Converter::camel('add_' . $offset);
+        $setSingle = Converter::camel('set_' . (substr($offset, -1) == 's' ? substr($offset, 0, -1) : $offset));
         $addSingle = Converter::camel('add_' . (substr($offset, -1) == 's' ? substr($offset, 0, -1) : $offset));
+
+        var_dump($set, $add, $addSingle);
 
         if (method_exists($this, $set)) {
             $this->$set($value);
+        } elseif (method_exists($this, $setSingle)) {
+            $this->$setSingle($value);
         } elseif (method_exists($this, $add)) {
             $this->$add($value);
         } elseif (method_exists($this, $addSingle)) {
@@ -234,7 +246,10 @@ abstract class AbstractIO implements IO
      */
     public function __clone()
     {
-        return static::fromArray($this->toArray());
+        $this->isCloning = true;
+        $new = static::fromArray($this->toArray());
+        $this->isCloning = false;
+        return $new;
     }
 
     /**
@@ -254,12 +269,14 @@ abstract class AbstractIO implements IO
      */
     public function toArray(): array
     {
-        foreach ($this->getRequiredParams() as $required) {
-            if (
-                !in_array($required, $this->allIteratorKeys)
-                || empty($this[$required]) && $this[$required] !== 0
-            ) {
-                throw Ga4IOException::throwMissingRequiredParam($required);
+        if (!$this->isCloning) {
+            foreach ($this->getRequiredParams() as $required) {
+                if (
+                    !in_array($required, $this->allIteratorKeys)
+                    || empty($this[$required]) && $this[$required] !== 0
+                ) {
+                    throw Ga4IOException::throwMissingRequiredParam($required);
+                }
             }
         }
 

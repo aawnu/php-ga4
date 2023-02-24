@@ -16,7 +16,7 @@ use AlexWestergaard\PhpGa4Test\Class\TestAbstractUserProperty;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractIO;
 use AlexWestergaard\PhpGa4Test\Class\TestAbstractEvent;
 
-class AbstractTest extends TestCase
+final class AbstractTest extends TestCase
 {
     public function testAbstractionIoCapabilities()
     {
