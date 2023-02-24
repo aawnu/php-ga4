@@ -33,9 +33,15 @@ abstract class AbstractEvent extends AbstractIO implements Event
 
         return $return;
     }
-    
+
     public static function new(): static
     {
         return new static();
+    }
+
+    /** @deprecated 1.1.1 */
+    public function debug()
+    {
+        return $this;
     }
 }
