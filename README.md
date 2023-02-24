@@ -4,25 +4,23 @@ PHP Wrapper for Google Analytics 4 with Server Side Tracking
 [![Release Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
 [![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/issues)
 
-`composer require alexwestergaard/php-ga4`
+```sh
+composer require alexwestergaard/php-ga4
+```
 
-- [GDPR Notice](#gdpr-notice)
-- [Events](#events)
-  - [Default](#default)
-  - [E-commerce](#e-commerce)
-  - [Engagement / Gaming](#engagement--gaming)
-- [Frontend \& Backend Communication](#frontend--backend-communication)
-  - [Logged/Queued Events](#loggedqueued-events)
-  - [Frontend to Backend communication](#frontend-to-backend-communication)
-- [Custom Events](#custom-events)
-- [Documentation](#documentation)
+- [LEGACY](#legacy)
 
-**LEGACY WARNING**
+
+## LEGACY
 - `PHP 7` should only use `1.0.*` versions of this library
 
 ## GDPR Notice
 
-*European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe. This includes the use of 'GTAG.js' as JavaScript pushes the request from visitors device including IP-Address. Server Side Tracking, however, does only send information specified inside the body and of your server. Relying solely on Google Analytics 4 Events - that is not pushed through the GTAG.js script - can be scraped of GDPR-related information.*
+> European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe.
+>
+> This includes the use of `gtag.js`/`gtm.js` as JavaScript pushes the request from visitors device including their IP-Address. Server Side Tracking, however, does only send information specified inside the body and about your server.
+>
+> Relying solely on Google Analytics 4 Events - that is not pushed through the `gtag.js`/`gtm.js` script - can be scraped of GDPR-related information.
 
 - Source: Europe, GDPR, Schrems II
 - https://support.google.com/analytics/answer/9019185?hl=en
@@ -72,104 +70,87 @@ This is a list of prebuilt events as shown in the documentation.
 ## Frontend & Backend Communication
 
 This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets. There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
-  
-### Logged/Queued Events
+
+### Logging / Queues
 
 ```php
+
 use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
 
-require_once __DIR__ . '/vendor/autoload.php';
+// require vendor/autoload.php
 
-try {
-    $analytics = Analytics::new('G-XXXXX', 'secret_api_key')
-        ->setClientId('session_id');
-        // ^ If gtag.js, this can be the _ga or _gid cookie
-    
-    if ($user) {
-        $analytics->setUserId($user->id);
-        // ^ This can be any kind of identifier, readable is easier for you
+// If gtag.js, this can be the _ga or _gid cookie
+// This can be any kind of session identifier
+$session = $_COOKIE['_ga'] ?? $_COOKIE['_gid'] ?? $_COOKIE['PHPSESSID'];
+
+// Render events grouped on time
+foreach ($groups as $time => $data) {
+    try {
+            $analytics = Analytics::new($measurementId, $apiSecret)
+                ->setClientId($session)
+                ->setTimestampMicros($time);
+
+            // load logged in user/visitor
+            if ($auth) {
+                // This can be any kind of identifier, readable is easier for you
+                // Just be wary not to use GDPR sensitive information
+                $analytics->setUserId($auth->id);
+            }
+
+            $analytics->addUserParameter(...$data['userParameters']);
+            $analytics->addEvent(...$data['events']);
+
+            $analytics->post();
+    } catch (Exception\Ga4Exception $exception) {
+        // Handle exception
+        // Exceptions might be stacked, check: $exception->getPrevious();
     }
-
-    $addToCart = Event\AddToCart::new()
-        ->setCurrency($cart->currency)
-        ->setValue($cart->total);
-    
-    foreach($cart->products as $product) {
-        $addToCart->addItem(
-            Item::new()
-                ->setItemId($product['id'])
-                ->setItemName($product['name'])
-                ->setQuantity($product['quantity'])
-                ->setPrice($product['price_total'])
-                ->setItemVariant($product['colorName'])
-        );
-    }
-
-    $analytics->addEvent($addToCart);
-
-    // Errors are served as exceptions on pre-exit
-    $analytics->post();
-} catch (Exception\Ga4Exception $exception) {
-    // Handle exception
-    // Exceptions might be stacked, check: $exception->getPrevious();
 }
-
-//// ==============================================================
-// You can instanciate events with 'fromArray' method as of v1.0.9
-// This allows for quick-events by recursive instanciation
-$analytics->addEvent(
-    Event\AddToCart::fromEvent([
-        'currency' => $cart->currency,
-        'value' => $cart->total,
-        // Items must be array of Items models
-        'items' => array_map(
-            function ($product) {
-                return Item::fromArray([
-                    'item_id' => $product->id,
-                    'item_name' => $product->name,
-                    'quantity' => $product->quantity,
-                    'price' => $product->price,
-                ]);
-            },
-            $cart->products
-        ),
-    ])
-);
-//// ==============================================================
 ```
 
-### Frontend to Backend communication
+### Frontend => Backend
+
+#### Frontend
 
 ```js
-axios.post('/api/ga4', {
-    addToCart: {
-        currency: 'EUR',
-        value: 13.37,
-        items: [
-            {
-                'item_id': 1,
-                'item_name': 'Cup',
-                'price': 13.37,
-                'quantity': 1
-            }
-        ]
+axios.post('/api/ga4', [
+    {
+        addToCart: {
+            currency: 'EUR',
+            value: 13.37,
+            items: [
+                {
+                    'item_id': 1,
+                    'item_name': 'Cup',
+                    'price': 13.37,
+                    'quantity': 1
+                }
+            ]
+        }
     }
-})
+])
 ```
 
+#### Backend
+
 ```php
+use AlexWestergaard\PhpGa4\Helper\Converter;
+use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 
+// require vendor/autoload.php
+
 try {
-    $addToCart = Event\AddToCart::fromArray($_POST['addToCart']);
+    $events = Converter::parseEvents($_POST);
+
     Analytics::new($measurementId, $apiSecret)
-        ->addEvent($addToCart)
+        ->addEvent(...$events)
         ->post();
-} catch (GA4Exception $exception) {
+} catch (Exception\Ga4Exception $exception) {
     // Handle exception
     // Exceptions might be stacked, check: $exception->getPrevious();
 }
@@ -177,15 +158,19 @@ try {
 
 ## Custom Events
 
-You can build your own custom events, but be careful to follow this structure. It is important that you implement the `AlexWestergaard\PhpGa4\Facade\Type\TypeEvent` class because Analytics checks inheritance towards that class on addEvent.
+You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\Event` facade/interface. If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\AbstractEvent` and overwrite as you see fit.
 
 ```php
 
-class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\AbstractEvent // AbstractEvent implements AlexWestergaard\PhpGa4\Facade\Type\TypeEvent
+// AbstractEvent implements AlexWestergaard\PhpGa4\Facade\Type\TypeEvent
+class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\AbstractEvent
 {
-    protected null|mixed $my_variable; // variables should be nullable as unset() will set variable as null
-    protected array $my_array = []; // Arrays should always be instanciated empty
+    // variables should be nullable as unset() will set variable as null
+    protected null|mixed $my_variable;
     protected null|mixed $my_required_variable;
+    
+    // Arrays should always be instanciated empty
+    protected array $my_array = [];
 
     public function getName(): string
     {
