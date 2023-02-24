@@ -77,4 +77,4 @@ jobs:
         run: ./vendor/bin/phpunit
 
       - name: "Coverage"
-        run: echo "$(cat ./.phpunit/coverage.txt)" >> $GITHUB_OUTPUT
+        run: echo "$(cat ./.phpunit/coverage.txt)"
