@@ -102,34 +102,4 @@ final class AnalyticsTest extends TestCase
 
         $this->assertNull($this->analytics->post());
     }
-
-    public function testBuildEventFromArray()
-    {
-        $event = Event\AddToCart::fromArray([
-            'currency' => $this->prefill['currency'],
-            'value' => rand(1000, 10000) / 100,
-            'items' => [$this->item],
-        ]);
-
-        $this->assertIsArray($event->toArray(), get_class($event));
-
-        $this->analytics->addEvent($event);
-
-        $this->assertNull($this->analytics->post());
-    }
-
-    public function testEventArrayableAccess()
-    {
-        $event = new Event\AddToCart();
-        $event['currency'] = $this->prefill['currency'];
-        $event['value'] = ($value = rand(1000, 10000) / 100);
-
-        $this->assertArrayHasKey('currency', $event);
-        $this->assertArrayHasKey('value', $event);
-        $this->assertArrayHasKey('items', $event);
-
-        $this->assertEquals($this->prefill['currency'], $event['currency']);
-        $this->assertEquals($value, $event['value']);
-        $this->assertIsArray($event['items']);
-    }
 }

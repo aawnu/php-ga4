@@ -19,6 +19,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testAddPaymentInfo()
@@ -27,6 +28,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testAddShippingInfo()
@@ -35,6 +37,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testAddToCart()
@@ -43,6 +46,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testAddToWishlist()
@@ -51,6 +55,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testBeginCheckout()
@@ -59,6 +64,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testEarnVirtualCurrency()
@@ -67,6 +73,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testGenerateLead()
@@ -75,6 +82,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testJoinGroup()
@@ -83,6 +91,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testLevelUp()
@@ -92,6 +101,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
     public function testLogin()
     {
@@ -99,6 +109,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testPostScore()
@@ -107,6 +118,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testPurchase()
@@ -115,6 +127,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testRefund()
@@ -123,6 +136,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testEventFullRefundRequiresNoItems()
@@ -164,6 +178,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSearch()
@@ -172,6 +187,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSelectContent()
@@ -180,6 +196,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSelectItem()
@@ -188,6 +205,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSelectPromotion()
@@ -196,6 +214,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testShare()
@@ -204,6 +223,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSignup()
@@ -212,6 +232,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testSpendVirtualCurrency()
@@ -220,6 +241,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testTutorialBegin()
@@ -228,6 +250,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testTutorialComplete()
@@ -236,6 +259,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testUnlockAchievement()
@@ -244,6 +268,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testViewCart()
@@ -252,6 +277,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testViewItem()
@@ -260,6 +286,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testViewItemList()
@@ -268,6 +295,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testViewPromotion()
@@ -276,6 +304,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     public function testViewSearchResults()
@@ -284,6 +313,7 @@ final class EventsTest extends TestCase
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
     protected function assertEventNaming($event)
@@ -315,11 +345,45 @@ final class EventsTest extends TestCase
         }
     }
 
-    private function populateEventByArrayable(
-        TypeEvent|Group\AddPaymentInfo|Group\AddShippingInfo|Group\AddToCart|Group\AddToWishlist|Group\Analytics|Group\BeginCheckout|Group\EarnVirtualCurrency|Group\Export|Group\GenerateLead|Group\Item|Group\JoinGroup|Group\LevelUp|Group\Login|Group\PostScore|Group\Purchase|Group\Refund|Group\RemoveFromCart|Group\Search|Group\SelectContent|Group\SelectItem|Group\SelectPromotion|Group\Share|Group\SignUp|Group\SpendVirtualCurrency|Group\UnlockAchievement|Group\ViewCart|Group\ViewItem|Group\ViewItemList|Group\ViewPromotion|Group\ViewSearchResults|Group\hasItems $event
-    ) {
-        $params = $event->getAllParams();
+    private function populateEventByFromArray(TypeEvent $event)
+    {
+        return $event::fromArray([
+            'currency' => $this->prefill['currency'],
+            'value' => 9.99,
+            'affiliation' => 'affiliation',
+            'coupon' => 'voucher-code',
+            'price' => 9.99,
+            'quantity' => 10,
+            'payment_type' => 'credit card',
+            'tax' => 2.22,
+            'shipping' => 3.33,
+            'shipping_tier' => 'ground',
+            'item_id' => 'item-id',
+            'items' => $this->item, // converts into either addItem() or setItem(), will not overwrite as [item]
+            'item_list_id' => 'list-id',
+            'item_list_name' => 'list-name',
+            'virtual_currency_name' => $this->prefill['currency_virtual'],
+            'value' => 9.99,
+            'item_name' => 'CookieBite',
+            'character' => 'AlexWestergaard',
+            'level' => 3,
+            'score' => 500,
+            'location_id' => 'ChIJeRpOeF67j4AR9ydy_PIzPuM',
+            'transaction_id' => 'O6435DK',
+            'achievement_id' => 'achievement_buy_5_items',
+            'group_id' => '999',
+            'method' => 'some-method',
+            'search_term' => 'search',
+            'content_type' => 'content-type',
+            'creative_name' => 'creative-name',
+            'creative_slot' => 'creative-slot',
+            'promotion_id' => 'promotion-id',
+            'promotion_name' => 'promotion-name',
+        ]);
+    }
 
+    private function populateEventByArrayable(TypeEvent $event)
+    {
         $event['currency'] = $this->prefill['currency'];
         $event['value'] = 9.99;
         $event['affiliation'] = 'affiliation';
