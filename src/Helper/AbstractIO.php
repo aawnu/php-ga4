@@ -136,8 +136,6 @@ abstract class AbstractIO implements IO
         $setSingle = Converter::camel('set_' . (substr($offset, -1) == 's' ? substr($offset, 0, -1) : $offset));
         $addSingle = Converter::camel('add_' . (substr($offset, -1) == 's' ? substr($offset, 0, -1) : $offset));
 
-        var_dump($set, $add, $addSingle);
-
         if (method_exists($this, $set)) {
             $this->$set($value);
         } elseif (method_exists($this, $setSingle)) {
