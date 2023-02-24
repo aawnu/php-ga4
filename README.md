@@ -132,7 +132,7 @@ $analytics->addEvent(
                     'item_name' => $product->name,
                     'quantity' => $product->quantity,
                     'price' => $product->price,
-                ])
+                ]);
             },
             $cart->products
         ),
