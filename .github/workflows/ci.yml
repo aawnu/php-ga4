@@ -74,4 +74,4 @@ jobs:
         run: chmod -R 0755 vendor
 
       - name: "PHPUnit"
-        run: ./vendor/bin/phpunit --testdox
+        run: ./vendor/bin/phpunit --testdox --coverage-text
