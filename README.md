@@ -38,6 +38,19 @@ composer require alexwestergaard/php-ga4
 - Source: Europe, GDPR, Schrems II
 - https://support.google.com/analytics/answer/9019185?hl=en
 
+## Getting started
+
+To get started, you will need two things:
+
+- a data stream can be created under `Admin` > `Data Streams`, get its measurement id eg. `G-8XQMZ2E7TH`
+- an API key to send events to the data stream `Admin` > `Data Streams` > Select data stream > `Measurement Protocol API secrets` > `Create`
+
+```php
+use AlexWestergaard\PhpGa4\Analytics;
+
+$analytics = Analytics::new('G-8XQMZ2E7TH', 'kU4_0HsvQ8y4itR2ilD94w');
+```
+
 ## Events
 
 This is a list of prebuilt events as shown in the documentation.
