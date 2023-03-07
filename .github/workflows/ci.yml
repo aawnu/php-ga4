@@ -74,7 +74,24 @@ jobs:
         run: chmod -R 0755 vendor
 
       - name: "PHPUnit"
-        run: ./vendor/bin/phpunit
+        run: ./vendor/bin/phpunit --coverage-clover clover.xml
 
       - name: "Coverage"
         run: echo "$(cat ./.phpunit/coverage.txt)"
+
+      - name: Make code coverage badge
+        uses: timkrase/phpunit-coverage-badge@v1.2.1
+        with:
+          coverage_badge_path: .github/coverage.svg
+          # push badge later on
+          push_badge: false
+          #repo_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Git push badges to image-data branch
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: .github
+          publish_branch: image-data
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
