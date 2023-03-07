@@ -10,6 +10,7 @@ composer require alexwestergaard/php-ga4
 
 - [LEGACY](#legacy)
 - [GDPR Notice](#gdpr-notice)
+- [Getting started](#getting-started)
 - [Events](#events)
   - [Default](#default)
   - [E-commerce](#e-commerce)
@@ -40,13 +41,13 @@ composer require alexwestergaard/php-ga4
 
 To get started, you will need two things:
 
-- a data stream can be created under `Admin` > `Data Streams`, get its measurement id eg. `G-8XQMZ2E7TH`
+- a data stream can be created under `Admin` > `Data Streams`, get its measurement id eg. `G-XXXXXXXX`
 - an API key to send events to the data stream `Admin` > `Data Streams` > Select data stream > `Measurement Protocol API secrets` > `Create`
 
 ```php
 use AlexWestergaard\PhpGa4\Analytics;
 
-$analytics = Analytics::new('G-8XQMZ2E7TH', 'kU4_0HsvQ8y4itR2ilD94w');
+$analytics = Analytics::new('G-XXXXXXXX', 'xYzzX_xYzzXzxyZxX');
 ```
 
 ## Events
