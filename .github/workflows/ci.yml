@@ -85,7 +85,6 @@ jobs:
           coverage_badge_path: .github/coverage.svg
           # push badge later on
           push_badge: false
-          #repo_token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Git push badges to image-data branch
         uses: peaceiris/actions-gh-pages@v3
