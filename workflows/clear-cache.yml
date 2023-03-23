@@ -1,0 +1,14 @@
+name: Clear Caches
+on:
+  schedule:
+    - cron: "30 2 1,15 * *"
+  workflow_dispatch:
+
+jobs:
+  remove-caches:
+    name: Delete all caches
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Clear caches
+        uses: easimon/wipe-cache@main
