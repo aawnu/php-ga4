@@ -91,6 +91,6 @@ jobs:
         with:
           publish_dir: .github
           publish_branch: image-data
-          personal_token: ${{ secrets.PHP_GA4_TOKEN }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           user_name: 'github-actions[bot]'
           user_email: 'github-actions[bot]@users.noreply.github.com'
