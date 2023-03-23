@@ -3,6 +3,8 @@ PHP Wrapper for Google Analytics 4 with Server Side Tracking
 [![PHP Version](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://www.php.net/releases/)
 [![Release Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
 [![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/issues)
+[![Tests](https://github.com/AlexWestergaard/php-ga4/actions/workflows/ci.yml/badge.svg)](https://github.com/AlexWestergaard/php-ga4/actions/workflows/ci.yml)
+![Code Coverage Badge](https://raw.githubusercontent.com/AlexWestergaard/php-ga4/image-data/coverage.svg)
 
 ```sh
 composer require alexwestergaard/php-ga4
