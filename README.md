@@ -1,8 +1,16 @@
-PHP Wrapper for Google Analytics 4 with Server Side Tracking
+_Package_
 
-[![PHP Version](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://www.php.net/releases/)
-[![Release Size](https://img.shields.io/github/languages/code-size/alexwestergaard/php-ga4?color=blue&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
-[![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&style=for-the-badge)](https://github.com/AlexWestergaard/php-ga4/issues)
+[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?label=stable)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
+[![License](https://img.shields.io/packagist/l/alexwestergaard/php-ga4?color=blue)](/LICENSE)
+[![PHPVersion](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4)](https://www.php.net/releases/)
+[![Size](https://img.shields.io/github/languages/code-size/aawnu/php-ga4)](https://github.com/AlexWestergaard/php-ga4/releases/latest)
+
+_Development_
+
+[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?include_prereleases&label=latest)](https://github.com/AlexWestergaard/php-ga4/releases)
+[![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4)](https://github.com/AlexWestergaard/php-ga4/issues)
+[![Contributors](https://img.shields.io/github/contributors/aawnu/php-ga4)](https://github.com/AlexWestergaard/php-ga4/issues)
+[![LastCommit](https://img.shields.io/github/last-commit/aawnu/php-ga4/master)](https://github.com/AlexWestergaard/php-ga4/issues)
 
 ```sh
 composer require alexwestergaard/php-ga4
