@@ -13,7 +13,6 @@ _Development_
 [![Contributors](https://img.shields.io/github/contributors/aawnu/php-ga4?color=red)](https://github.com/aawnu/php-ga4/graphs/contributors)
 [![LastCommit](https://img.shields.io/github/last-commit/aawnu/php-ga4/master?color=red)](https://github.com/aawnu/php-ga4/commits)
 
-https://github.com/aawnu/php-ga4/graphs/contributors
 ```sh
 composer require alexwestergaard/php-ga4
 ```
