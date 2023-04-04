@@ -5,7 +5,7 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
-final class ItemsTest extends TestCase
+final class ItemTest extends TestCase
 {
     public function test_can_configure_and_export()
     {

@@ -7,10 +7,11 @@ use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade\Type\Event as TypeEvent;
 use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
+use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
-final class EventsTest extends TestCase
+final class EventTest extends TestCase
 {
     public function test_addpaymentinfo()
     {
@@ -159,6 +160,7 @@ final class EventsTest extends TestCase
         $refund = Event\Refund::new()->setTransactionId(1);
 
         $this->expectException(Ga4Exception::class);
+        $this->expectExceptionCode(Ga4Exception::PARAM_MISSING_REQUIRED);
 
         $this->analytics->addEvent($refund);
     }
@@ -305,6 +307,82 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+    }
+
+    public function test_throw_name_missing()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return '';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_MISSING);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_too_long()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                $tooLongName = '';
+                while (mb_strlen($tooLongName) <= 40) {
+                    $tooLongName .= range('a', 'z')[rand(0, 25)];
+                }
+                return $tooLongName;
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_TOO_LONG);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_invalid()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return 'WëirdNåme';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_INVALID);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_reserved()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return TypeEvent::RESERVED_NAMES[0];
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_RESERVED);
+
+        $class->toArray();
     }
 
     protected function assertEventNaming($event)

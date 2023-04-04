@@ -28,15 +28,21 @@ abstract class AbstractUserProperty extends AbstractIO implements UserProperty
     {
         $return = [];
 
-        $return[$this->name] = $this->value;
+        if (!isset($this->name)) {
+            throw Ga4UserPropertyException::throwNameMissing();
+        }
 
-        if (!is_array($this->value)) {
-            $return[$this->name] = ['value' => $this->value];
+        $value = isset($this->value) ? $this->value : null;
+
+        $return[$this->name] = $value;
+
+        if (!is_array($value)) {
+            $return[$this->name] = ['value' => $value];
         }
 
         return $return;
     }
-    
+
     public static function new(): static
     {
         return new static();

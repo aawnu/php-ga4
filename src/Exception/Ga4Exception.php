@@ -42,11 +42,6 @@ class Ga4Exception extends \Exception implements TypeGa4Exception
         return new static("Timestamp must be numeric", static::REQUEST_MISSING_API_SECRET);
     }
 
-    public static function throwMicrotimeInvalidFormat()
-    {
-        return new static("Timestamp must be numeric", static::MICROTIME_INVALID_FORMAT);
-    }
-
     public static function throwMicrotimeExpired()
     {
         return new static("Timestamp is too old, max 3 days", static::MICROTIME_EXPIRED);
