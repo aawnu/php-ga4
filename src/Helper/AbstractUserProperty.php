@@ -33,12 +33,11 @@ abstract class AbstractUserProperty extends AbstractIO implements UserProperty
         }
 
         $value = isset($this->value) ? $this->value : null;
+        if (!is_array($value)) {
+            $value = ['value' => $value];
+        }
 
         $return[$this->name] = $value;
-
-        if (!is_array($value)) {
-            $return[$this->name] = ['value' => $value];
-        }
 
         return $return;
     }
