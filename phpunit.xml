@@ -17,10 +17,10 @@
         </include>
         <exclude>
             <directory suffix=".php">./src/Facade</directory>
+            <file>./src/GA4Exception.php</file>
         </exclude>
         <report>
-            <text outputFile="./.phpunit/coverage.txt" showUncoveredFiles="true"
-                showOnlySummary="false" />
+            <text outputFile="./.phpunit/coverage.txt" showUncoveredFiles="true" showOnlySummary="false" />
         </report>
     </coverage>
     <php>
