@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4Test\Class;
+namespace AlexWestergaard\PhpGa4Test\Mocks;
 
 use AlexWestergaard\PhpGa4\Helper\AbstractUserProperty;
 
-class TestAbstractUserProperty extends AbstractUserProperty
+class MockAbstractUserProperty extends AbstractUserProperty
 {
     protected string $name;
     protected int|float|string $value;
