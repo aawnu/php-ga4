@@ -30,7 +30,7 @@ final class ExceptionTest extends TestCase
         $kB = 1024;
         $preparyKB = '';
         while (mb_strlen($preparyKB) < $kB) {
-            $preparyKB .= 'AAAAAAAA'; // 1 byte
+            $preparyKB .= 'AAAAAAAA'; // 8 bytes
         }
 
         $this->expectException(Ga4Exception::class);
