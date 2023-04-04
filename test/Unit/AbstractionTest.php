@@ -4,20 +4,12 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Helper\Converter;
-use AlexWestergaard\PhpGa4\Helper\AbstractIO;
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
-use AlexWestergaard\PhpGa4\Facade\Type\Event;
-use AlexWestergaard\PhpGa4\Exception\Ga4UserPropertyException;
-use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
-use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
-use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
-use AlexWestergaard\PhpGa4\Event\UnlockAchievement;
-use AlexWestergaard\PhpGa4\Event\TutorialBegin;
+use AlexWestergaard\PhpGa4\Helper;
+use AlexWestergaard\PhpGa4\Facade\Type;
+use AlexWestergaard\PhpGa4\Exception;
+use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4Test\TestCase;
-use AlexWestergaard\PhpGa4Test\Mocks\MockAbstractUserProperty;
-use AlexWestergaard\PhpGa4Test\Mocks\MockAbstractIO;
-use AlexWestergaard\PhpGa4Test\Mocks\MockAbstractEvent;
+use AlexWestergaard\PhpGa4Test\Mocks;
 
 final class AbstractionTest extends TestCase
 {
@@ -27,9 +19,9 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_io_interface_capabilities()
     {
-        $io = new MockAbstractIO();
+        $io = new Mocks\MockAbstractIO();
 
-        $this->assertInstanceOf(AbstractIO::class, $io, get_class($io));
+        $this->assertInstanceOf(Helper\AbstractIO::class, $io, get_class($io));
         $this->assertArrayHasKey('test', $io);
         $this->assertArrayHasKey('test_required', $io);
         $this->assertArrayHasKey('test_array', $io);
@@ -57,17 +49,17 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_io_throws_on_missing_required_param()
     {
-        $io = new MockAbstractIO();
+        $io = new Mocks\MockAbstractIO();
 
-        $this->expectException(Ga4IOException::class);
-        $this->expectExceptionCode(Ga4Exception::PARAM_MISSING_REQUIRED);
+        $this->expectException(Exception\Ga4IOException::class);
+        $this->expectExceptionCode(Exception\Ga4Exception::PARAM_MISSING_REQUIRED);
 
         $io->toArray();
     }
 
     public function test_abstract_io_unsets_array_as_empty_array()
     {
-        $io = new MockAbstractIO();
+        $io = new Mocks\MockAbstractIO();
         $this->assertIsArray($io['test_array']);
         unset($io['test_array']);
         $this->assertIsArray($io['test_array']);
@@ -75,7 +67,7 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_io_can_iterate_as_arrayable()
     {
-        $io = new MockAbstractIO();
+        $io = new Mocks\MockAbstractIO();
         $io['test'] = 'optionalTest';
         $io['test_required'] = 'requiredTest';
         $io['test_array'] = 'optionalArrayElement';
@@ -92,9 +84,9 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_event_interface_capabilities()
     {
-        $event = new MockAbstractEvent();
+        $event = new Mocks\MockAbstractEvent();
 
-        $this->assertInstanceOf(AbstractEvent::class, $event, get_class($event));
+        $this->assertInstanceOf(Helper\AbstractEvent::class, $event, get_class($event));
         $this->assertArrayHasKey('test', $event);
         $this->assertArrayHasKey('test_required', $event);
         $this->assertArrayHasKey('test_items', $event);
@@ -126,7 +118,7 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_event_throws_on_missing_name()
     {
-        $event = new class extends MockAbstractEvent
+        $event = new class extends Mocks\MockAbstractEvent
         {
             public function getName(): string
             {
@@ -134,24 +126,24 @@ final class AbstractionTest extends TestCase
             }
         };
 
-        $this->expectException(Ga4EventException::class);
-        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_MISSING);
+        $this->expectException(Exception\Ga4EventException::class);
+        $this->expectExceptionCode(Exception\Ga4Exception::EVENT_NAME_MISSING);
 
         $event->toArray();
     }
 
     public function test_abstract_event_throws_on_reserved_name()
     {
-        $event = new class extends MockAbstractEvent
+        $event = new class extends Mocks\MockAbstractEvent
         {
             public function getName(): string
             {
-                return Event::RESERVED_NAMES[0];
+                return Type\Event::RESERVED_NAMES[0];
             }
         };
 
-        $this->expectException(Ga4EventException::class);
-        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_RESERVED);
+        $this->expectException(Exception\Ga4EventException::class);
+        $this->expectExceptionCode(Exception\Ga4Exception::EVENT_NAME_RESERVED);
 
         $event->toArray();
     }
@@ -162,7 +154,7 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_userproperty_interface_capabilities()
     {
-        $userProperty = new MockAbstractUserProperty();
+        $userProperty = new Mocks\MockAbstractUserProperty();
 
         $userProperty->setName($name = 'testname');
         $userProperty->setValue($value = 'testvalue');
@@ -176,12 +168,27 @@ final class AbstractionTest extends TestCase
 
     public function test_abstract_userproperty_throws_on_reserved_name()
     {
-        $userProperty = new MockAbstractUserProperty();
+        $userProperty = new Mocks\MockAbstractUserProperty();
 
-        $this->expectException(Ga4UserPropertyException::class);
-        $this->expectExceptionCode(Ga4Exception::PARAM_RESERVED);
+        $this->expectException(Exception\Ga4UserPropertyException::class);
+        $this->expectExceptionCode(Exception\Ga4Exception::PARAM_RESERVED);
 
         $userProperty->setName(UserProperty::RESERVED_NAMES[0]);
+    }
+
+    public function test_abstract_userproperty_throws_on_too_long_name()
+    {
+        $userProperty = new Mocks\MockAbstractUserProperty();
+
+        $this->expectException(Exception\Ga4UserPropertyException::class);
+        $this->expectExceptionCode(Exception\Ga4Exception::PARAM_TOO_LONG);
+
+        $tooLongName = '';
+        while (mb_strlen($tooLongName) <= 24) {
+            $tooLongName .= range('a', 'z')[rand(0, 25)];
+        }
+
+        $userProperty->setName($tooLongName);
     }
 
     /******************************************************************
@@ -190,7 +197,7 @@ final class AbstractionTest extends TestCase
 
     public function test_convert_helper_transforms_array_into_events()
     {
-        $list = Converter::parseEvents([
+        $list = Helper\Converter::parseEvents([
             ['TutorialBegin' => []],
             ['UnlockAchievement' => ['achievement_id' => '123']],
             ['NotAnEvent' => ['skip' => 'me']]
@@ -198,8 +205,8 @@ final class AbstractionTest extends TestCase
 
         $this->assertIsArray($list);
         $this->assertCount(2, $list);
-        $this->assertInstanceOf(TutorialBegin::class, $list[0]);
-        $this->assertInstanceOf(UnlockAchievement::class, $list[1]);
+        $this->assertInstanceOf(Event\TutorialBegin::class, $list[0]);
+        $this->assertInstanceOf(Event\UnlockAchievement::class, $list[1]);
 
         $this->analytics->addEvent(...$list);
         $this->assertCount(2, $this->analytics['events']);
@@ -207,11 +214,11 @@ final class AbstractionTest extends TestCase
 
     public function test_snakecase_helper_transforms_camelcase_names()
     {
-        $this->assertEquals('snake_case', Converter::snake('snakeCase'));
+        $this->assertEquals('snake_case', Helper\Converter::snake('snakeCase'));
     }
 
     public function test_camelcase_helper_transforms_snakecase_names()
     {
-        $this->assertEquals('snakeCase', Converter::camel('snake_case'));
+        $this->assertEquals('snakeCase', Helper\Converter::camel('snake_case'));
     }
 }
