@@ -47,6 +47,44 @@ final class ItemTest extends TestCase
         $this->assertIsArray($asArray['item_category']);
     }
 
+    public function test_can_configure_arrayable()
+    {
+        $item = Item::new();
+
+        $item['item_id'] = '1';
+        $item['item_name'] = 'First Product';
+        $item['affiliation'] = 'unit test';
+        $item['coupon'] = 'code';
+        $item['currency'] = $this->prefill['currency'];
+        $item['item_brand'] = 'phpunit';
+        $item['item_list_id'] = 'test-list';
+        $item['item_list_name'] = 'test list';
+        $item['item_variant'] = 'test';
+        $item['location_id'] = 'L1';
+        $item['discount'] = 1.11;
+        $item['price'] = 7.39;
+        $item['quantity'] = 2;
+        $item['index'] = 1;
+        $item['item_category'] = 'unit';
+
+        $this->assertArrayHasKey('item_id', $item);
+        $this->assertArrayHasKey('item_name', $item);
+        $this->assertArrayHasKey('affiliation', $item);
+        $this->assertArrayHasKey('coupon', $item);
+        $this->assertArrayHasKey('currency', $item);
+        $this->assertArrayHasKey('item_brand', $item);
+        $this->assertArrayHasKey('item_list_id', $item);
+        $this->assertArrayHasKey('item_list_name', $item);
+        $this->assertArrayHasKey('item_variant', $item);
+        $this->assertArrayHasKey('location_id', $item);
+        $this->assertArrayHasKey('discount', $item);
+        $this->assertArrayHasKey('price', $item);
+        $this->assertArrayHasKey('quantity', $item);
+        $this->assertArrayHasKey('index', $item);
+        $this->assertArrayHasKey('item_category', $item);
+        $this->assertIsArray($item['item_category']);
+    }
+
     public function test_can_export_to_array()
     {
         $this->assertInstanceOf(Item::class, $this->item);
