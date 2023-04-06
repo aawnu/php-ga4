@@ -4,8 +4,7 @@
     beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true"
     testdox="true"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
-    cacheDirectory=".phpunit.cache">
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd">
     <testsuites>
         <testsuite name="Units">
             <directory>test/Unit</directory>

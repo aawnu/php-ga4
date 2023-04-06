@@ -31,7 +31,6 @@ jobs:
       matrix:
         operating-system: ["ubuntu-latest"]
         php-versions: ["8.0", "8.1", "8.2"]
-        phpunit-versions: ["latest"]
 
     steps:
       - name: "Checkout"
@@ -46,7 +45,6 @@ jobs:
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
-          tools: phpunit:${{ matrix.phpunit-versions }}
 
       - name: "Composer State"
         run: composer update --no-install --with-all-dependencies
@@ -77,7 +75,7 @@ jobs:
         run: ./vendor/bin/phpunit
 
   render-php-lowest:
-    needs: render-php-default
+    needs: validate-mergable
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -86,7 +84,6 @@ jobs:
       matrix:
         operating-system: ["ubuntu-latest"]
         php-versions: ["8.0", "8.1", "8.2"]
-        phpunit-versions: ["latest"]
 
     steps:
       - name: "Checkout"
@@ -101,7 +98,6 @@ jobs:
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
-          tools: phpunit:${{ matrix.phpunit-versions }}
 
       - name: "Composer State"
         run: composer update --prefer-lowest --no-install --with-all-dependencies
