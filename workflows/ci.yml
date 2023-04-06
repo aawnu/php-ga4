@@ -68,7 +68,6 @@ jobs:
         run: composer install
 
       - name: "Linux: Restore Vendor Executable"
-        if: matrix.operating-system == 'ubuntu-latest'
         run: chmod -R 0755 vendor
 
       - name: "PHPUnit"
