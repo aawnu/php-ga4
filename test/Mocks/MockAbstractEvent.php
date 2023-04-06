@@ -1,11 +1,11 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4Test\Class;
+namespace AlexWestergaard\PhpGa4Test\Mocks;
 
 use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade\Type\Item;
 
-class TestAbstractEvent extends AbstractEvent
+class MockAbstractEvent extends AbstractEvent
 {
     public $test;
     public $test_required;

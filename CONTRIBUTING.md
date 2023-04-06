@@ -1,6 +1,6 @@
 # Contribute
 
-Thank you for being interesting in this package and wanting to contribute to it.
+Thank you for being interested in this package and wanting to contribute to it.
 
 ## Coding
 
@@ -8,7 +8,7 @@ New code should be introduced to the codebase through issues that specify what y
 I understand that sometimes you need to add/update/delete code otherwhere in the codebase to achieve this goal.
 This is why my test always merges master in to ensure that your code stays functional/executable during development.
 
-Please adhere these pointers:
+**Please adhere these pointers:**
 * Support selected PHP Versions | Ref: [Master/Composer.json](https://github.com/AlexWestergaard/php-ga4/blob/master/composer.json)
 * Pass current tests without modification; unless clearly explaining why the change is necessary/required | `> vendor/bin/phpunit`
 * PHPUnit tests should confidently ensure that code doesn't fail/error in unwated ways (eg. E_WARNINGS or missing paranthesis)

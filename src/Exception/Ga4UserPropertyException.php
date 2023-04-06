@@ -13,4 +13,9 @@ class Ga4UserPropertyException extends GA4IOException
     {
         return new static("Name is too long, max is 24: $name", static::PARAM_TOO_LONG);
     }
+
+    public static function throwNameMissing()
+    {
+        return new static("Name is missing", static::PARAM_MISSING);
+    }
 }
