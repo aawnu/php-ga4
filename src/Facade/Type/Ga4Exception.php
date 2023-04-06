@@ -10,6 +10,7 @@ interface Ga4Exception
     const PARAM_MISSING_REQUIRED = 102001;
     const PARAM_RESERVED = 102002;
     const PARAM_TOO_LONG = 102003;
+    const PARAM_MISSING = 102004;
 
     const EVENT_NAME_RESERVED = 103001;
     const EVENT_NAME_MISSING = 103002;

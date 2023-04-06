@@ -7,12 +7,13 @@ use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
 use AlexWestergaard\PhpGa4\Facade\Type\Event as TypeEvent;
 use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
+use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 use AlexWestergaard\PhpGa4\Event;
-use AlexWestergaard\PhpGa4Test\Class\TestCase;
+use AlexWestergaard\PhpGa4Test\TestCase;
 
-final class EventsTest extends TestCase
+final class EventTest extends TestCase
 {
-    public function testEventAddPaymentInfo()
+    public function test_addpaymentinfo()
     {
         $event = new Event\AddPaymentInfo;
 
@@ -22,16 +23,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testAddPaymentInfo()
-    {
-        $event = new Event\AddPaymentInfo;
-        $this->assertEventNaming($event);
-        $this->assertEventFills($this->populateEventByMethod(clone $event));
-        $this->assertEventFills($this->populateEventByArrayable(clone $event));
-        $this->assertEventFills($this->populateEventByFromArray(clone $event));
-    }
-
-    public function testAddShippingInfo()
+    public function test_addshippinginfo()
     {
         $event = new Event\AddShippingInfo;
         $this->assertEventNaming($event);
@@ -40,7 +32,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testAddToCart()
+    public function test_addtocart()
     {
         $event = new Event\AddToCart;
         $this->assertEventNaming($event);
@@ -49,7 +41,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testAddToWishlist()
+    public function test_addtowishlist()
     {
         $event = new Event\AddToWishlist;
         $this->assertEventNaming($event);
@@ -58,7 +50,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testBeginCheckout()
+    public function test_begincheckout()
     {
         $event = new Event\BeginCheckout;
         $this->assertEventNaming($event);
@@ -67,7 +59,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testEarnVirtualCurrency()
+    public function test_earnvirtualcurrency()
     {
         $event = new Event\EarnVirtualCurrency;
         $this->assertEventNaming($event);
@@ -76,7 +68,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testGenerateLead()
+    public function test_generatelead()
     {
         $event = new Event\GenerateLead;
         $this->assertEventNaming($event);
@@ -85,7 +77,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testJoinGroup()
+    public function test_joingroup()
     {
         $event = new Event\JoinGroup;
         $this->assertEventNaming($event);
@@ -94,7 +86,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testLevelUp()
+    public function test_levelup()
     {
         $event = new Event\LevelUp;
 
@@ -103,7 +95,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
-    public function testLogin()
+    public function test_login()
     {
         $event = new Event\Login;
         $this->assertEventNaming($event);
@@ -112,7 +104,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testPostScore()
+    public function test_postscore()
     {
         $event = new Event\PostScore;
         $this->assertEventNaming($event);
@@ -121,7 +113,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testPurchase()
+    public function test_purchase()
     {
         $event = new Event\Purchase;
         $this->assertEventNaming($event);
@@ -130,7 +122,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testRefund()
+    public function test_refund()
     {
         $event = new Event\Refund;
         $this->assertEventNaming($event);
@@ -139,7 +131,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testEventFullRefundRequiresNoItems()
+    public function test_refund_full_succeeds_without_items()
     {
         $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
@@ -148,7 +140,7 @@ final class EventsTest extends TestCase
         $this->assertNull($this->analytics->post());
     }
 
-    public function testEventPartialRefundWithItems()
+    public function test_refund_partial_succeeds_with_items()
     {
         $refund = Event\Refund::new()->setTransactionId(1)->addItem($this->item);
 
@@ -163,16 +155,17 @@ final class EventsTest extends TestCase
         $this->assertArrayHasKey('items', $arr);
     }
 
-    public function testEventPartialRefundWithoutItemsThrows()
+    public function test_refund_partial_throws_without_items()
     {
         $refund = Event\Refund::new()->setTransactionId(1);
 
         $this->expectException(Ga4Exception::class);
+        $this->expectExceptionCode(Ga4Exception::PARAM_MISSING_REQUIRED);
 
         $this->analytics->addEvent($refund);
     }
 
-    public function testRemoveFromCart()
+    public function test_removefromcart()
     {
         $event = new Event\RemoveFromCart;
         $this->assertEventNaming($event);
@@ -181,7 +174,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSearch()
+    public function test_search()
     {
         $event = new Event\Search;
         $this->assertEventNaming($event);
@@ -190,7 +183,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSelectContent()
+    public function test_selectcontent()
     {
         $event = new Event\SelectContent;
         $this->assertEventNaming($event);
@@ -199,7 +192,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSelectItem()
+    public function test_selectitem()
     {
         $event = new Event\SelectItem;
         $this->assertEventNaming($event);
@@ -208,7 +201,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSelectPromotion()
+    public function test_selectpromotion()
     {
         $event = new Event\SelectPromotion;
         $this->assertEventNaming($event);
@@ -217,7 +210,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testShare()
+    public function test_share()
     {
         $event = new Event\Share;
         $this->assertEventNaming($event);
@@ -226,7 +219,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSignup()
+    public function test_signup()
     {
         $event = new Event\Signup;
         $this->assertEventNaming($event);
@@ -235,7 +228,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testSpendVirtualCurrency()
+    public function test_spendvirtualcurrency()
     {
         $event = new Event\SpendVirtualCurrency;
         $this->assertEventNaming($event);
@@ -244,7 +237,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testTutorialBegin()
+    public function test_tutorialbegin()
     {
         $event = new Event\TutorialBegin;
         $this->assertEventNaming($event);
@@ -253,7 +246,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testTutorialComplete()
+    public function test_tutorialcomplete()
     {
         $event = new Event\TutorialComplete;
         $this->assertEventNaming($event);
@@ -262,7 +255,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testUnlockAchievement()
+    public function test_unlockachievement()
     {
         $event = new Event\UnlockAchievement;
         $this->assertEventNaming($event);
@@ -271,7 +264,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testViewCart()
+    public function test_biewcart()
     {
         $event = new Event\ViewCart;
         $this->assertEventNaming($event);
@@ -280,7 +273,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testViewItem()
+    public function test_viewitem()
     {
         $event = new Event\ViewItem;
         $this->assertEventNaming($event);
@@ -289,7 +282,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testViewItemList()
+    public function test_viewitemlist()
     {
         $event = new Event\ViewItemList;
         $this->assertEventNaming($event);
@@ -298,7 +291,7 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testViewPromotion()
+    public function test_viewpromotion()
     {
         $event = new Event\ViewPromotion;
         $this->assertEventNaming($event);
@@ -307,13 +300,89 @@ final class EventsTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function testViewSearchResults()
+    public function test_viewsearchresults()
     {
         $event = new Event\ViewSearchResults;
         $this->assertEventNaming($event);
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+    }
+
+    public function test_throw_name_missing()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return '';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_MISSING);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_too_long()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                $tooLongName = '';
+                while (mb_strlen($tooLongName) <= 40) {
+                    $tooLongName .= range('a', 'z')[rand(0, 25)];
+                }
+                return $tooLongName;
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_TOO_LONG);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_invalid()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return 'WëirdNåme';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_INVALID);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_reserved()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return TypeEvent::RESERVED_NAMES[0];
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_RESERVED);
+
+        $class->toArray();
     }
 
     protected function assertEventNaming($event)

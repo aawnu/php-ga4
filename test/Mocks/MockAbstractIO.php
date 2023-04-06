@@ -1,10 +1,10 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4Test\Class;
+namespace AlexWestergaard\PhpGa4Test\Mocks;
 
 use AlexWestergaard\PhpGa4\Helper\AbstractIO;
 
-class TestAbstractIO extends AbstractIO
+class MockAbstractIO extends AbstractIO
 {
     public $test;
     public $test_required;

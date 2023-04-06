@@ -76,10 +76,6 @@ class Analytics extends AbstractIO implements TypeAnalytics
         $secondInMicro = 1_000_000;
         $offsetLimit = (strtotime('-3 days') + 90) * $secondInMicro;
 
-        if (!is_numeric($microOrUnix)) {
-            throw Ga4Exception::throwMicrotimeInvalidFormat();
-        }
-
         $formattedTime =  floor($microOrUnix * $secondInMicro);
         if ($formattedTime < $offsetLimit) {
             throw Ga4Exception::throwMicrotimeExpired();
@@ -162,10 +158,10 @@ class Analytics extends AbstractIO implements TypeAnalytics
                     }
                 }
             }
+        }
 
-            if (Ga4Exception::hasThrowStack()) {
-                throw Ga4Exception::getThrowStack();
-            }
+        if (Ga4Exception::hasThrowStack()) {
+            throw Ga4Exception::getThrowStack();
         }
     }
 

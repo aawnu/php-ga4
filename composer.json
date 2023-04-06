@@ -10,6 +10,7 @@
         "analytics",
         "analytics 4",
         "google analytics",
+        "google analytics 4",
         "server side tracking",
         "tracking",
         "ga4",
@@ -41,11 +42,11 @@
         }
     },
     "require": {
-        "php": "^8.0.0|^8.1.0|^8.2.0",
+        "php": ">=8.0,<8.3",
         "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0|^10.0"
+        "phpunit/phpunit": "^9.5|^10.0"
     },
     "minimum-stability": "stable",
     "prefer-stable": true

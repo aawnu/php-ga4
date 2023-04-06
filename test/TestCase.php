@@ -1,6 +1,6 @@
 <?php
 
-namespace AlexWestergaard\PhpGa4Test\Class;
+namespace AlexWestergaard\PhpGa4Test;
 
 use PHPUnit\Framework\TestCase as FrameworkTestCase;
 use AlexWestergaard\PhpGa4\Item;
@@ -28,16 +28,16 @@ class TestCase extends FrameworkTestCase
             'currency' => 'EUR',
             'currency_virtual' => 'GA4Coins',
         ];
-        
+
         $this->analytics = Analytics::new($this->prefill['measurement_id'], $this->prefill['api_secret'], /* DEBUG */ true)
             ->setClientId($this->prefill['client_id'])
             ->setUserId($this->prefill['user_id']);
 
-            $this->item = Item::new()
-                ->setItemId('1')
-                ->setItemName('First Product')
-                ->setCurrency($this->prefill['currency'])
-                ->setPrice(7.39)
-                ->setQuantity(2);
+        $this->item = Item::new()
+            ->setItemId('1')
+            ->setItemName('First Product')
+            ->setCurrency($this->prefill['currency'])
+            ->setPrice(7.39)
+            ->setQuantity(2);
     }
 }
