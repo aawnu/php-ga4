@@ -20,7 +20,7 @@
             <file>./src/GA4Exception.php</file>
         </exclude>
         <report>
-            <text outputFile="./.phpunit/coverage.txt" showUncoveredFiles="true" showOnlySummary="false" />
+            <clover outputFile="clover.xml"/>
         </report>
     </coverage>
     <php>

@@ -1,0 +1,71 @@
+name: Continuous Deployment
+
+on:
+  push:
+    branches:
+      - "master"
+
+concurrency:
+  group: ${{ github.head_ref || github.run_id }}
+  cancel-in-progress: true
+
+jobs:
+  phpunit-render-badge:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: "8.2"
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+
+      - name: "Composer State"
+        run: composer update --no-install --with-all-dependencies
+
+      - name: "Composer Name Hash"
+        id: composer-hash
+        uses: KEINOS/gh-action-hash-for-cache@main
+        with:
+          path: ./composer.lock
+
+      - name: "Caching"
+        id: cache-composer
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: composer-default-${{ steps.composer-hash.outputs.hash }}
+          restore-keys: composer-default-${{ steps.composer-hash.outputs.hash }}
+
+      - name: "Install Dependencies"
+        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
+        run: composer install
+
+      - name: "Linux: Restore Vendor Executable"
+        run: chmod -R 0755 vendor
+
+      - name: "PHPUnit"
+        run: ./vendor/bin/phpunit
+
+      - name: "Make code coverage badge"
+        uses: timkrase/phpunit-coverage-badge@v1.2.1
+        with:
+          coverage_badge_path: .github/coverage.svg
+          # push badge later on
+          push_badge: false
+
+      - name: "Git push badges to origin/image-data"
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: .github
+          publish_branch: image-data
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          user_name: "github-actions[bot]"
+          user_email: "github-actions[bot]@users.noreply.github.com"

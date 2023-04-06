@@ -4,6 +4,7 @@ _Package_
 [![License](https://img.shields.io/packagist/l/alexwestergaard/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/blob/master/LICENSE)
 [![PHPVersion](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue)](https://www.php.net/releases)
 [![Size](https://img.shields.io/github/languages/code-size/aawnu/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/releases/latest)
+![Code Coverage Badge](https://raw.githubusercontent.com/AlexWestergaard/php-ga4/image-data/coverage.svg)
 
 _Development_
 
