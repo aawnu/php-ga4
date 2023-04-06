@@ -3,9 +3,8 @@
 namespace AlexWestergaard\PhpGa4;
 
 use AlexWestergaard\PhpGa4\Helper\AbstractUserProperty;
-use AlexWestergaard\PhpGa4\Facade\Type\UserProperty as TypeUserProperty;
 
-class UserProperty extends AbstractUserProperty implements TypeUserProperty
+class UserProperty extends AbstractUserProperty
 {
     protected null|string $name;
     protected null|int|float|string $value;

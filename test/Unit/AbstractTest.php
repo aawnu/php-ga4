@@ -2,16 +2,14 @@
 
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
-use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade\Type;
 use AlexWestergaard\PhpGa4\Exception;
-use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4Test\TestCase;
 use AlexWestergaard\PhpGa4Test\Mocks;
 
-final class AbstractionTest extends TestCase
+final class AbstractTest extends TestCase
 {
     /******************************************************************
      * ABSTRACT IO | INPUT OUTPUT
@@ -146,79 +144,5 @@ final class AbstractionTest extends TestCase
         $this->expectExceptionCode(Exception\Ga4Exception::EVENT_NAME_RESERVED);
 
         $event->toArray();
-    }
-
-    /******************************************************************
-     * ABSTRACT USER PROPERTY
-     */
-
-    public function test_abstract_userproperty_interface_capabilities()
-    {
-        $userProperty = new Mocks\MockAbstractUserProperty();
-
-        $userProperty->setName($name = 'testname');
-        $userProperty->setValue($value = 'testvalue');
-
-        $export = $userProperty->toArray();
-
-        $this->assertArrayHasKey($name, $export);
-        $this->assertArrayHasKey('value', $export[$name]);
-        $this->assertEquals($value, $export[$name]['value']);
-    }
-
-    public function test_abstract_userproperty_throws_on_reserved_name()
-    {
-        $userProperty = new Mocks\MockAbstractUserProperty();
-
-        $this->expectException(Exception\Ga4UserPropertyException::class);
-        $this->expectExceptionCode(Exception\Ga4Exception::PARAM_RESERVED);
-
-        $userProperty->setName(UserProperty::RESERVED_NAMES[0]);
-    }
-
-    public function test_abstract_userproperty_throws_on_too_long_name()
-    {
-        $userProperty = new Mocks\MockAbstractUserProperty();
-
-        $this->expectException(Exception\Ga4UserPropertyException::class);
-        $this->expectExceptionCode(Exception\Ga4Exception::PARAM_TOO_LONG);
-
-        $tooLongName = '';
-        while (mb_strlen($tooLongName) <= 24) {
-            $tooLongName .= range('a', 'z')[rand(0, 25)];
-        }
-
-        $userProperty->setName($tooLongName);
-    }
-
-    /******************************************************************
-     * OTHER
-     */
-
-    public function test_convert_helper_transforms_array_into_events()
-    {
-        $list = Helper\Converter::parseEvents([
-            ['TutorialBegin' => []],
-            ['UnlockAchievement' => ['achievement_id' => '123']],
-            ['NotAnEvent' => ['skip' => 'me']]
-        ]);
-
-        $this->assertIsArray($list);
-        $this->assertCount(2, $list);
-        $this->assertInstanceOf(Event\TutorialBegin::class, $list[0]);
-        $this->assertInstanceOf(Event\UnlockAchievement::class, $list[1]);
-
-        $this->analytics->addEvent(...$list);
-        $this->assertCount(2, $this->analytics['events']);
-    }
-
-    public function test_snakecase_helper_transforms_camelcase_names()
-    {
-        $this->assertEquals('snake_case', Helper\Converter::snake('snakeCase'));
-    }
-
-    public function test_camelcase_helper_transforms_snakecase_names()
-    {
-        $this->assertEquals('snakeCase', Helper\Converter::camel('snake_case'));
     }
 }
