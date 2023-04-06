@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-mergable:
+  validate-master:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
@@ -21,8 +21,8 @@ jobs:
       - name: "Validate Mergable"
         run: git merge origin/master --no-commit --ff-only
 
-  render-php:
-    needs: validate-mergable
+  phpunit-composer-latest:
+    needs: validate-master
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -31,7 +31,6 @@ jobs:
       matrix:
         operating-system: ["ubuntu-latest"]
         php-versions: ["8.0", "8.1", "8.2"]
-        phpunit-versions: ["latest"]
 
     steps:
       - name: "Checkout"
@@ -46,7 +45,6 @@ jobs:
           extensions: mbstring, intl
           ini-values: post_max_size=256M, max_execution_time=180
           coverage: xdebug
-          tools: phpunit:${{ matrix.phpunit-versions }}
 
       - name: "Composer State"
         run: composer update --no-install --with-all-dependencies
@@ -62,8 +60,8 @@ jobs:
         uses: actions/cache@v3
         with:
           path: vendor
-          key: composer-${{ steps.composer-hash.outputs.hash }}
-          restore-keys: composer-${{ steps.composer-hash.outputs.hash }}
+          key: composer-default-${{ steps.composer-hash.outputs.hash }}
+          restore-keys: composer-default-${{ steps.composer-hash.outputs.hash }}
 
       - name: "Install Dependencies"
         if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
@@ -76,5 +74,55 @@ jobs:
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
 
-      - name: "Coverage"
-        run: echo "$(cat ./.phpunit/coverage.txt)"
+  phpunit-composer-lowest:
+    needs: validate-master
+    runs-on: ${{ matrix.operating-system }}
+
+    strategy:
+      max-parallel: 3
+      fail-fast: true
+      matrix:
+        operating-system: ["ubuntu-latest"]
+        php-versions: ["8.0", "8.1", "8.2"]
+
+    steps:
+      - name: "Checkout"
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: "Setup PHP"
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: mbstring, intl
+          ini-values: post_max_size=256M, max_execution_time=180
+          coverage: xdebug
+
+      - name: "Composer State"
+        run: composer update --prefer-lowest --no-install --with-all-dependencies
+
+      - name: "Composer Name Hash"
+        id: composer-hash
+        uses: KEINOS/gh-action-hash-for-cache@main
+        with:
+          path: ./composer.lock
+
+      - name: "Caching"
+        id: cache-composer
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: composer-lowest-${{ steps.composer-hash.outputs.hash }}
+          restore-keys: composer-lowest-${{ steps.composer-hash.outputs.hash }}
+
+      - name: "Install Dependencies"
+        if: ${{ steps.cache-composer.outputs.cache-hit != 'true' }}
+        run: composer install
+
+      - name: "Linux: Restore Vendor Executable"
+        if: matrix.operating-system == 'ubuntu-latest'
+        run: chmod -R 0755 vendor
+
+      - name: "PHPUnit"
+        run: ./vendor/bin/phpunit
