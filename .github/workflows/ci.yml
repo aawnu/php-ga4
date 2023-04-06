@@ -10,7 +10,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  validate-mergable:
+  validate-master:
     runs-on: ubuntu-latest
     steps:
       - name: "Checkout"
@@ -21,8 +21,8 @@ jobs:
       - name: "Validate Mergable"
         run: git merge origin/master --no-commit --ff-only
 
-  render-php-default:
-    needs: validate-mergable
+  phpunit-composer-latest:
+    needs: validate-master
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
@@ -74,8 +74,8 @@ jobs:
       - name: "PHPUnit"
         run: ./vendor/bin/phpunit
 
-  render-php-lowest:
-    needs: validate-mergable
+  phpunit-composer-lowest:
+    needs: validate-master
     runs-on: ${{ matrix.operating-system }}
 
     strategy:
