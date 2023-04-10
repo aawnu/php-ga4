@@ -36,4 +36,10 @@ interface Event extends IO
      * @return string snake_case
      */
     public function getName(): string;
+
+    public function setLanguage(string $lang);
+    public function setPageLocation(string $url);
+    public function setPageReferrer(string $url);
+    public function setPageTitle(string $title);
+    public function setScreenResolution(string $wxh);
 }
