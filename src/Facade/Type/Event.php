@@ -2,7 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade\Type;
 
-interface Event extends IO
+interface Event extends IO, DefaultEventParams
 {
     /** @return array<int,string> */
     public const RESERVED_NAMES = [
@@ -36,10 +36,4 @@ interface Event extends IO
      * @return string snake_case
      */
     public function getName(): string;
-
-    public function setLanguage(string $lang);
-    public function setPageLocation(string $url);
-    public function setPageReferrer(string $url);
-    public function setPageTitle(string $title);
-    public function setScreenResolution(string $wxh);
 }

@@ -3,6 +3,7 @@
 namespace AlexWestergaard\PhpGa4\Helper;
 
 use AlexWestergaard\PhpGa4\Facade\Type\Event;
+use AlexWestergaard\PhpGa4\Facade\Type\DefaultEventParams;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 
 abstract class AbstractEvent extends AbstractIO implements Event
@@ -40,6 +41,19 @@ abstract class AbstractEvent extends AbstractIO implements Event
     public function setScreenResolution(string $wxh)
     {
         $this->screen_resolution = $wxh;
+        return $this;
+    }
+
+    public function setEventPage(DefaultEventParams $page)
+    {
+        $args = $page->toArray();
+
+        $this->language = $args['language'] ?? null;
+        $this->page_location = $args['page_location'] ?? null;
+        $this->page_referrer = $args['page_referrer'] ?? null;
+        $this->page_title = $args['page_title'] ?? null;
+        $this->screen_resolution = $args['screen_resolution'] ?? null;
+
         return $this;
     }
 
