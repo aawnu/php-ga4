@@ -420,6 +420,12 @@ final class EventTest extends TestCase
     private function populateEventByFromArray(TypeEvent $event)
     {
         return $event::fromArray([
+            'language' => 'en-US',
+            'page_location' => '/',
+            'page_referrer' => 'https://example.com/',
+            'page_title' => 'Home - Site',
+            'screen_resolution' => '1920x1080',
+            // ---
             'currency' => $this->prefill['currency'],
             'value' => 9.99,
             'affiliation' => 'affiliation',
@@ -456,6 +462,12 @@ final class EventTest extends TestCase
 
     private function populateEventByArrayable(TypeEvent $event)
     {
+        $event['language'] = 'en-US';
+        $event['page_location'] = '/';
+        $event['page_referrer'] = 'https://example.com/';
+        $event['page_title'] = 'Home - Site';
+        $event['screen_resolution'] = '1920x1080';
+
         $event['currency'] = $this->prefill['currency'];
         $event['value'] = 9.99;
         $event['affiliation'] = 'affiliation';
@@ -495,6 +507,12 @@ final class EventTest extends TestCase
         TypeEvent|Group\AddPaymentInfo|Group\AddShippingInfo|Group\AddToCart|Group\AddToWishlist|Group\Analytics|Group\BeginCheckout|Group\EarnVirtualCurrency|Group\Export|Group\GenerateLead|Group\Item|Group\JoinGroup|Group\LevelUp|Group\Login|Group\PostScore|Group\Purchase|Group\Refund|Group\RemoveFromCart|Group\Search|Group\SelectContent|Group\SelectItem|Group\SelectPromotion|Group\Share|Group\SignUp|Group\SpendVirtualCurrency|Group\UnlockAchievement|Group\ViewCart|Group\ViewItem|Group\ViewItemList|Group\ViewPromotion|Group\ViewSearchResults|Group\hasItems $event
     ) {
         $params = $event->getAllParams();
+
+        $event->setLanguage('en-US');
+        $event->setPageLocation('/');
+        $event->setPageReferrer('https://example.com/');
+        $event->setPageTitle('Home - Site');
+        $event->setScreenResolution('1920x1080');
 
         if (in_array('currency', $params)) {
             $event->setCurrency($this->prefill['currency']);
