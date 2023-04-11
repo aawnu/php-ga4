@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4\Exception;
 
-use AlexWestergaard\PhpGa4\Facade\Type\Ga4Exception as TypeGa4Exception;
+use AlexWestergaard\PhpGa4\Facade\Type\Ga4ExceptionType;
 
-class Ga4Exception extends \Exception implements TypeGa4Exception
+class Ga4Exception extends \Exception implements Ga4ExceptionType
 {
     private static ?Ga4Exception $exceptionStack = null;
 

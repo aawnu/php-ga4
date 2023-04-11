@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class Share extends AbstractEvent implements Facade\Group\Share
+class Share extends EventHelper implements Facade\Group\ShareFacade
 {
     protected null|string $method;
     protected null|string $content_type;

@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractUserProperty;
+use AlexWestergaard\PhpGa4\Helper;
 
-class UserProperty extends AbstractUserProperty
+class UserProperty extends Helper\UserPropertyHelper
 {
     protected null|string $name;
     protected null|int|float|string $value;

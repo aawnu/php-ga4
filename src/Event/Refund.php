@@ -2,11 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class Refund extends AbstractEvent implements Facade\Group\Refund
+class Refund extends EventHelper implements Facade\Group\RefundFacade
 {
     protected null|string $currency;
     protected null|string $transaction_id;
@@ -113,7 +112,7 @@ class Refund extends AbstractEvent implements Facade\Group\Refund
         return $this;
     }
 
-    public function addItem(Item $item)
+    public function addItem(Facade\Type\ItemType $item)
     {
         $this->items[] = $item->toArray();
         return $this;

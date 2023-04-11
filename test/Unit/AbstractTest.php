@@ -17,9 +17,9 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_io_interface_capabilities()
     {
-        $io = new Mocks\MockAbstractIO();
+        $io = new Mocks\MockIOHelper();
 
-        $this->assertInstanceOf(Helper\AbstractIO::class, $io, get_class($io));
+        $this->assertInstanceOf(Helper\IOHelper::class, $io, get_class($io));
         $this->assertArrayHasKey('test', $io);
         $this->assertArrayHasKey('test_required', $io);
         $this->assertArrayHasKey('test_array', $io);
@@ -47,7 +47,7 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_io_throws_on_missing_required_param()
     {
-        $io = new Mocks\MockAbstractIO();
+        $io = new Mocks\MockIOHelper();
 
         $this->expectException(Exception\Ga4IOException::class);
         $this->expectExceptionCode(Exception\Ga4Exception::PARAM_MISSING_REQUIRED);
@@ -57,7 +57,7 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_io_unsets_array_as_empty_array()
     {
-        $io = new Mocks\MockAbstractIO();
+        $io = new Mocks\MockIOHelper();
         $this->assertIsArray($io['test_array']);
         unset($io['test_array']);
         $this->assertIsArray($io['test_array']);
@@ -65,7 +65,7 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_io_can_iterate_as_arrayable()
     {
-        $io = new Mocks\MockAbstractIO();
+        $io = new Mocks\MockIOHelper();
         $io['test'] = 'optionalTest';
         $io['test_required'] = 'requiredTest';
         $io['test_array'] = 'optionalArrayElement';
@@ -82,9 +82,9 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_event_interface_capabilities()
     {
-        $event = new Mocks\MockAbstractEvent();
+        $event = new Mocks\MockEventHelper();
 
-        $this->assertInstanceOf(Helper\AbstractEvent::class, $event, get_class($event));
+        $this->assertInstanceOf(Helper\EventHelper::class, $event, get_class($event));
         $this->assertArrayHasKey('test', $event);
         $this->assertArrayHasKey('test_required', $event);
         $this->assertArrayHasKey('test_items', $event);
@@ -116,7 +116,7 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_event_throws_on_missing_name()
     {
-        $event = new class extends Mocks\MockAbstractEvent
+        $event = new class extends Mocks\MockEventHelper
         {
             public function getName(): string
             {
@@ -132,11 +132,11 @@ final class AbstractTest extends TestCase
 
     public function test_abstract_event_throws_on_reserved_name()
     {
-        $event = new class extends Mocks\MockAbstractEvent
+        $event = new class extends Mocks\MockEventHelper
         {
             public function getName(): string
             {
-                return Type\Event::RESERVED_NAMES[0];
+                return Type\EventType::RESERVED_NAMES[0];
             }
         };
 

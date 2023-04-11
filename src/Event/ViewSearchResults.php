@@ -2,11 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class ViewSearchResults extends AbstractEvent implements Facade\Group\ViewSearchResults
+class ViewSearchResults extends EventHelper implements Facade\Group\ViewSearchResultsFacade
 {
     protected null|string $search_term;
     protected array $items = [];
@@ -37,7 +36,7 @@ class ViewSearchResults extends AbstractEvent implements Facade\Group\ViewSearch
         return $this;
     }
 
-    public function addItem(Item $item)
+    public function addItem(Facade\Type\ItemType $item)
     {
         $this->items[] = $item->toArray();
         return $this;

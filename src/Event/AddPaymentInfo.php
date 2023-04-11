@@ -2,11 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class AddPaymentInfo extends AbstractEvent implements Facade\Group\AddPaymentInfo
+class AddPaymentInfo extends EventHelper implements Facade\Group\AddPaymentInfoFacade
 {
     protected null|string $currency;
     protected null|int|float $value;
@@ -72,7 +71,7 @@ class AddPaymentInfo extends AbstractEvent implements Facade\Group\AddPaymentInf
         return $this;
     }
 
-    public function addItem(Item $item)
+    public function addItem(Facade\Type\ItemType $item)
     {
         $this->items[] = $item->toArray();
         return $this;

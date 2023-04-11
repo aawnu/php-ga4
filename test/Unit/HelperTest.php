@@ -10,7 +10,7 @@ final class HelperTest extends TestCase
 {
     public function test_convert_helper_transforms_array_into_events()
     {
-        $list = Helper\Converter::parseEvents([
+        $list = Helper\ConvertHelper::parseEvents([
             ['TutorialBegin' => []],
             ['UnlockAchievement' => ['achievement_id' => '123']],
             ['NotAnEvent' => ['skip' => 'me']]
@@ -27,13 +27,13 @@ final class HelperTest extends TestCase
 
     public function test_snakecase_helper_transforms_camelcase_names()
     {
-        $output = Helper\Converter::snake('snakeCase');
+        $output = Helper\ConvertHelper::snake('snakeCase');
         $this->assertEquals('snake_case', $output);
     }
 
     public function test_camelcase_helper_transforms_snakecase_names()
     {
-        $output = Helper\Converter::camel('snake_case');
+        $output = Helper\ConvertHelper::camel('snake_case');
         $this->assertEquals('snakeCase', $output);
     }
 }

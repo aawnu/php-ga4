@@ -3,8 +3,8 @@
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use ReflectionClass;
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
-use AlexWestergaard\PhpGa4\Facade\Type\Event as TypeEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\Facade\Type;
 use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
@@ -373,7 +373,7 @@ final class EventTest extends TestCase
         {
             public function getName(): string
             {
-                return TypeEvent::RESERVED_NAMES[0];
+                return Type\EventType::RESERVED_NAMES[0];
             }
         };
 
@@ -387,8 +387,8 @@ final class EventTest extends TestCase
 
     protected function assertEventNaming($event)
     {
-        $this->assertInstanceOf(TypeEvent::class, $event);
-        $this->assertInstanceOf(AbstractEvent::class, $event);
+        $this->assertInstanceOf(Type\EventType::class, $event);
+        $this->assertInstanceOf(EventHelper::class, $event);
 
         $reflection = new ReflectionClass($event);
         $filename = $reflection->getFileName();
@@ -401,7 +401,7 @@ final class EventTest extends TestCase
         );
     }
 
-    protected function assertEventFills(AbstractEvent $event)
+    protected function assertEventFills(Type\EventType $event)
     {
         $fillables = $event->getAllParams();
         $toArray = $event->toArray();
@@ -417,7 +417,7 @@ final class EventTest extends TestCase
         }
     }
 
-    private function populateEventByFromArray(TypeEvent $event)
+    private function populateEventByFromArray(Type\EventType $event)
     {
         return $event::fromArray([
             'language' => 'en-US',
@@ -460,7 +460,7 @@ final class EventTest extends TestCase
         ]);
     }
 
-    private function populateEventByArrayable(TypeEvent $event)
+    private function populateEventByArrayable(Type\EventType $event)
     {
         $event['language'] = 'en-US';
         $event['page_location'] = '/';
@@ -504,7 +504,7 @@ final class EventTest extends TestCase
     }
 
     private function populateEventByMethod(
-        TypeEvent|Group\AddPaymentInfo|Group\AddShippingInfo|Group\AddToCart|Group\AddToWishlist|Group\Analytics|Group\BeginCheckout|Group\EarnVirtualCurrency|Group\Export|Group\GenerateLead|Group\Item|Group\JoinGroup|Group\LevelUp|Group\Login|Group\PostScore|Group\Purchase|Group\Refund|Group\RemoveFromCart|Group\Search|Group\SelectContent|Group\SelectItem|Group\SelectPromotion|Group\Share|Group\SignUp|Group\SpendVirtualCurrency|Group\UnlockAchievement|Group\ViewCart|Group\ViewItem|Group\ViewItemList|Group\ViewPromotion|Group\ViewSearchResults|Group\hasItems $event
+        Type\EventType|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
     ) {
         $params = $event->getAllParams();
 

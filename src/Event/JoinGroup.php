@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class JoinGroup extends AbstractEvent implements Facade\Group\JoinGroup
+class JoinGroup extends EventHelper implements Facade\Group\JoinGroupFacade
 {
     protected null|string $group_id;
 
