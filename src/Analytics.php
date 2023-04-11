@@ -71,15 +71,16 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
     public function setTimestampMicros(int|float $microOrUnix)
     {
-        $secondInMicro = 1_000_000;
-        $offsetLimit = (strtotime('-3 days') + 90) * $secondInMicro;
+        $min = Helper\ConvertHelper::timeAsMicro(strtotime('-3 days') + 10);
+        $max = Helper\ConvertHelper::timeAsMicro(time() + 3);
 
-        $formattedTime =  floor($microOrUnix * $secondInMicro);
-        if ($formattedTime < $offsetLimit) {
+        $time = Helper\ConvertHelper::timeAsMicro($microOrUnix);
+
+        if ($time < $min || $time > $max) {
             throw Ga4Exception::throwMicrotimeExpired();
         }
 
-        $this->timestamp_micros = intval($formattedTime);
+        $this->timestamp_micros = $time;
         return $this;
     }
 
