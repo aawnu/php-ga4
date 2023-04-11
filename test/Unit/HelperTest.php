@@ -3,6 +3,7 @@
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\Helper;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
@@ -35,5 +36,26 @@ final class HelperTest extends TestCase
     {
         $output = Helper\ConvertHelper::camel('snake_case');
         $this->assertEquals('snakeCase', $output);
+    }
+
+    public function test_timeasmicro_converts_to_microseconds()
+    {
+        $time = time();
+        $secondAsMicro = 1_000_000;
+        $timeAsMicro = $time * $secondAsMicro;
+
+        $convert = Helper\ConvertHelper::timeAsMicro($time);
+
+        $this->assertEquals($timeAsMicro, $convert);
+    }
+
+    public function test_timeasmicro_throws_too_large()
+    {
+        $time = time() * 100;
+
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_INVALID_FORMAT);
+
+        $this->analytics->setTimestampMicros($time);
     }
 }

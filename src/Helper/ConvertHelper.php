@@ -3,9 +3,32 @@
 namespace AlexWestergaard\PhpGa4\Helper;
 
 use AlexWestergaard\PhpGa4\Facade\Type\EventType;
+use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 
 class ConvertHelper
 {
+    /**
+     * Converts unix or microtime to microseconds; 1 second = 1,000,000 microseconds
+     *
+     * @param int|float $unixOrMicro time() or microtime(true)
+     *
+     * @return int
+     * @throws Ga4Exception
+     */
+    public static function timeAsMicro(int|float $unixOrMicro)
+    {
+        $secondAsMicro = 1_000_000;
+
+        $input = strlen(intval($unixOrMicro));
+        $current = strlen(time()) + 1;
+
+        if ($input > $current) {
+            throw Ga4Exception::throwMicrotimeInvalid($unixOrMicro);
+        }
+
+        return intval($secondAsMicro * $unixOrMicro);
+    }
+
     /**
      * @param string $input
      * @return string snake_case

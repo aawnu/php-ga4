@@ -4,7 +4,6 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Facade;
-use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4Test\TestCase;
@@ -61,7 +60,7 @@ final class AnalyticsTest extends TestCase
 
     public function test_throws_if_microtime_older_than_three_days()
     {
-        $this->expectException(Ga4Exception::class);
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
 
         $this->analytics->setTimestampMicros(strtotime('-1 week'));
@@ -106,16 +105,16 @@ final class AnalyticsTest extends TestCase
 
     public function test_throws_missing_measurement_id()
     {
-        $this->expectException(Ga4Exception::class);
-        $this->expectExceptionCode(Ga4Exception::REQUEST_MISSING_MEASUREMENT_ID);
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_MEASUREMENT_ID);
 
         Analytics::new('', $this->prefill['api_secret'], true)->post();
     }
 
     public function test_throws_missing_apisecret()
     {
-        $this->expectException(Ga4Exception::class);
-        $this->expectExceptionCode(Ga4Exception::REQUEST_MISSING_API_SECRET);
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_API_SECRET);
 
         Analytics::new($this->prefill['measurement_id'], '', true)->post();
     }
@@ -128,8 +127,8 @@ final class AnalyticsTest extends TestCase
             $preparyKB .= 'AAAAAAAA'; // 8 bytes
         }
 
-        $this->expectException(Ga4Exception::class);
-        $this->expectExceptionCode(Ga4Exception::REQUEST_TOO_LARGE);
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_TOO_LARGE);
 
         $userProperty = UserProperty::new()->setName('large_package');
 
@@ -140,5 +139,25 @@ final class AnalyticsTest extends TestCase
         }
 
         $this->analytics->addUserProperty($userProperty)->post();
+    }
+
+    public function test_timeasmicro_throws_exceeding_max()
+    {
+        $time = time() + 60;
+
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
+
+        $this->analytics->setTimestampMicros($time);
+    }
+
+    public function test_timeasmicro_throws_exceeding_min()
+    {
+        $time = strtotime('-1 month');
+
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
+
+        $this->analytics->setTimestampMicros($time);
     }
 }
