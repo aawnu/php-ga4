@@ -18,7 +18,6 @@ _Development_
 composer require alexwestergaard/php-ga4
 ```
 
-- [LEGACY](#legacy)
 - [GDPR Notice](#gdpr-notice)
 - [Getting started](#getting-started)
 - [Events](#events)
@@ -32,9 +31,6 @@ composer require alexwestergaard/php-ga4
     - [Backend](#backend)
 - [Custom Events](#custom-events)
 - [Documentation](#documentation)
-
-## LEGACY
-- `PHP 7` should only use `1.0.*` versions of this library
 
 ## GDPR Notice
 
