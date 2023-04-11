@@ -4,3 +4,4 @@
 
 # PHPUnit
 /.phpunit*
+/clover.xml
