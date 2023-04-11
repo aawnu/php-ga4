@@ -172,7 +172,7 @@ axios.post('/api/ga4', [
 #### Backend
 
 ```php
-use AlexWestergaard\PhpGa4\Helper\Converter;
+use AlexWestergaard\PhpGa4\Helper\ConvertHelper;
 use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
@@ -180,7 +180,7 @@ use AlexWestergaard\PhpGa4\Event;
 // require vendor/autoload.php
 
 try {
-    $events = Converter::parseEvents($_POST);
+    $events = ConvertHelper::parseEvents($_POST);
 
     Analytics::new($measurementId, $apiSecret)
         ->addEvent(...$events)
@@ -197,8 +197,8 @@ You can build your own custom events. All you need is to implement and fullfill 
 
 ```php
 
-// AbstractEvent implements AlexWestergaard\PhpGa4\Facade\Type\TypeEvent
-class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\AbstractEvent
+// EventHelper implements AlexWestergaard\PhpGa4\Facade\Type\EventType
+class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\EventHelper
 {
     // variables should be nullable as unset() will set variable as null
     protected null|mixed $my_variable;
