@@ -2,11 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
-use AlexWestergaard\PhpGa4\Facade\Type\Item;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class AddToCart extends AbstractEvent implements Facade\Group\AddToCart
+class AddToCart extends EventHelper implements Facade\Group\AddToCartFacade
 {
     protected null|string $currency;
     protected null|int|float $value;
@@ -56,7 +55,7 @@ class AddToCart extends AbstractEvent implements Facade\Group\AddToCart
         return $this;
     }
 
-    public function addItem(Item $item)
+    public function addItem(Facade\Type\ItemType $item)
     {
         $this->items[] = $item->toArray();
         return $this;

@@ -3,13 +3,11 @@
 namespace AlexWestergaard\PhpGa4;
 
 use GuzzleHttp\Client as Guzzle;
-use AlexWestergaard\PhpGa4\Helper\AbstractIO;
-use AlexWestergaard\PhpGa4\Facade\Type\UserProperty;
-use AlexWestergaard\PhpGa4\Facade\Type\Event;
-use AlexWestergaard\PhpGa4\Facade\Type\Analytics as TypeAnalytics;
+use AlexWestergaard\PhpGa4\Helper;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 
-class Analytics extends AbstractIO implements TypeAnalytics
+class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 {
     protected null|bool $non_personalized_ads = false;
     protected null|int $timestamp_micros;
@@ -85,7 +83,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $this;
     }
 
-    public function addUserProperty(UserProperty ...$props)
+    public function addUserProperty(Facade\Type\UserPropertyType ...$props)
     {
         foreach ($props as $prop) {
             $this->user_properties = array_replace($this->user_properties, $prop->toArray());
@@ -94,7 +92,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
         return $this;
     }
 
-    public function addEvent(Event ...$events)
+    public function addEvent(Facade\Type\EventType ...$events)
     {
         foreach ($events as $event) {
             $this->events[] = $event->toArray();
@@ -112,7 +110,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
             throw Ga4Exception::throwMissingApiSecret();
         }
 
-        $url = $this->debug ? TypeAnalytics::URL_DEBUG : TypeAnalytics::URL_LIVE;
+        $url = $this->debug ? Facade\Type\AnalyticsType::URL_DEBUG : Facade\Type\AnalyticsType::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
         $body = $this->toArray();
@@ -141,7 +139,7 @@ class Analytics extends AbstractIO implements TypeAnalytics
             $guzzle = new Guzzle();
             $res = $guzzle->request('POST', $url, ['json' => $body]);
 
-            if (!in_array(($code = $res?->getStatusCode() ?? 0), TypeAnalytics::ACCEPT_RESPONSE_HEADERS)) {
+            if (!in_array(($code = $res?->getStatusCode() ?? 0), Facade\Type\AnalyticsType::ACCEPT_RESPONSE_HEADERS)) {
                 Ga4Exception::throwRequestWrongResponceCode($code);
             }
 

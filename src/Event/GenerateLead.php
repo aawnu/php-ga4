@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class GenerateLead extends AbstractEvent implements Facade\Group\GenerateLead
+class GenerateLead extends EventHelper implements Facade\Group\GenerateLeadFacade
 {
     protected null|string $currency;
     protected null|int|float $value;

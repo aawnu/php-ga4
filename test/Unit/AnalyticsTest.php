@@ -3,8 +3,7 @@
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\UserProperty;
-use AlexWestergaard\PhpGa4\Facade\Type\Ga4Exception as TypeGa4Exception;
-use AlexWestergaard\PhpGa4\Facade\Type\Event as TypeEvent;
+use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
@@ -63,7 +62,7 @@ final class AnalyticsTest extends TestCase
     public function test_throws_if_microtime_older_than_three_days()
     {
         $this->expectException(Ga4Exception::class);
-        $this->expectExceptionCode(TypeGa4Exception::MICROTIME_EXPIRED);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
 
         $this->analytics->setTimestampMicros(strtotime('-1 week'));
     }
@@ -93,7 +92,7 @@ final class AnalyticsTest extends TestCase
         $event = Event\JoinGroup::new()
             ->setGroupId('1');
 
-        $this->assertInstanceOf(TypeEvent::class, $event);
+        $this->assertInstanceOf(Facade\Type\EventType::class, $event);
         $this->assertIsArray($event->toArray());
 
         $this->analytics->addEvent($event);

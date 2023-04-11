@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class PostScore extends AbstractEvent implements Facade\Group\PostScore
+class PostScore extends EventHelper implements Facade\Group\PostScoreFacade
 {
     protected null|int $score;
     protected null|int $level;

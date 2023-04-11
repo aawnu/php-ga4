@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class LevelUp extends AbstractEvent implements Facade\Group\LevelUp
+class LevelUp extends EventHelper implements Facade\Group\LevelUpFacade
 {
     protected null|int $level;
     protected null|string $character;

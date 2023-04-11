@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractEvent;
+use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
 
-class UnlockAchievement extends AbstractEvent implements Facade\Group\UnlockAchievement
+class UnlockAchievement extends EventHelper implements Facade\Group\UnlockAchievementFacade
 {
     protected null|string $achievement_id;
 

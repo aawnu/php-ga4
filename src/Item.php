@@ -2,10 +2,10 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Helper\AbstractIO;
-use AlexWestergaard\PhpGa4\Facade\Type\Item as TypeItem;
+use AlexWestergaard\PhpGa4\Helper;
+use AlexWestergaard\PhpGa4\Facade;
 
-class Item extends AbstractIO implements TypeItem
+class Item extends Helper\IOHelper implements Facade\Type\ItemType
 {
     protected null|string $item_id;
     protected null|string $item_name;
