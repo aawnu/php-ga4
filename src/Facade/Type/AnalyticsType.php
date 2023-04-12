@@ -61,7 +61,8 @@ interface AnalyticsType extends IOType
     /**
      * Validate params and send it to Google Analytics
      *
-     * @return bool
+     * @return void
+     * @throws AlexWestergaard\PhpGa4\Exception\Ga4Exception
      */
     public function post();
 }
