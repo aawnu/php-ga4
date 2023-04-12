@@ -13,6 +13,16 @@ use AlexWestergaard\PhpGa4Test\TestCase;
 
 final class EventTest extends TestCase
 {
+    public function test_pageview()
+    {
+        $event = new Event\PageView;
+
+        $this->assertEventNaming($event);
+        $this->assertEventFills($this->populateEventByMethod(clone $event));
+        $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
+    }
+
     public function test_addpaymentinfo()
     {
         $event = new Event\AddPaymentInfo;
