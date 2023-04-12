@@ -9,6 +9,8 @@ use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 
 class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 {
+    private Guzzle $guzzle;
+
     protected null|bool $non_personalized_ads = false;
     protected null|int $timestamp_micros;
     protected null|string $client_id;
@@ -22,6 +24,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         private bool $debug = false
     ) {
         parent::__construct();
+        $this->guzzle = new Guzzle();
     }
 
     public function getParams(): array
@@ -107,6 +110,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         if (empty($this->measurement_id)) {
             throw Ga4Exception::throwMissingMeasurementId();
         }
+
         if (empty($this->api_secret)) {
             throw Ga4Exception::throwMissingApiSecret();
         }
@@ -126,10 +130,14 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
         for ($chunk = 0; $chunk < $chunkMax; $chunk++) {
             $body['user_properties'] = $chunkUserProperties[$chunk] ?? [];
-            if (empty($body['user_properties'])) unset($body['user_properties']);
+            if (empty($body['user_properties'])) {
+                unset($body['user_properties']);
+            }
 
             $body['events'] = $chunkEvents[$chunk] ?? [];
-            if (empty($body['events'])) unset($body['events']);
+            if (empty($body['events'])) {
+                unset($body['events']);
+            }
 
             $kB = 1024;
             if (($size = mb_strlen(json_encode($body))) > ($kB * 130)) {
@@ -137,8 +145,15 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
                 continue;
             }
 
-            $guzzle = new Guzzle();
-            $res = $guzzle->request('POST', $url, ['json' => $body]);
+            $jsonBody = json_encode($body);
+            $jsonBody = strtr($jsonBody, [':[]' => ':{}']);
+
+            $res = $this->guzzle->request('POST', $url, [
+                'headers' => [
+                    'content-type' => 'application/json;charset=utf-8'
+                ],
+                'body' => $jsonBody,
+            ]);
 
             if (!in_array(($code = $res?->getStatusCode() ?? 0), Facade\Type\AnalyticsType::ACCEPT_RESPONSE_HEADERS)) {
                 Ga4Exception::throwRequestWrongResponceCode($code);
@@ -147,10 +162,10 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             if ($code !== 204) {
                 $callback = @json_decode($res->getBody()->getContents(), true);
 
-                if (empty($callback)) {
-                    Ga4Exception::throwRequestEmptyResponse();
-                } elseif (json_last_error() != JSON_ERROR_NONE) {
+                if (json_last_error() != JSON_ERROR_NONE) {
                     Ga4Exception::throwRequestInvalidResponse();
+                } elseif (empty($callback)) {
+                    Ga4Exception::throwRequestEmptyResponse();
                 } elseif (!empty($callback['validationMessages'])) {
                     foreach ($callback['validationMessages'] as $msg) {
                         Ga4Exception::throwRequestInvalidBody($msg);
