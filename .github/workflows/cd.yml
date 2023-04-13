@@ -19,6 +19,9 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: "Remove .gitignore"
+        run: rm .gitignore
+
       - name: "Setup PHP"
         uses: shivammathur/setup-php@v2
         with:
