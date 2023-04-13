@@ -47,6 +47,7 @@ final class HelperTest extends TestCase
 
         $list = Helper\ConvertHelper::parseEvents($request);
         $this->analytics->addEvent(...$list);
+        $this->assertCount(1, $this->analytics['events']);
     }
 
     public function test_snakecase_helper_transforms_camelcase_names()
