@@ -2,6 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4\Helper;
 
+use AlexWestergaard\PhpGa4\Item;
+use AlexWestergaard\PhpGa4\Facade\Type\ItemType;
 use AlexWestergaard\PhpGa4\Facade\Type\IOType;
 use AlexWestergaard\PhpGa4\Exception\Ga4IOException;
 
@@ -303,6 +305,10 @@ abstract class IOHelper implements IOType
         foreach ($importable as $key => $val) {
             if (is_array($val)) {
                 foreach ($val as $single) {
+                    if (in_array($key, ['item', 'items']) && !($importable instanceof ItemType)) {
+                        $single = Item::fromArray($single);
+                    }
+
                     $static[$key] = $single;
                 }
             } else {
