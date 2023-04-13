@@ -26,6 +26,31 @@ final class HelperTest extends TestCase
         $this->assertCount(2, $this->analytics['events']);
     }
 
+    public function test_convert_helper_transforms_events_with_items()
+    {
+        $request = [
+            [
+                'AddToCart' =>  [
+                    'currency' => 'AUD',
+                    'value' => 38,
+                    'items' =>  [
+                        [
+                            'item_id' => 29,
+                            'item_name' => '500g Musk Scrolls',
+                            'price' => 38,
+                            'quantity' => 1,
+                        ],
+                    ],
+                ],
+            ],
+        ];
+
+        $list = Helper\ConvertHelper::parseEvents($request);
+
+        var_dump($request, $list);
+        exit;
+    }
+
     public function test_snakecase_helper_transforms_camelcase_names()
     {
         $output = Helper\ConvertHelper::snake('snakeCase');
