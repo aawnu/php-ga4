@@ -4,6 +4,7 @@ namespace AlexWestergaard\PhpGa4\Helper;
 
 use AlexWestergaard\PhpGa4\Facade\Type\EventType;
 use AlexWestergaard\PhpGa4\Facade\Type\DefaultEventParamsType;
+use AlexWestergaard\PhpGa4\Facade\Type\CampaignType;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 
 abstract class EventHelper extends IOHelper implements EventType
@@ -13,6 +14,8 @@ abstract class EventHelper extends IOHelper implements EventType
     protected null|string $page_referrer;
     protected null|string $page_title;
     protected null|string $screen_resolution;
+
+    protected array $campaign = [];
 
     public function setLanguage(string $lang)
     {
@@ -57,6 +60,11 @@ abstract class EventHelper extends IOHelper implements EventType
         return $this;
     }
 
+    public function setCampaign(CampaignType $campaign)
+    {
+        $this->campaign = $campaign->toArray();
+    }
+
     public function toArray(): array
     {
         $return = [];
@@ -80,6 +88,10 @@ abstract class EventHelper extends IOHelper implements EventType
         }
 
         $return['params'] = parent::toArray();
+
+        if (!empty($this->campaign)) {
+            $return['params'] = array_replace($return['params'], $this->campaign);
+        }
 
         return $return;
     }

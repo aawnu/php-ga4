@@ -9,6 +9,7 @@ use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 use AlexWestergaard\PhpGa4\Event;
+use AlexWestergaard\PhpGa4\Campaign;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
 final class EventTest extends TestCase
@@ -317,6 +318,29 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+    }
+
+    public function test_campaign()
+    {
+        $event = new Event\PageView;
+
+        /** @var Event\PageView */
+        $event = $this->populateEventByMethod($event);
+
+        $event->setCampaign(
+            Campaign::new(
+                'newsletter_category',
+                'newsletter',
+                'email',
+                'Weekly Newsletter 2020w20',
+                'continue reading here',
+                'section1'
+            )
+        );
+
+        $this->analytics->addEvent($event);
+
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_throw_name_missing()
