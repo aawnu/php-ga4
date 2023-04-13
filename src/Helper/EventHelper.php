@@ -60,9 +60,17 @@ abstract class EventHelper extends IOHelper implements EventType
         return $this;
     }
 
-    public function setCampaign(CampaignType $campaign)
+    public function setCampaign(?CampaignType $campaign)
     {
-        $this->campaign = $campaign->toArray();
+        $this->campaign = [];
+
+        foreach ($campaign as $tag => $val) {
+            if (!in_array($tag, CampaignType::CAMPAIGN_VARS)) {
+                continue;
+            }
+
+            $this->campaign[$tag] = $val;
+        }
     }
 
     public function toArray(): array
@@ -90,7 +98,10 @@ abstract class EventHelper extends IOHelper implements EventType
         $return['params'] = parent::toArray();
 
         if (!empty($this->campaign)) {
-            $return['params'] = array_replace($return['params'], $this->campaign);
+            $return['params'] = array_replace(
+                $return['params'],
+                $this->campaign
+            );
         }
 
         return $return;

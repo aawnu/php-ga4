@@ -5,12 +5,12 @@ namespace AlexWestergaard\PhpGa4\Facade\Type;
 interface CampaignType
 {
     const CAMPAIGN_VARS = [
-        'id',
-        'source',
-        'medium',
-        'name',
-        'term',
-        'content',
+        'campaign_id',
+        'campaign_source',
+        'campaign_medium',
+        'campaign_name',
+        'campaign_term',
+        'campaign_content',
     ];
 
     /**
