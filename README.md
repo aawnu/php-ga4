@@ -1,6 +1,6 @@
 _Package_
 
-[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=blue&label=stable)](https://github.com/aawnu/php-ga4/releases/latest)
+[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=blue&label=stable%20release)](https://github.com/aawnu/php-ga4/releases/latest)
 [![License](https://img.shields.io/packagist/l/alexwestergaard/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/blob/master/LICENSE)
 [![PHPVersion](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue)](https://www.php.net/releases)
 [![Size](https://img.shields.io/github/languages/code-size/aawnu/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/releases/latest)
@@ -8,7 +8,7 @@ _Package_
 
 _Development_
 
-[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=red&include_prereleases&label=latest)](https://github.com/aawnu/php-ga4/releases)
+[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=red&include_prereleases&label=latest%20release)](https://github.com/aawnu/php-ga4/releases)
 [![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&label=issues)](https://github.com/aawnu/php-ga4/issues)
 [![Pulls](https://img.shields.io/github/issues-pr/aawnu/php-ga4?color=red&label=pulls)](https://github.com/aawnu/php-ga4/pulls)
 [![Contributors](https://img.shields.io/github/contributors/aawnu/php-ga4?color=red)](https://github.com/aawnu/php-ga4/graphs/contributors)
@@ -34,34 +34,60 @@ composer require alexwestergaard/php-ga4
 
 ## GDPR Notice
 
-> European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe.
->
-> This includes the use of `gtag.js`/`gtm.js` as JavaScript pushes the request from visitors device including their IP-Address. Server Side Tracking, however, does only send information specified inside the body and about your server.
->
-> Relying solely on Google Analytics 4 Events - that is not pushed through the `gtag.js`/`gtm.js` script - can be scraped of GDPR-related information.
+European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe.
+This includes the use of `gtag.js` as JavaScript pushes the request from visitors device including their IP-Address.
+
+Server Side Tracking, however, does only send information specified inside the body and about your server.
+
+Relying solely on Google Analytics 4 Events - that is not pushed through the `gtag.js` script - can be scraped of GDPR-related information.
 
 - Source: Europe, GDPR, Schrems II
 - https://support.google.com/analytics/answer/9019185?hl=en
 
 ## Getting started
 
-To get started, you will need two things:
+To setup Analytics you need a Measurement ID and API Secret.
 
-- a data stream can be created under `Admin` > `Data Streams`, get its measurement id eg. `G-XXXXXXXX`
-- an API key to send events to the data stream `Admin` > `Data Streams` > Select data stream > `Measurement Protocol API secrets` > `Create`
+Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.  
+Here you will find `Measurement-ID` at top from and further down `Api Secrets for Measurement Protocol`, in there you can create yourself an `API Secret`.
+
+**PLEASE** note that Google Analytics will look out from traffic gathered by the `gtag.js` library, as Server Side Events are supposed to supplement the frontend through its `_ga`/`_gid` cookie sessions.
 
 ```php
 use AlexWestergaard\PhpGa4\Analytics;
 
-$analytics = Analytics::new('G-XXXXXXXX', 'xYzzX_xYzzXzxyZxX');
+$analytics = Analytics::new(
+    measurement_id: 'G-XXXXXXXX',
+    api_secret: 'xYzzX_xYzzXzxyZxX',
+    debug: true/false
+);
 ```
 
 ## Events
 
-This is a list of prebuilt events as shown in the documentation.
+This is a list of prebuilt events as shown in the documentation. All events have the following parameters to locate trigger location of each event or if they were related to any campaigns/referrals.
+
+```php
+// Manual setting of each event
+$event->setLanguage(string $var);
+$event->setPageLocation(string $var);
+$event->setPageReferrer(string $var);
+$event->setPageTitle(string $var);
+$event->setScreenResolution(string $var);
+// Fillable for multiple events
+$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper();
+$event->setEventPage($eventPage);
+```
+
+```php
+// Campaign parameters (Experimental)
+$campaign = AlexWestergaard\PhpGa4\Campaign()
+$event->setCampaign($campaign);
+```
 
 ### Default
 
+![badge](https://shields.io/badge/PageView-informational)
 ![badge](https://shields.io/badge/Share-informational)
 ![badge](https://shields.io/badge/Signup-informational)
 ![badge](https://shields.io/badge/Login-informational)
@@ -147,22 +173,28 @@ foreach ($groups as $time => $data) {
 #### Frontend
 
 ```js
-axios.post('/api/ga4', [
-    {
-        addToCart: {
-            currency: 'EUR',
-            value: 13.37,
-            items: [
-                {
-                    'item_id': 1,
-                    'item_name': 'Cup',
-                    'price': 13.37,
-                    'quantity': 1
-                }
-            ]
+// array<array<eventName,eventParams>>
+axios.post(
+    '/api/ga4',
+    [
+        // Note each event is its own object inside an array as
+        // this allows to pass the same event type multiple times
+        {
+            addToCart: {
+                currency: 'EUR',
+                value: 13.37,
+                items: [
+                    {
+                        'item_id': 1,
+                        'item_name': 'Cup',
+                        'price': 13.37,
+                        'quantity': 1
+                    }
+                ]
+            }
         }
-    }
-])
+    ]
+)
 ```
 
 #### Backend
@@ -189,7 +221,7 @@ try {
 
 ## Custom Events
 
-You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\Event` facade/interface. If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\AbstractEvent` and overwrite as you see fit.
+You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\EventType` facade/interface. If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\EventHelper` and overwrite as you see fit.
 
 ```php
 
