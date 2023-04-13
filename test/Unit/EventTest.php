@@ -320,7 +320,7 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
     }
 
-    public function test_campaign()
+    public function test_can_pass_campaign_parameters()
     {
         $event = new Event\PageView;
 
