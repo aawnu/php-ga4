@@ -4,6 +4,7 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use ReflectionClass;
 use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\Helper\ConvertHelper;
 use AlexWestergaard\PhpGa4\Facade\Type;
 use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
@@ -22,6 +23,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_addpaymentinfo()
@@ -32,6 +43,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_addshippinginfo()
@@ -41,6 +62,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_addtocart()
@@ -50,6 +81,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_addtowishlist()
@@ -59,6 +100,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_begincheckout()
@@ -68,6 +119,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_earnvirtualcurrency()
@@ -77,6 +138,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_generatelead()
@@ -86,6 +157,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_joingroup()
@@ -95,6 +176,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_levelup()
@@ -105,6 +196,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
     public function test_login()
     {
@@ -113,6 +214,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_postscore()
@@ -122,6 +233,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_purchase()
@@ -131,6 +252,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_refund()
@@ -140,6 +271,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_refund_full_succeeds_without_items()
@@ -183,6 +324,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_search()
@@ -192,6 +343,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_selectcontent()
@@ -201,6 +362,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_selectitem()
@@ -210,6 +381,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_selectpromotion()
@@ -219,6 +400,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_share()
@@ -228,6 +419,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_signup()
@@ -237,6 +438,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_spendvirtualcurrency()
@@ -246,6 +457,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_tutorialbegin()
@@ -255,6 +476,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_tutorialcomplete()
@@ -264,6 +495,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_unlockachievement()
@@ -273,6 +514,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_biewcart()
@@ -282,6 +533,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_viewitem()
@@ -291,6 +552,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_viewitemlist()
@@ -300,6 +571,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_viewpromotion()
@@ -309,6 +590,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_viewsearchresults()
@@ -318,6 +609,16 @@ final class EventTest extends TestCase
         $this->assertEventFills($this->populateEventByMethod(clone $event));
         $this->assertEventFills($this->populateEventByArrayable(clone $event));
         $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->assertNull($this->analytics->post());
     }
 
     public function test_can_pass_campaign_parameters()
@@ -449,6 +750,15 @@ final class EventTest extends TestCase
                 $this->assertArrayHasKey($fillable, $toArray['params'], $fillable);
             }
         }
+    }
+
+    protected function assertImportableByConvertHelper(array $form, object $expectedClass)
+    {
+        $parse = ConvertHelper::parseEvents($form);
+
+        $this->assertIsArray($parse);
+        $this->assertCount(1, $parse);
+        $this->assertInstanceOf($expectedClass::class, $parse[0]);
     }
 
     private function populateEventByFromArray(Type\EventType $event)
