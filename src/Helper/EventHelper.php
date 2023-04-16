@@ -2,6 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Helper;
 
+use AlexWestergaard\PhpGa4\Facade\Type\GtmEventType;
 use AlexWestergaard\PhpGa4\Facade\Type\EventType;
 use AlexWestergaard\PhpGa4\Facade\Type\DefaultEventParamsType;
 use AlexWestergaard\PhpGa4\Facade\Type\CampaignType;
@@ -88,7 +89,7 @@ abstract class EventHelper extends IOHelper implements EventType
                 throw Ga4EventException::throwNameTooLong();
             } elseif (preg_match('/[^\w\d\-]/', $name)) {
                 throw Ga4EventException::throwNameInvalid();
-            } elseif (in_array($name, EventType::RESERVED_NAMES)) {
+            } elseif (in_array($name, EventType::RESERVED_NAMES) && !($this instanceof GtmEventType)) {
                 throw Ga4EventException::throwNameReserved($name);
             } else {
                 $return['name'] = $name;
