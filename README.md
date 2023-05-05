@@ -65,7 +65,7 @@ $analytics = Analytics::new(
 
 ## Events
 
-This is a list of prebuilt events as shown in the documentation. All events have the following parameters to locate trigger location of each event or if they were related to any campaigns/referrals.
+This is a list of prebuilt events as shown in the documentation. All events have the following parameters to locate trigger location of each event.
 
 ```php
 // Manual setting of each event
@@ -77,12 +77,6 @@ $event->setScreenResolution(string $var);
 // Fillable for multiple events
 $eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper();
 $event->setEventPage($eventPage);
-```
-
-```php
-// Campaign parameters (Experimental)
-$campaign = AlexWestergaard\PhpGa4\Campaign()
-$event->setCampaign($campaign);
 ```
 
 ### Default
