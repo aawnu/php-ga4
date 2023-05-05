@@ -1,17 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
-    colors="true" stopOnFailure="false"
-    beStrictAboutTestsThatDoNotTestAnything="true"
-    beStrictAboutTodoAnnotatedTests="true"
-    testdox="true"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.0/phpunit.xsd"
-    cacheDirectory=".phpunit.cache">
+    colors="true" stopOnFailure="false" beStrictAboutTestsThatDoNotTestAnything="true"
+    beStrictAboutTodoAnnotatedTests="true" testdox="true"
+    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
+    cacheDirectory=".phpunit.cache" displayDetailsOnTestsThatTriggerDeprecations="true">
     <testsuites>
         <testsuite name="Units">
             <directory>test/Unit</directory>
         </testsuite>
     </testsuites>
     <coverage includeUncoveredFiles="true" pathCoverage="true">
+        <report>
+            <clover outputFile="clover.xml" />
+        </report>
+    </coverage>
+    <php>
+        <env name="XDEBUG" value="coverage" />
+    </php>
+    <source>
         <include>
             <directory suffix=".php">./src</directory>
         </include>
@@ -19,11 +25,5 @@
             <directory suffix=".php">./src/Facade</directory>
             <file>./src/GA4Exception.php</file>
         </exclude>
-        <report>
-            <clover outputFile="clover.xml"/>
-        </report>
-    </coverage>
-    <php>
-        <env name="XDEBUG" value="coverage" />
-    </php>
+    </source>
 </phpunit>

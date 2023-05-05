@@ -5,7 +5,6 @@ namespace AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade\Type\GtmEventType;
 use AlexWestergaard\PhpGa4\Facade\Type\EventType;
 use AlexWestergaard\PhpGa4\Facade\Type\DefaultEventParamsType;
-use AlexWestergaard\PhpGa4\Facade\Type\CampaignType;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 
 abstract class EventHelper extends IOHelper implements EventType
@@ -59,19 +58,6 @@ abstract class EventHelper extends IOHelper implements EventType
         $this->screen_resolution = $args['screen_resolution'] ?? null;
 
         return $this;
-    }
-
-    public function setCampaign(?CampaignType $campaign)
-    {
-        $this->campaign = [];
-
-        foreach ($campaign as $tag => $val) {
-            if (!in_array($tag, CampaignType::CAMPAIGN_VARS)) {
-                continue;
-            }
-
-            $this->campaign[$tag] = $val;
-        }
     }
 
     public function toArray(): array

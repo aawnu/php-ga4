@@ -621,29 +621,6 @@ final class EventTest extends TestCase
         $this->assertNull($this->analytics->post());
     }
 
-    public function test_can_pass_campaign_parameters()
-    {
-        $event = new Event\PageView;
-
-        /** @var Event\PageView */
-        $event = $this->populateEventByMethod($event);
-
-        $event->setCampaign(
-            Campaign::new(
-                'newsletter_category',
-                'newsletter',
-                'email',
-                'Weekly Newsletter 2020w20',
-                'continue reading here',
-                'section1'
-            )
-        );
-
-        $this->analytics->addEvent($event);
-
-        $this->assertNull($this->analytics->post());
-    }
-
     public function test_throw_name_missing()
     {
         $mock = new class extends Event\Refund
