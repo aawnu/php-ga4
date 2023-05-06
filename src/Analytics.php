@@ -7,6 +7,9 @@ use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 
+/**
+ * Analytics wrapper to contain UserProperties and Events to post on Google Analytics
+ */
 class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 {
     private Guzzle $guzzle;
