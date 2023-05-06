@@ -5,6 +5,9 @@ namespace AlexWestergaard\PhpGa4;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade;
 
+/**
+ * Structured items for events that touch products
+ */
 class Item extends Helper\IOHelper implements Facade\Type\ItemType
 {
     protected null|string $item_id;
