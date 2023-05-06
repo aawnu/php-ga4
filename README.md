@@ -20,6 +20,7 @@ composer require alexwestergaard/php-ga4
 
 - [GDPR Notice](#gdpr-notice)
 - [Getting started](#getting-started)
+  - [Data flow](#data-flow)
 - [Events](#events)
   - [Default](#default)
   - [E-commerce](#e-commerce)
@@ -59,9 +60,17 @@ use AlexWestergaard\PhpGa4\Analytics;
 $analytics = Analytics::new(
     measurement_id: 'G-XXXXXXXX',
     api_secret: 'xYzzX_xYzzXzxyZxX',
-    debug: true/false
+    debug: true|false
 );
 ```
+
+### Data flow
+
+1. Acquire proper GDPR Consent
+2. Client/GTAG.js sends session_start and first_visit to GA4
+3. GA4 sends _ga and _gid cookies to Client/GTAG.js
+4. Server uses _ga to populate events
+
 
 ## Events
 
