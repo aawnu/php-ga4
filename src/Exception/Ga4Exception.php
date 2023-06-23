@@ -39,7 +39,7 @@ class Ga4Exception extends \Exception implements Ga4ExceptionType
 
     public static function throwMissingApiSecret()
     {
-        return new static("Timestamp must be numeric", static::REQUEST_MISSING_API_SECRET);
+        return new static("Missing API Secret", static::REQUEST_MISSING_API_SECRET);
     }
 
     public static function throwMicrotimeInvalid($inp)
