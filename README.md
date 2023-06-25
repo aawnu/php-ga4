@@ -21,6 +21,7 @@ composer require alexwestergaard/php-ga4
 - [GDPR Notice](#gdpr-notice)
 - [Getting started](#getting-started)
   - [Data flow](#data-flow)
+  - [Layers](#layers)
 - [Events](#events)
   - [Default](#default)
   - [E-commerce](#e-commerce)
@@ -71,6 +72,23 @@ $analytics = Analytics::new(
 3. GA4 sends _ga and _gid cookies to Client/GTAG.js
 4. Server uses _ga to populate events
 
+### Layers
+
+The code is following 3 layers, that should be considered.
+
+```txt
+Analytics [
+    Event [
+        Event Parameters
+        ? Items [
+            Item Parameters
+        ]
+    ]
+    User Properties [
+        Properties {Key, Value} pairs
+    ]
+]
+```
 
 ## Events
 
