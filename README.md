@@ -67,7 +67,7 @@ $analytics = Analytics::new(
 
 ### Data flow
 
-`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `GTAG.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `GTAG.js` is using *client-side Javascript* and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
+`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `gtag.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `gtag.js` is using *client-side Javascript* and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
 
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
