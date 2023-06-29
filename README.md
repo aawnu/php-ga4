@@ -27,7 +27,7 @@ composer require alexwestergaard/php-ga4
   - [E-commerce](#e-commerce)
   - [Engagement / Gaming](#engagement--gaming)
 - [Frontend \& Backend Communication](#frontend--backend-communication)
-  - [Logging / Queues](#logging--queues)
+  - [Logging / Queue](#logging--queue)
   - [Frontend =\> Backend](#frontend--backend)
     - [Frontend](#frontend)
     - [Backend](#backend)
@@ -67,10 +67,14 @@ $analytics = Analytics::new(
 
 ### Data flow
 
+`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `gtag.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `gtag.js` is using *client-side Javascript* and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
+
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
-3. GA4 sends _ga and _gid cookies to Client/GTAG.js
-4. Server uses _ga to populate events
+3. GA4 sends _ga and _gid cookies back to Client/GTAG.js
+4. Server uses _ga (or _gid; or your unique session_id) to populate events
+
+Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will however lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too.
 
 ### Layers
 
@@ -149,10 +153,9 @@ $event->setEventPage($eventPage);
 
 This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets. There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
 
-### Logging / Queues
+### Logging / Queue
 
 ```php
-
 use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
@@ -160,33 +163,45 @@ use AlexWestergaard\PhpGa4\Item;
 
 // require vendor/autoload.php
 
-// If gtag.js, this can be the _ga or _gid cookie
-// This can be any kind of session identifier
-$session = $_COOKIE['_ga'] ?? $_COOKIE['_gid'] ?? $_COOKIE['PHPSESSID'];
+$visitors = getVisitorsAndEvents(); // pseudo function, make your own logic here
 
-// Render events grouped on time
-foreach ($groups as $time => $data) {
-    try {
-            $analytics = Analytics::new($measurementId, $apiSecret)
-                ->setClientId($session)
-                ->setTimestampMicros($time);
+foreach ($visitors as $collection) {
+    // Group of events, perhaps need logic to change from json or array to event objects
+    // Maybe its formatted well for the > ConvertHelper::parseEvents([...]) < helper
+    $groups = $collection['events'];
+    
+    // If gtag.js, this can be the _ga or _gid cookie
+    // This can be any kind of session identifier
+    // Usually derives from $_COOKIE['_ga'] or $_COOKIE['_gid'] set by GTAG.js
+    $visitor = $collection['session_id'];
+    
+    // load logged in user/visitor
+    // This can be any kind of unique identifier, readable is easier for you
+    // Just be wary not to use GDPR sensitive information
+    $user = $collection['user_id'];
 
-            // load logged in user/visitor
-            if ($auth) {
-                // This can be any kind of identifier, readable is easier for you
-                // Just be wary not to use GDPR sensitive information
-                $analytics->setUserId($auth->id);
-            }
-
-            $analytics->addUserParameter(...$data['userParameters']);
-            $analytics->addEvent(...$data['events']);
-
-            $analytics->post();
-    } catch (Exception\Ga4Exception $exception) {
-        // Handle exception
-        // Exceptions might be stacked, check: $exception->getPrevious();
+    // Render events grouped on time (max offset is 3 days from NOW)
+    foreach ($groups as $time => $data) {
+        try {
+                $analytics = Analytics::new($measurementId, $apiSecret)
+                    ->setClientId($visitor)
+                    ->setTimestampMicros($time);
+    
+                if ($user !== null) {
+                    $analytics->setUserId($user);
+                }
+    
+                $analytics->addUserParameter(...$data['userParameters']); // pseudo logic for adding user parameters
+                $analytics->addEvent(...$data['events']); // pseudo logic for adding events
+    
+                $analytics->post(); // send events to Google Analytics
+        } catch (Exception\Ga4Exception $exception) {
+            // Handle exception
+            // Exceptions might be stacked, check: $exception->getPrevious();
+        }
     }
 }
+
 ```
 
 ### Frontend => Backend
@@ -194,9 +209,9 @@ foreach ($groups as $time => $data) {
 #### Frontend
 
 ```js
-// array<array<eventName,eventParams>>
+// array< array< eventName, array<eventParams> > >
 axios.post(
-    '/api/ga4',
+    '/your-api-endpoint/ga4-event-receiver',
     [
         // Note each event is its own object inside an array as
         // this allows to pass the same event type multiple times
