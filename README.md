@@ -67,10 +67,14 @@ $analytics = Analytics::new(
 
 ### Data flow
 
+`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `GTAG.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `GTAG.js` is using *client-side Javascript* and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
+
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
-3. GA4 sends _ga and _gid cookies to Client/GTAG.js
-4. Server uses _ga to populate events
+3. GA4 sends _ga and _gid cookies back to Client/GTAG.js
+4. Server uses _ga (or _gid; or your unique session_id) to populate events
+
+Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will however lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too.
 
 ### Layers
 
