@@ -46,4 +46,11 @@ abstract class UserPropertyHelper extends IOHelper implements UserPropertyType
     {
         return new static();
     }
+
+    public static function make(string $name, $value): static
+    {
+        return static::new()
+            ->setName($name)
+            ->setValue($value);
+    }
 }
