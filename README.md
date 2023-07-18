@@ -342,7 +342,8 @@ Two important points:
 
 ## Additional information
 
-Geographic information is only available via automatic collection from gtag, Google Tag Manager, or Google Analytics for Firebase.
+- Geographic information is only available via automatic collection from gtag, Google Tag Manager, or Google Analytics for Firebase.
+- The `page_view` event works, however it's not documented in the official documentation, so do not rely on it.
 
 ## Documentation
 
