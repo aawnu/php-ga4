@@ -73,25 +73,29 @@ $analytics = Analytics::new(
 
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
-3. GA4 sends \_ga and \_gid cookies back to Client/GTAG.js
-4. Server uses \_ga (or \_gid; or your unique session_id) to populate events
+3. GA4 sends `_ga` and `_gid` cookies back to Client/GTAG.js
+4. Server uses `_ga` (or `_gid`; or your unique session_id) to populate events
 
 Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will however lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too.
 
 ### Layers
 
-The code is following 3 layers, that should be considered.
+The code is following 3 layers that should be considered; 5 layers at max.
 
 ```txt
 Analytics [
-    Event [
-        Event Parameters
-        ? Items [
-            Item Parameters
-        ]
+    Events [
+        Event {
+            Parameters
+            ? Items [
+                Item Parameters
+            ]
+        }
     ]
     User Properties [
-        Properties {Key, Value} pairs
+        Properties {
+            Key: Value
+        }
     ]
 ]
 ```
@@ -259,7 +263,8 @@ try {
 
 ## Custom Events
 
-You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\EventType` facade/interface. If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\EventHelper` and overwrite as you see fit.
+You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\EventType` facade/interface.
+If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\EventHelper` and overwrite as you see fit.
 
 ```php
 
@@ -309,17 +314,19 @@ class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\EventHelper
 
 ## Debug
 
-Measurement protocol for GA4 has a debug functionality that can be enabled with the `debug` parameter in the constructor.
+Measurement protocol for GA4 has debug functionality that can be enabled with the `debug` parameter in the Analytics constructor.
 
 ```php
 $analytics = Analytics::new(
     measurement_id: 'G-XXXXXXXX',
     api_secret: 'xYzzX_xYzzXzxyZxX',
-    debug: true
+    debug: true // default: false
 );
 ```
 
-Once set, events are sent to `https://www.google-analytics.com/debug/mp/collect` which will return a validation response such as
+When `Debug` is enabled then events are sent to `https://www.google-analytics.com/debug/mp/collect` where issues will be caught with
+[GA4Exception](https://github.com/aawnu/php-ga4/blob/master/src/Exception/Ga4Exception.php) (Be aware of `$exception->getPrevious()` stacks);
+such response will look as follows:
 
 ```json
 {
@@ -333,12 +340,12 @@ Once set, events are sent to `https://www.google-analytics.com/debug/mp/collect`
 }
 ```
 
-This library already validates that events are properly formatted and it is unlikely, you will experience any validation messages.
+Notice: This library already validates that events are properly formatted when added to analytics (`$analytics->addEvent(...)`).
 
 Two important points:
 
 - Events sent to the Validation Server will not show up in reports.
-- There is no way for events sent through measurement protocol to show up in the `debugView` in Google Analytics Admin.
+- There is no way for events sent through measurement protocol (Server Side) to show up in the `debugView` in Google Analytics Admin.
 
 ## Additional information
 

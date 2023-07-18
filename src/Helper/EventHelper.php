@@ -73,7 +73,7 @@ abstract class EventHelper extends IOHelper implements EventType
                 throw Ga4EventException::throwNameMissing();
             } elseif (strlen($name) > 40) {
                 throw Ga4EventException::throwNameTooLong();
-            } elseif (preg_match('/[^\w\d\-]/', $name)) {
+            } elseif (preg_match('/[^\w\d\-]|^\-|\-$/', $name)) {
                 throw Ga4EventException::throwNameInvalid();
             } elseif (in_array($name, EventType::RESERVED_NAMES) && !($this instanceof GtmEventType)) {
                 throw Ga4EventException::throwNameReserved($name);

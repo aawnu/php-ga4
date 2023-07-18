@@ -679,6 +679,42 @@ final class EventTest extends TestCase
         $class->toArray();
     }
 
+    public function test_throw_name_invalid_starting_line()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return '-almost-valid-name';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_INVALID);
+
+        $class->toArray();
+    }
+
+    public function test_throw_name_invalid_ending_line()
+    {
+        $mock = new class extends Event\Refund
+        {
+            public function getName(): string
+            {
+                return 'almost-valid-name-';
+            }
+        };
+
+        $class = $mock::new()->setTransactionId(1);
+
+        $this->expectException(Ga4EventException::class);
+        $this->expectExceptionCode(Ga4Exception::EVENT_NAME_INVALID);
+
+        $class->toArray();
+    }
+
     public function test_throw_name_reserved()
     {
         $mock = new class extends Event\Refund
