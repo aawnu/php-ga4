@@ -32,6 +32,7 @@ composer require alexwestergaard/php-ga4
     - [Frontend](#frontend)
     - [Backend](#backend)
 - [Custom Events](#custom-events)
+- [Debug](#debug)
 - [Documentation](#documentation)
 
 ## GDPR Notice
@@ -304,6 +305,39 @@ class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\EventHelper
     }
 }
 ```
+
+## Debug
+
+Measurement protocol for GA4 has a debug functionality that can be enabled with the `debug` parameter in the constructor.
+
+```php
+$analytics = Analytics::new(
+    measurement_id: 'G-XXXXXXXX',
+    api_secret: 'xYzzX_xYzzXzxyZxX',
+    debug: true
+);
+```
+
+Once set, events are sent to `https://www.google-analytics.com/debug/mp/collect` which will return a validation response such as
+
+```json
+{
+  "validationMessages": [
+    {
+      "fieldPath": "events",
+      "description": "Event at index: [0] has invalid name [_badEventName]. Names must start with an alphabetic character.",
+      "validationCode": "NAME_INVALID"
+    }
+  ]
+}
+```
+
+This library already validates that events are properly formatted and it is unlikely, you will experience any validation messages.
+
+Two important points:
+
+- Events sent to the Validation Server will not show up in reports.
+- There is no way for events sent through measurement protocol to show up in the `debugView` in Google Analytics Admin.
 
 ## Documentation
 
