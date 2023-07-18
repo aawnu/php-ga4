@@ -33,6 +33,7 @@ composer require alexwestergaard/php-ga4
     - [Backend](#backend)
 - [Custom Events](#custom-events)
 - [Debug](#debug)
+- [Additional information](#additional-information)
 - [Documentation](#documentation)
 
 ## GDPR Notice
@@ -338,6 +339,11 @@ Two important points:
 
 - Events sent to the Validation Server will not show up in reports.
 - There is no way for events sent through measurement protocol to show up in the `debugView` in Google Analytics Admin.
+
+## Additional information
+
+- Geographic information is only available via automatic collection from gtag, Google Tag Manager, or Google Analytics for Firebase.
+- The `page_view` event works, however it's not documented in the official documentation, so do not rely on it.
 
 ## Documentation
 
