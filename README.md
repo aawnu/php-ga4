@@ -72,8 +72,8 @@ $analytics = Analytics::new(
 
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
-3. GA4 sends _ga and _gid cookies back to Client/GTAG.js
-4. Server uses _ga (or _gid; or your unique session_id) to populate events
+3. GA4 sends \_ga and \_gid cookies back to Client/GTAG.js
+4. Server uses \_ga (or \_gid; or your unique session_id) to populate events
 
 Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will however lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too.
 
