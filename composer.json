@@ -7,6 +7,7 @@
         "php80",
         "php81",
         "php82",
+        "php83",
         "analytics",
         "analytics 4",
         "google analytics",
@@ -42,7 +43,7 @@
         }
     },
     "require": {
-        "php": ">=8.0,<8.3",
+        "php": ">=8.0,<8.4",
         "guzzlehttp/guzzle": "^7.0"
     },
     "require-dev": {
