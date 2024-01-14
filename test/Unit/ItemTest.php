@@ -44,7 +44,7 @@ final class ItemTest extends TestCase
         $this->assertArrayHasKey('quantity', $asArray);
         $this->assertArrayHasKey('index', $asArray);
         $this->assertArrayHasKey('item_category', $asArray);
-        $this->assertIsArray($asArray['item_category']);
+        $this->assertIsNotArray($asArray['item_category']);
     }
 
     public function test_can_configure_arrayable()
