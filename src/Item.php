@@ -154,6 +154,28 @@ class Item extends Helper\IOHelper implements Facade\Type\ItemType
         return $return;
     }
 
+    public function toArray(): array
+    {
+        $res = parent::toArray();
+
+        if (!isset($res['item_category'])) {
+            return $res;
+        }
+
+        $categories = $res['item_category'];
+        unset($res['item_category']);
+
+        if (is_array($categories)) {
+            foreach ($categories as $k => $val) {
+                $tag = 'item_category' . ($k > 0 ? $k + 1 : '');
+
+                $res[$tag] = $val;
+            }
+        }
+
+        return $res;
+    }
+
     public static function new(): static
     {
         return new static();

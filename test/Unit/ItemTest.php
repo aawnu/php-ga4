@@ -118,4 +118,21 @@ final class ItemTest extends TestCase
         $this->assertArrayHasKey('price', $arr);
         $this->assertArrayHasKey('quantity', $arr);
     }
+
+    public function test_can_convert_item_category_to_index_names()
+    {
+        $arr = Item::new()
+            ->setItemId("123")
+            ->addItemCategory("a")
+            ->addItemCategory("b")
+            ->addItemCategory("c")
+            ->toArray();
+
+        $this->assertArrayHasKey('item_category', $arr);
+        $this->assertArrayHasKey('item_category2', $arr);
+        $this->assertArrayHasKey('item_category3', $arr);
+
+        $this->assertArrayNotHasKey('item_category0', $arr);
+        $this->assertArrayNotHasKey('item_category1', $arr);
+    }
 }
