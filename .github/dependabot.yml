@@ -9,3 +9,12 @@ updates:
       day: "monday"
     assignees:
       - "octocat"
+      
+  # Maintain dependencies for Composer
+  - package-ecosystem: "composer"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+      day: "monday"
+    assignees:
+      - "octocat"
