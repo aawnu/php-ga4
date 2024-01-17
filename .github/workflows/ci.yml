@@ -57,7 +57,7 @@ jobs:
 
       - name: "Caching"
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: composer-default-${{ steps.composer-hash.outputs.hash }}
@@ -109,7 +109,7 @@ jobs:
 
       - name: "Caching"
         id: cache-composer
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: vendor
           key: composer-lowest-${{ steps.composer-hash.outputs.hash }}
