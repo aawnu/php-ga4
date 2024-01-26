@@ -34,7 +34,7 @@ class Ga4Exception extends \Exception implements Ga4ExceptionType
 
     public static function throwMissingMeasurementId()
     {
-        return new static("Timestamp must be numeric", static::REQUEST_MISSING_MEASUREMENT_ID);
+        return new static("Missing Measurement ID", static::REQUEST_MISSING_MEASUREMENT_ID);
     }
 
     public static function throwMissingApiSecret()
@@ -49,7 +49,7 @@ class Ga4Exception extends \Exception implements Ga4ExceptionType
 
     public static function throwMicrotimeExpired()
     {
-        return new static("Timestamp is too old, max 3 days", static::MICROTIME_EXPIRED);
+        return new static("Timestamp is too old, max 3 days from NOW", static::MICROTIME_EXPIRED);
     }
 
     public static function throwRequestTooLarge(int $kb)
