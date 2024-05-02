@@ -62,7 +62,7 @@ jobs:
           push_badge: false
 
       - name: "Git push badges to origin/image-data"
-        uses: peaceiris/actions-gh-pages@v3
+        uses: peaceiris/actions-gh-pages@v4
         with:
           publish_dir: .github
           publish_branch: image-data
