@@ -61,12 +61,6 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $return;
     }
 
-    public function setNonPersonalizedAds(bool $exclude)
-    {
-        $this->non_personalized_ads = $exclude;
-        return $this;
-    }
-
     public function setClientId(string $id)
     {
         $this->client_id = $id;
@@ -112,7 +106,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
-    public function consent()
+    public function consent(): ConsentHelper
     {
         return $this->consent;
     }
@@ -204,13 +198,20 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
      * Deprecated references
      */
 
-    /** @deprecated 1.1.1 */
-    public function allowPersonalisedAds(bool $allow)
+    /** @deprecated 1.1.9 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
+    public function setNonPersonalizedAds(bool $exclude)
     {
-        $this->setNonPersonalizedAds(!$allow);
+        $this->consent->setAdPersonalizationPermission(!$exclude);
+        return $this;
     }
 
-    /** @deprecated 1.1.1 */
+    /** @deprecated 1.1.1 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
+    public function allowPersonalisedAds(bool $allow)
+    {
+        $this->consent->setAdPersonalizationPermission($allow);
+    }
+
+    /** @deprecated 1.1.1 Please use `Analytics->setTimestampMicros()` instead */
     public function setTimestamp(int|float $microOrUnix)
     {
         $this->setTimestampMicros($microOrUnix);
