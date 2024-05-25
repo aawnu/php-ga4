@@ -130,21 +130,16 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             ["consent" => $this->consent->toArray()],
         );
 
-        $chunkUserProperties = array_chunk($this->user_properties, 25, true);
-        $this->user_properties = [];
-
         $chunkEvents = array_chunk($this->events, 25);
         $this->events = [];
 
-        $chunkMax = count($chunkEvents) > count($chunkUserProperties) ? count($chunkEvents) : count($chunkUserProperties);
-
-        for ($chunk = 0; $chunk < $chunkMax; $chunk++) {
-            $body['user_properties'] = $chunkUserProperties[$chunk] ?? [];
+        foreach ($chunkEvents as $events) {
+            $body['user_properties'] = $this->user_properties;
             if (empty($body['user_properties'])) {
                 unset($body['user_properties']);
             }
 
-            $body['events'] = $chunkEvents[$chunk] ?? [];
+            $body['events'] = $events;
             if (empty($body['events'])) {
                 unset($body['events']);
             }
