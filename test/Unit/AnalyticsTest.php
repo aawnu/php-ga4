@@ -6,6 +6,7 @@ use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\Event\Login;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
 final class AnalyticsTest extends TestCase
@@ -17,7 +18,6 @@ final class AnalyticsTest extends TestCase
             $this->prefill['api_secret'],
             $debug = true
         )
-            ->setNonPersonalizedAds($nonPersonalisedAds = true)
             ->setClientId($this->prefill['client_id'])
             ->setUserId($this->prefill['user_id'])
             ->setTimestampMicros($time = time())
@@ -27,7 +27,6 @@ final class AnalyticsTest extends TestCase
         $asArray = $analytics->toArray();
         $this->assertIsArray($asArray);
 
-        $this->assertArrayHasKey('non_personalized_ads', $asArray);
         $this->assertArrayHasKey('timestamp_micros', $asArray);
         $this->assertArrayHasKey('client_id', $asArray);
         $this->assertArrayHasKey('user_id', $asArray);
@@ -36,7 +35,6 @@ final class AnalyticsTest extends TestCase
 
         $timeAsMicro = $time * 1_000_000;
 
-        $this->assertEquals($nonPersonalisedAds, $asArray['non_personalized_ads']);
         $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
         $this->assertEquals($this->prefill['client_id'], $asArray['client_id']);
         $this->assertEquals($this->prefill['user_id'], $asArray['user_id']);
@@ -46,7 +44,7 @@ final class AnalyticsTest extends TestCase
 
     public function test_can_post_to_google()
     {
-        $this->assertNull($this->analytics->post());
+        $this->assertNull($this->analytics->addEvent(Login::new())->post());
     }
 
     public function test_converts_to_full_microtime_stamp()
@@ -68,6 +66,8 @@ final class AnalyticsTest extends TestCase
 
     public function test_exports_userproperty_to_array()
     {
+        $this->analytics->addEvent(Login::new());
+        
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');
@@ -138,7 +138,7 @@ final class AnalyticsTest extends TestCase
             $userProperty->setValue($overflowValue);
         }
 
-        $this->analytics->addUserProperty($userProperty)->post();
+        $this->analytics->addEvent(Login::new())->addUserProperty($userProperty)->post();
     }
 
     public function test_timeasmicro_throws_exceeding_max()
