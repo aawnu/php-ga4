@@ -3,7 +3,8 @@
     colors="true" stopOnFailure="false" beStrictAboutTestsThatDoNotTestAnything="true"
     beStrictAboutTodoAnnotatedTests="true" testdox="true"
     xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/10.1/phpunit.xsd"
-    cacheDirectory=".phpunit.cache" displayDetailsOnTestsThatTriggerDeprecations="true">
+    cacheDirectory=".phpunit.cache" displayDetailsOnTestsThatTriggerDeprecations="true"
+    failOnWarning="true">
     <testsuites>
         <testsuite name="Units">
             <directory>test/Unit</directory>
