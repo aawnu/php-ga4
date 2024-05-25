@@ -49,6 +49,6 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5|^10.0"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "alpha",
     "prefer-stable": true
 }
