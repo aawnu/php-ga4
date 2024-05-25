@@ -124,25 +124,23 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         $url = $this->debug ? Facade\Type\AnalyticsType::URL_DEBUG : Facade\Type\AnalyticsType::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
-        $body = $this->toArray();
-        array_merge_recursive(
+        $body = array_replace_recursive(
             $this->toArray(),
+            ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
 
         $chunkEvents = array_chunk($this->events, 25);
+
+        if (count($chunkEvents) < 1) {
+            throw Ga4Exception::throwMissingEvents();
+        }
+
+        $this->user_properties = [];
         $this->events = [];
 
         foreach ($chunkEvents as $events) {
-            $body['user_properties'] = $this->user_properties;
-            if (empty($body['user_properties'])) {
-                unset($body['user_properties']);
-            }
-
             $body['events'] = $events;
-            if (empty($body['events'])) {
-                unset($body['events']);
-            }
 
             $kB = 1024;
             if (($size = mb_strlen(json_encode($body))) > ($kB * 130)) {

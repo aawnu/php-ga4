@@ -81,4 +81,9 @@ class Ga4Exception extends \Exception implements Ga4ExceptionType
             static::REQUEST_INVALID_BODY
         );
     }
+
+    public static function throwMissingEvents()
+    {
+        return new static("Request must include at least 1 event with a name", static::REQUEST_EMPTY_EVENTLIST);
+    }
 }
