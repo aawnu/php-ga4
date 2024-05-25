@@ -2,6 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
+use AlexWestergaard\PhpGa4\Event\Login;
 use AlexWestergaard\PhpGa4\Helper\ConsentHelper;
 use AlexWestergaard\PhpGa4Test\TestCase;
 
@@ -9,6 +10,8 @@ final class ConsentTest extends TestCase
 {
     public function test_no_consent_is_empty()
     {
+        $this->analytics->addEvent(Login::new());
+
         $export = $this->analytics->consent()->toArray();
         $this->assertIsArray($export);
         $this->assertCount(0, $export);
@@ -16,6 +19,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_ad_user_data_granted()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(true);
 
         $export = $this->analytics->consent()->toArray();
@@ -28,6 +33,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_ad_personalization_granted()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdPersonalizationPermission(true);
 
         $export = $this->analytics->consent()->toArray();
@@ -40,6 +47,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_granted()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(true);
         $this->analytics->consent()->setAdPersonalizationPermission(true);
 
@@ -54,6 +63,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_granted_posted()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(true);
         $this->analytics->consent()->setAdPersonalizationPermission(true);
 
@@ -69,6 +80,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_ad_user_data_denied()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(false);
 
         $export = $this->analytics->consent()->toArray();
@@ -81,6 +94,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_ad_personalization_denied()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdPersonalizationPermission(false);
 
         $export = $this->analytics->consent()->toArray();
@@ -93,6 +108,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_denied()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(false);
         $this->analytics->consent()->setAdPersonalizationPermission(false);
 
@@ -107,6 +124,8 @@ final class ConsentTest extends TestCase
 
     public function test_consent_denied_posted()
     {
+        $this->analytics->addEvent(Login::new());
+
         $this->analytics->consent()->setAdUserDataPermission(false);
         $this->analytics->consent()->setAdPersonalizationPermission(false);
 

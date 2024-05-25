@@ -61,12 +61,6 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $return;
     }
 
-    public function setNonPersonalizedAds(bool $exclude)
-    {
-        $this->non_personalized_ads = $exclude;
-        return $this;
-    }
-
     public function setClientId(string $id)
     {
         $this->client_id = $id;
@@ -112,7 +106,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
-    public function consent()
+    public function consent(): ConsentHelper
     {
         return $this->consent;
     }
@@ -130,30 +124,23 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         $url = $this->debug ? Facade\Type\AnalyticsType::URL_DEBUG : Facade\Type\AnalyticsType::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
-        $body = $this->toArray();
-        array_merge_recursive(
+        $body = array_replace_recursive(
             $this->toArray(),
+            ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
 
-        $chunkUserProperties = array_chunk($this->user_properties, 25, true);
-        $this->user_properties = [];
-
         $chunkEvents = array_chunk($this->events, 25);
+
+        if (count($chunkEvents) < 1) {
+            throw Ga4Exception::throwMissingEvents();
+        }
+
+        $this->user_properties = [];
         $this->events = [];
 
-        $chunkMax = count($chunkEvents) > count($chunkUserProperties) ? count($chunkEvents) : count($chunkUserProperties);
-
-        for ($chunk = 0; $chunk < $chunkMax; $chunk++) {
-            $body['user_properties'] = $chunkUserProperties[$chunk] ?? [];
-            if (empty($body['user_properties'])) {
-                unset($body['user_properties']);
-            }
-
-            $body['events'] = $chunkEvents[$chunk] ?? [];
-            if (empty($body['events'])) {
-                unset($body['events']);
-            }
+        foreach ($chunkEvents as $events) {
+            $body['events'] = $events;
 
             $kB = 1024;
             if (($size = mb_strlen(json_encode($body))) > ($kB * 130)) {
@@ -204,13 +191,20 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
      * Deprecated references
      */
 
-    /** @deprecated 1.1.1 */
-    public function allowPersonalisedAds(bool $allow)
+    /** @deprecated 1.1.9 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
+    public function setNonPersonalizedAds(bool $exclude)
     {
-        $this->setNonPersonalizedAds(!$allow);
+        $this->consent->setAdPersonalizationPermission(!$exclude);
+        return $this;
     }
 
-    /** @deprecated 1.1.1 */
+    /** @deprecated 1.1.1 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
+    public function allowPersonalisedAds(bool $allow)
+    {
+        $this->consent->setAdPersonalizationPermission($allow);
+    }
+
+    /** @deprecated 1.1.1 Please use `Analytics->setTimestampMicros()` instead */
     public function setTimestamp(int|float $microOrUnix)
     {
         $this->setTimestampMicros($microOrUnix);
