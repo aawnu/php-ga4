@@ -6,6 +6,7 @@ use GuzzleHttp\Client as Guzzle;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
+use AlexWestergaard\PhpGa4\Helper\ConsentHelper;
 
 /**
  * Analytics wrapper to contain UserProperties and Events to post on Google Analytics
@@ -13,6 +14,8 @@ use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 {
     private Guzzle $guzzle;
+
+    private ConsentHelper $consent;
 
     protected null|bool $non_personalized_ads = false;
     protected null|int $timestamp_micros;
@@ -28,6 +31,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
     ) {
         parent::__construct();
         $this->guzzle = new Guzzle();
+        $this->consent = new ConsentHelper();
     }
 
     public function getParams(): array
@@ -108,6 +112,11 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
+    public function consent()
+    {
+        return $this->consent;
+    }
+
     public function post(): void
     {
         if (empty($this->measurement_id)) {
@@ -122,6 +131,10 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
         $body = $this->toArray();
+        array_merge_recursive(
+            $this->toArray(),
+            ["consent" => $this->consent->toArray()],
+        );
 
         $chunkUserProperties = array_chunk($this->user_properties, 25, true);
         $this->user_properties = [];
