@@ -70,7 +70,8 @@ $analytics = Analytics::new(
 // Read full docs here: https://support.google.com/tagmanager/answer/13802165
 $consent = $analytics->consent(); // returns a consent handler
 
-// Sets consent for sending user data from the request's events and user properties to Google for advertising purposes.
+// Sets consent for sending user data from the request's events  
+// and user properties to Google for advertising purposes.
 $consent->setAdUserDataPermission();
 $consent->getAdUserDataPermission();
 $consent->clearAdUserDataPermission();
