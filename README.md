@@ -65,11 +65,25 @@ $analytics = Analytics::new(
     api_secret: 'xYzzX_xYzzXzxyZxX',
     debug: true|false
 );
+
+// You can set CONSENT here if not done through the gtat.js
+// Read full docs here: https://support.google.com/tagmanager/answer/13802165
+$consent = $analytics->consent(); // returns a consent handler
+
+// Sets consent for sending user data from the request's events and user properties to Google for advertising purposes.
+$consent->setAdUserDataPermission();
+$consent->getAdUserDataPermission();
+$consent->clearAdUserDataPermission();
+
+// Sets consent for personalized advertising for the user.
+$consent->setAdPersonalizationPermission();
+$consent->getAdPersonalizationPermission();
+$consent->clearAdPersonalizationPermission();
 ```
 
 ### Data flow
 
-`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `gtag.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `gtag.js` is using *client-side Javascript* and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
+`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `gtag.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `gtag.js` is using _client-side Javascript_ and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
 
 1. Acquire proper GDPR Consent
 2. Client/GTAG.js sends session_start and first_visit to GA4
@@ -143,7 +157,7 @@ $event->setEventPage($eventPage);
 ![badge](https://shields.io/badge/AddShippingInfo-informational)
 ![badge](https://shields.io/badge/Purchase-informational)
 ![badge](https://shields.io/badge/Refund-informational)
-  
+
 ### Engagement / Gaming
 
 ![badge](https://shields.io/badge/EarnVirtualCurrency-informational)
@@ -175,12 +189,12 @@ foreach ($visitors as $collection) {
     // Group of events, perhaps need logic to change from json or array to event objects
     // Maybe its formatted well for the > ConvertHelper::parseEvents([...]) < helper
     $groups = $collection['events'];
-    
+
     // If gtag.js, this can be the _ga or _gid cookie
     // This can be any kind of session identifier
     // Usually derives from $_COOKIE['_ga'] or $_COOKIE['_gid'] set by GTAG.js
     $visitor = $collection['session_id'];
-    
+
     // load logged in user/visitor
     // This can be any kind of unique identifier, readable is easier for you
     // Just be wary not to use GDPR sensitive information
@@ -192,14 +206,14 @@ foreach ($visitors as $collection) {
                 $analytics = Analytics::new($measurementId, $apiSecret)
                     ->setClientId($visitor)
                     ->setTimestampMicros($time);
-    
+
                 if ($user !== null) {
                     $analytics->setUserId($user);
                 }
-    
+
                 $analytics->addUserParameter(...$data['userParameters']); // pseudo logic for adding user parameters
                 $analytics->addEvent(...$data['events']); // pseudo logic for adding events
-    
+
                 $analytics->post(); // send events to Google Analytics
         } catch (Exception\Ga4Exception $exception) {
             // Handle exception
@@ -216,27 +230,24 @@ foreach ($visitors as $collection) {
 
 ```js
 // array< array< eventName, array<eventParams> > >
-axios.post(
-    '/your-api-endpoint/ga4-event-receiver',
-    [
-        // Note each event is its own object inside an array as
-        // this allows to pass the same event type multiple times
+axios.post("/your-api-endpoint/ga4-event-receiver", [
+  // Note each event is its own object inside an array as
+  // this allows to pass the same event type multiple times
+  {
+    addToCart: {
+      currency: "EUR",
+      value: 13.37,
+      items: [
         {
-            addToCart: {
-                currency: 'EUR',
-                value: 13.37,
-                items: [
-                    {
-                        'item_id': 1,
-                        'item_name': 'Cup',
-                        'price': 13.37,
-                        'quantity': 1
-                    }
-                ]
-            }
-        }
-    ]
-)
+          item_id: 1,
+          item_name: "Cup",
+          price: 13.37,
+          quantity: 1,
+        },
+      ],
+    },
+  },
+]);
 ```
 
 #### Backend
@@ -274,7 +285,7 @@ class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\EventHelper
     // variables should be nullable as unset() will set variable as null
     protected null|mixed $my_variable;
     protected null|mixed $my_required_variable;
-    
+
     // Arrays should always be instanciated empty
     protected array $my_array = [];
 
