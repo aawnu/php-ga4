@@ -1,0 +1,11 @@
+name: Continuous Integration
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 2 1 * *
+
+jobs:
+  validate-master:
+    if: github.ref == 'refs/heads/master'
+    uses: aawnu/php-ga4/blob/master/.github/workflows/ci.yml
