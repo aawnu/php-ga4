@@ -1,0 +1,11 @@
+name: Cron | Monthly Health Check
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: 0 2 1 * *
+
+jobs:
+  validate-master:
+    if: github.ref == 'refs/heads/master'
+    uses: ./.github/workflows/ci.yml
