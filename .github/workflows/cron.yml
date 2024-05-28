@@ -8,4 +8,4 @@ on:
 jobs:
   validate-master:
     if: github.ref == 'refs/heads/master'
-    uses: aawnu/php-ga4/blob/master/.github/workflows/ci.yml
+    uses: ./.github/workflows/ci.yml@master
