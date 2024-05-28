@@ -4,8 +4,8 @@ namespace AlexWestergaard\PhpGa4\Helper;
 
 class ConsentHelper
 {
-    const GRANTED = "granted";
-    const DENIED = "denied";
+    const GRANTED = "GRANTED";
+    const DENIED = "DENIED";
 
     private ?string $ad_user_data = null;
     private ?string $ad_personalization = null;

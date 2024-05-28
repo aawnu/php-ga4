@@ -43,10 +43,11 @@ interface AnalyticsType extends IOType
     public function setNonPersonalizedAds(bool $allow);
 
     /**
-     * The user properties for the measurement
+     * The user properties for the measurement (Up to 25 custom per project, see link)
      *
      * @var user_properties
      * @param AlexWestergaard\PhpGa4\Facade\Type\UserProperty $prop
+     * @link https://support.google.com/analytics/answer/14240153
      */
     public function addUserProperty(UserPropertyType ...$props);
 
