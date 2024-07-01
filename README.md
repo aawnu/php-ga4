@@ -372,3 +372,4 @@ Two important points:
 - [Measurement Protocol: Events](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference/events)
   - [Reserved Event Names](https://developers.google.com/analytics/devguides/collection/protocol/ga4/reference?client_type=gtag#reserved_event_names)
 - [Measurement Protocol: Validation](https://developers.google.com/analytics/devguides/collection/protocol/ga4/validating-events?client_type=gtag)
+- [Measurement Protocol: User Data](https://developers.google.com/analytics/devguides/collection/ga4/uid-data)
