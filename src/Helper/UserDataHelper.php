@@ -31,7 +31,7 @@ class UserDataHelper
         ) {
             $x = explode("@", $email, 2);
             // https://support.google.com/mail/thread/125577450/gmail-and-googlemail
-            if (substr($x[1], -mb_strlen("googlemail.com")) == "googlemail.com") {
+            if ($x[1] == "googlemail.com") {
                 $x[1] = "gmail.com";
             }
             // https://gmail.googleblog.com/2008/03/2-hidden-ways-to-get-more-from-your.html
