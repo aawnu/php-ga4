@@ -36,4 +36,20 @@ final class UserDataTest extends TestCase
         $this->assertEquals($setPostalCode, $export["address"]["postal_code"], $setPostalCode);
         $this->assertEquals($setCountry, $export["address"]["country"], $setCountry);
     }
+    public function test_user_data_is_sendable()
+    {
+        $uad = $this->analytics->userdata();
+        $uad->setEmail("test@gmail.com");
+        $uad->setPhone(4500000000);
+        $uad->setFirstName("test");
+        $uad->setLastName("person");
+        $uad->setStreet("some street 11");
+        $uad->setCity("somewhere");
+        $uad->setRegion("inthere");
+        $uad->setPostalCode("1234");
+        $uad->setCountry("DK");
+
+        $this->analytics->addEvent(Login::new());
+        $this->assertNull($this->analytics->post());
+    }
 }
