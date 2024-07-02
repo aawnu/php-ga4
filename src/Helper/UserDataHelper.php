@@ -5,6 +5,7 @@ namespace AlexWestergaard\PhpGa4\Helper;
 class UserDataHelper
 {
     private array $sha256_email_address = [];
+    private array $sha256_phone_number = [];
 
     /**
      * @param string $email Valid email format
@@ -25,7 +26,7 @@ class UserDataHelper
             $x = explode("@", $email, 2);
             if (substr($x[1], -mb_strlen("googlemail.com")) == "googlemail.com") {
                 // https://support.google.com/mail/thread/125577450/gmail-and-googlemail?hl=en
-                $x[1] = "gmail.com"; // 
+                $x[1] = "gmail.com";
             }
             $x[0] = explode("+", $x[0], 2)[0]; // https://gmail.googleblog.com/2008/03/2-hidden-ways-to-get-more-from-your.html
             $x[0] = str_replace(".", "", $x[0]);
@@ -38,5 +39,27 @@ class UserDataHelper
         // Skip duplicated and append email
         $this->sha256_email_address = array_filter($this->sha256_email_address, fn ($v) => $v != $email);
         return array_push($this->sha256_email_address, $email) - 1;
+    }
+
+    /**
+     * This converst prefix and number into international approved numbers
+     * @param int $number fully international number (without dashes or plus) eg. \
+     * "+1-123-4567890" for USA or\
+     * "+44-1234-5678900" for UK or\
+     * "+45-12345678" for DK
+     * @return int Cursor of array or -1 for error
+     */
+    public function addPhone(int $number): int
+    {
+        $sNumber = (string)$number;
+        if (strlen($sNumber) < 1 || strlen($sNumber) > 15) {
+            return -1;
+        }
+
+        $sNumber = hash("sha256", "+{$sNumber}");
+
+        // Skip duplicated and append phone number
+        $this->sha256_phone_number = array_filter($this->sha256_phone_number, fn ($v) => $v != $sNumber);
+        return array_push($this->sha256_phone_number, $sNumber) - 1;
     }
 }
