@@ -16,16 +16,14 @@ class UserDataHelper
     private ?string $country = null;
 
     /**
-     * @param string $email Valid email format
-     * @return int Cursor of array or -1 for invalid
+     * @param string $email
+     * @return bool
      */
     public function setEmail(string $email): bool
     {
-        // Sanitize & Validate email
         $email = str_replace(" ", "", mb_strtolower($email));
-        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return false; // Invalid email format
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) return false;
 
-        // Google Mail Sanitizer
         // https://support.google.com/mail/answer/7436150
         if (
             substr($email, -mb_strlen("@gmail.com")) == "@gmail.com" ||
@@ -42,13 +40,12 @@ class UserDataHelper
             $email = implode("@", $x);
         }
 
-        // Sha256 encode
         $this->sha256_email_address = hash("sha256", $email);
         return true;
     }
 
     /**
-     * @param int $number fully international number (without dashes or plus) eg. \
+     * @param int $number International number (without dashes and plus) eg. \
      * "+1-123-4567890" for USA or\
      * "+44-1234-5678900" for UK or\
      * "+45-12345678" for DK
@@ -65,6 +62,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $firstName Users first name
+     * @return bool
+     */
     public function setFirstName(string $firstName): bool
     {
         if (empty($firstName)) return false;
@@ -72,6 +73,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $lastName Users last name
+     * @return bool
+     */
     public function setLastName(string $lastName): bool
     {
         if (empty($lastName)) return false;
@@ -79,6 +84,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $street Users street name
+     * @return bool
+     */
     public function setStreet(string $street): bool
     {
         if (empty($street)) return false;
@@ -86,6 +95,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $city Users city name
+     * @return bool
+     */
     public function setCity(string $city): bool
     {
         if (empty($city)) return false;
@@ -93,6 +106,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $region Users region name
+     * @return bool
+     */
     public function setRegion(string $region): bool
     {
         if (empty($region)) return false;
@@ -100,6 +117,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $postalCode Users postal code
+     * @return bool
+     */
     public function setPostalCode(string $postalCode): bool
     {
         if (empty($postalCode)) return false;
@@ -107,6 +128,10 @@ class UserDataHelper
         return true;
     }
 
+    /**
+     * @param string $iso Users country (ISO)
+     * @return bool
+     */
     public function setCountry(string $iso): bool
     {
         if (!CountryIsoHelper::valid($iso)) {
