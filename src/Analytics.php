@@ -6,7 +6,6 @@ use GuzzleHttp\Client as Guzzle;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
-use AlexWestergaard\PhpGa4\Helper\ConsentHelper;
 
 /**
  * Analytics wrapper to contain UserProperties and Events to post on Google Analytics
@@ -15,7 +14,8 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 {
     private Guzzle $guzzle;
 
-    private ConsentHelper $consent;
+    private Helper\ConsentHelper $consent;
+    private Helper\UserDataHelper $userdata;
 
     protected null|bool $non_personalized_ads = false;
     protected null|int $timestamp_micros;
@@ -31,7 +31,8 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
     ) {
         parent::__construct();
         $this->guzzle = new Guzzle();
-        $this->consent = new ConsentHelper();
+        $this->consent = new Helper\ConsentHelper();
+        $this->userdata = new Helper\UserDataHelper();
     }
 
     public function getParams(): array
@@ -106,9 +107,14 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
-    public function consent(): ConsentHelper
+    public function consent(): Helper\ConsentHelper
     {
         return $this->consent;
+    }
+
+    public function userdata(): Helper\UserDataHelper
+    {
+        return $this->userdata;
     }
 
     public function post(): void
@@ -126,9 +132,13 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
         $body = array_replace_recursive(
             $this->toArray(),
+            ["user_data" => $this->user_id != null ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
+
+        if (count($body["user_data"]) < 1) unset($body["user_data"]);
+        if (count($body["user_properties"]) < 1) unset($body["user_properties"]);
 
         $chunkEvents = array_chunk($this->events, 25);
 
@@ -136,6 +146,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             throw Ga4Exception::throwMissingEvents();
         }
 
+        $this->userdata->reset();
         $this->user_properties = [];
         $this->events = [];
 
