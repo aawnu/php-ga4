@@ -30,8 +30,8 @@ class UserDataHelper
             substr($email, -mb_strlen("@googlemail.com")) == "@googlemail.com"
         ) {
             $x = explode("@", $email, 2);
+            // https://support.google.com/mail/thread/125577450/gmail-and-googlemail
             if (substr($x[1], -mb_strlen("googlemail.com")) == "googlemail.com") {
-                // https://support.google.com/mail/thread/125577450/gmail-and-googlemail?hl=en
                 $x[1] = "gmail.com";
             }
             // https://gmail.googleblog.com/2008/03/2-hidden-ways-to-get-more-from-your.html
@@ -45,7 +45,7 @@ class UserDataHelper
     }
 
     /**
-     * @param int $number International number (without dashes and plus) eg. \
+     * @param int $number International number (without prefix "+" and dashes) eg. \
      * "+1-123-4567890" for USA or\
      * "+44-1234-5678900" for UK or\
      * "+45-12345678" for DK
