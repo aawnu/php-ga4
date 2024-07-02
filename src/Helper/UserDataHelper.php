@@ -42,15 +42,15 @@ class UserDataHelper
             substr($email, -mb_strlen("@gmail.com")) == "@gmail.com" ||
             substr($email, -mb_strlen("@googlemail.com")) == "@googlemail.com"
         ) {
-            $x = explode("@", $email, 2);
+            [$addr, $host] = explode("@", $email, 2);
             // https://support.google.com/mail/thread/125577450/gmail-and-googlemail
-            if ($x[1] == "googlemail.com") {
-                $x[1] = "gmail.com";
+            if ($host == "googlemail.com") {
+                $host = "gmail.com";
             }
             // https://gmail.googleblog.com/2008/03/2-hidden-ways-to-get-more-from-your.html
-            $x[0] = explode("+", $x[0], 2)[0];
-            $x[0] = str_replace(".", "", $x[0]);
-            $email = implode("@", $x);
+            $addr = explode("+", $addr, 2)[0];
+            $addr = str_replace(".", "", $addr);
+            $email = implode("@", [trim($addr), trim($host)]);
         }
 
         $this->sha256_email_address = hash("sha256", $email);
