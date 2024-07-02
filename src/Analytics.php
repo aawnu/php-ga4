@@ -132,9 +132,13 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
         $body = array_replace_recursive(
             $this->toArray(),
+            ["user_data" => $this->user_id != null ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
+
+        if (count($body["user_data"]) < 1) unset($body["user_data"]);
+        if (count($body["user_properties"]) < 1) unset($body["user_properties"]);
 
         $chunkEvents = array_chunk($this->events, 25);
 
@@ -142,6 +146,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             throw Ga4Exception::throwMissingEvents();
         }
 
+        $this->userdata->reset();
         $this->user_properties = [];
         $this->events = [];
 

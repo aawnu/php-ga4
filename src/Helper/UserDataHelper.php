@@ -15,6 +15,19 @@ class UserDataHelper
     private ?string $postal_code = null;
     private ?string $country = null;
 
+    public function reset(): void
+    {
+        $this->sha256_email_address = null;
+        $this->sha256_phone_number = null;
+        $this->sha256_first_name = null;
+        $this->sha256_last_name = null;
+        $this->sha256_street = null;
+        $this->city = null;
+        $this->region = null;
+        $this->postal_code = null;
+        $this->country = null;
+    }
+
     /**
      * @param string $email
      * @return bool
