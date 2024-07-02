@@ -49,7 +49,7 @@ class UserDataHelper
      * "+1-123-4567890" for USA or\
      * "+44-1234-5678900" for UK or\
      * "+45-12345678" for DK
-     * @return boolean
+     * @return bool
      */
     public function setPhone(int $number): bool
     {
@@ -139,7 +139,7 @@ class UserDataHelper
         }
 
         $this->country = mb_strtoupper(trim($iso));
-        return false;
+        return true;
     }
 
     public function toArray(): array
