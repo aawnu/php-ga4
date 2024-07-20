@@ -20,7 +20,7 @@
     ],
     "homepage": "https://github.com/aawnu/php-ga4",
     "type": "library",
-    "license": "The Unlicense",
+    "license": "Unlicense",
     "authors": [
         {
             "name": "Alex Ahlgreen Westergaard",
