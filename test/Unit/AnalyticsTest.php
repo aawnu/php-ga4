@@ -11,6 +11,64 @@ use AlexWestergaard\PhpGa4Test\TestCase;
 
 final class AnalyticsTest extends TestCase
 {
+    public function test_can_configure_only_client_id_and_export()
+    {
+        $analytics = Analytics::new(
+            $this->prefill['measurement_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setClientId($this->prefill['client_id'])
+            ->setTimestampMicros($time = time())
+            ->addEvent($event = Event\JoinGroup::fromArray(['group_id' => 1]))
+            ->addUserProperty($userProperty = UserProperty::fromArray(['name' => 'test', 'value' => 'testvalue']));
+
+        $asArray = $analytics->toArray();
+        $this->assertIsArray($asArray);
+
+        $this->assertArrayHasKey('timestamp_micros', $asArray);
+        $this->assertArrayHasKey('client_id', $asArray);
+        $this->assertArrayNotHasKey('user_id', $asArray);
+        $this->assertArrayHasKey('user_properties', $asArray);
+        $this->assertArrayHasKey('events', $asArray);
+
+        $timeAsMicro = $time * 1_000_000;
+
+        $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
+        $this->assertEquals($this->prefill['client_id'], $asArray['client_id']);
+        $this->assertEquals($userProperty->toArray(), $asArray['user_properties']);
+        $this->assertEquals([$event->toArray()], $asArray['events']);
+    }
+
+    public function test_can_configure_only_user_id_and_export()
+    {
+        $analytics = Analytics::new(
+            $this->prefill['measurement_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setUserId($this->prefill['user_id'])
+            ->setTimestampMicros($time = time())
+            ->addEvent($event = Event\JoinGroup::fromArray(['group_id' => 1]))
+            ->addUserProperty($userProperty = UserProperty::fromArray(['name' => 'test', 'value' => 'testvalue']));
+
+        $asArray = $analytics->toArray();
+        $this->assertIsArray($asArray);
+
+        $this->assertArrayHasKey('timestamp_micros', $asArray);
+        $this->assertArrayNotHasKey('client_id', $asArray);
+        $this->assertArrayHasKey('user_id', $asArray);
+        $this->assertArrayHasKey('user_properties', $asArray);
+        $this->assertArrayHasKey('events', $asArray);
+
+        $timeAsMicro = $time * 1_000_000;
+
+        $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
+        $this->assertEquals($this->prefill['user_id'], $asArray['user_id']);
+        $this->assertEquals($userProperty->toArray(), $asArray['user_properties']);
+        $this->assertEquals([$event->toArray()], $asArray['events']);
+    }
+
     public function test_can_configure_and_export()
     {
         $analytics = Analytics::new(
@@ -42,6 +100,19 @@ final class AnalyticsTest extends TestCase
         $this->assertEquals([$event->toArray()], $asArray['events']);
     }
 
+    public function test_can_post_only_client_id_to_google()
+    {
+        $this->assertNull(
+            Analytics::new(
+                $this->prefill['measurement_id'],
+                $this->prefill['api_secret'],
+                $debug = true
+            )
+                ->setClientId($this->prefill['user_id'])
+                ->addEvent(Login::new())->post()
+        );
+    }
+
     public function test_can_post_to_google()
     {
         $this->assertNull($this->analytics->addEvent(Login::new())->post());
@@ -67,7 +138,7 @@ final class AnalyticsTest extends TestCase
     public function test_exports_userproperty_to_array()
     {
         $this->analytics->addEvent(Login::new());
-        
+
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
             ->setValue('premium');

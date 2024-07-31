@@ -132,7 +132,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
         $body = array_replace_recursive(
             $this->toArray(),
-            ["user_data" => $this->user_id != null ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
+            ["user_data" => !empty($this->user_id) ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
