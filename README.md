@@ -1,17 +1,10 @@
-_Package_
-
 [![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=blue&label=stable%20release)](https://github.com/aawnu/php-ga4/releases/latest)
-[![License](https://img.shields.io/packagist/l/alexwestergaard/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/blob/master/LICENSE)
-[![PHPVersion](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue)](https://www.php.net/releases)
-[![Size](https://img.shields.io/github/languages/code-size/aawnu/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/releases/latest)
+[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=yellow&include_prereleases&label=latest%20release)](https://github.com/aawnu/php-ga4/releases)
 ![Code Coverage Badge](https://raw.githubusercontent.com/AlexWestergaard/php-ga4/image-data/coverage.svg)
-
-_Development_
-
-[![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=red&include_prereleases&label=latest%20release)](https://github.com/aawnu/php-ga4/releases)
+[![PHPVersion](https://img.shields.io/packagist/php-v/alexwestergaard/php-ga4?color=blue)](https://www.php.net/releases)
+[![Size](https://img.shields.io/github/languages/code-size/aawnu/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/releases/latest) [![Contributors](https://img.shields.io/github/contributors/aawnu/php-ga4?color=blue)](https://github.com/aawnu/php-ga4/graphs/contributors)
 [![Issues](https://img.shields.io/github/issues-raw/alexwestergaard/php-ga4?color=red&label=issues)](https://github.com/aawnu/php-ga4/issues)
 [![Pulls](https://img.shields.io/github/issues-pr/aawnu/php-ga4?color=red&label=pulls)](https://github.com/aawnu/php-ga4/pulls)
-[![Contributors](https://img.shields.io/github/contributors/aawnu/php-ga4?color=red)](https://github.com/aawnu/php-ga4/graphs/contributors)
 [![LastCommit](https://img.shields.io/github/last-commit/aawnu/php-ga4/master?color=red)](https://github.com/aawnu/php-ga4/commits)
 
 ```sh
@@ -36,26 +29,21 @@ composer require alexwestergaard/php-ga4
 - [Additional information](#additional-information)
 - [Documentation](#documentation)
 
-## GDPR Notice
+## Europe - GDPR Notice
 
-European Union have noticed that default setup of Google Analytics does not comply with GDPR as data is sent unrestricted to an american service possibly outside of Europe.
-This includes the use of `gtag.js` as JavaScript pushes the request from visitors device including their IP-Address.
-
-Server Side Tracking, however, does only send information specified inside the body and about your server.
-
-Relying solely on Google Analytics 4 Events - that is not pushed through the `gtag.js` script - can be scraped of GDPR-related information.
+The European Union have notified that Google Analytics does not comply with GDPR by default. This is because the frontend Client sends visitor details like their IP Address and device information with events. This can be avoided with a middle-man server inside the European Region.
 
 - Source: Europe, GDPR, Schrems II
-- https://support.google.com/analytics/answer/9019185?hl=en
+- Options: [Privacy controls in Google Analytics](https://support.google.com/analytics/answer/9019185?hl=en)
 
 ## Getting started
 
-To setup Analytics you need a Measurement ID and API Secret.
+Setup requires a **Measurement ID** and **API Secret**. Go to Administrator (Bottom left) -> Account -> Data Streams -> {Your Stream}. Here you should find Measurement ID at top and "Api Secrets for Measurement Protocol" a little down the page, where you can create yourself an `API secret`.
 
 Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.  
 Here you will find `Measurement-ID` at top from and further down `Api Secrets for Measurement Protocol`, in there you can create yourself an `API Secret`.
 
-**PLEASE** note that Google Analytics will look out from traffic gathered by the `gtag.js` library, as Server Side Events are supposed to supplement the frontend through its `_ga`/`_gid` cookie sessions.
+Once you have obtained the credentials, you can initialise the Analytics like this:
 
 ```php
 use AlexWestergaard\PhpGa4\Analytics;
@@ -63,39 +51,23 @@ use AlexWestergaard\PhpGa4\Analytics;
 $analytics = Analytics::new(
     measurement_id: 'G-XXXXXXXX',
     api_secret: 'xYzzX_xYzzXzxyZxX',
-    debug: true|false
+    debug: true|false #Default: False
 );
-
-// You can set CONSENT here if not done through the gtat.js
-// Read full docs here: https://support.google.com/tagmanager/answer/13802165
-$consent = $analytics->consent(); // returns a consent handler
-
-// Sets consent for sending user data from the request's events  
-// and user properties to Google for advertising purposes.
-$consent->setAdUserDataPermission();
-$consent->getAdUserDataPermission();
-$consent->clearAdUserDataPermission();
-
-// Sets consent for personalized advertising for the user.
-$consent->setAdPersonalizationPermission();
-$consent->getAdPersonalizationPermission();
-$consent->clearAdPersonalizationPermission();
 ```
 
 ### Data flow
 
-`session_id` > Google Analytics does not specify a required type of **session or user id**. You are free to use any kind of **unique identifier** you want; the catch, however, is that Google Analytics populates some internal data with `gtag.js`, that is then referenced to their `_ga` cookie session id. Just be aware that `gtag.js` is using _client-side Javascript_ and can therefore have some **GDPR complications** as requests back to Google Analytics contains client information; such as their IP Address.
+Server Side Tagging is not supposed to replace the frontend Client and session initiation should happen through the `gtag.js` Client. The default flow is supposed to happen as follows:
 
-1. Acquire proper GDPR Consent
-2. Client/GTAG.js sends session_start and first_visit to GA4
-3. GA4 sends `_ga` and `_gid` cookies back to Client/GTAG.js
-4. Server uses `_ga` (or `_gid`; or your unique session_id) to populate events
+1. Obtain proper GDPR Consent
+2. Client/GTAG.js initiates session with Google Analytics
+3. Google Analytics sends `_ga` and `_gid` cookies back to Client/GTAG.js
+4. Server uses `_ga` (or `_gid`) to send/populate events
+   - Eg. GenerateLead, Purchase, Refund and other backend handled events.
 
-Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will however lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too.
+Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will, however, lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too. You can replace the `_ga` and `_gid` sessions with your own uniquely generated id.
 
-### Layers
-
-The code is following 3 layers that should be considered; 5 layers at max.
+All requests should follow this structure and contain at least 1 event for Google Analytics to accept it.
 
 ```txt
 Analytics [
@@ -112,6 +84,12 @@ Analytics [
             Key: Value
         }
     ]
+    ? Consent {
+      Key: Value
+    }
+    ? User Data {
+      Key: Value
+    }
 ]
 ```
 
