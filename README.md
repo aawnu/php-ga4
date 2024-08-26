@@ -11,24 +11,6 @@
 composer require alexwestergaard/php-ga4
 ```
 
-- [GDPR Notice](#gdpr-notice)
-- [Getting started](#getting-started)
-  - [Data flow](#data-flow)
-  - [Layers](#layers)
-- [Events](#events)
-  - [Default](#default)
-  - [E-commerce](#e-commerce)
-  - [Engagement / Gaming](#engagement--gaming)
-- [Frontend \& Backend Communication](#frontend--backend-communication)
-  - [Logging / Queue](#logging--queue)
-  - [Frontend =\> Backend](#frontend--backend)
-    - [Frontend](#frontend)
-    - [Backend](#backend)
-- [Custom Events](#custom-events)
-- [Debug](#debug)
-- [Additional information](#additional-information)
-- [Documentation](#documentation)
-
 ## Europe - GDPR Notice
 
 The European Union have notified that Google Analytics does not comply with GDPR by default. This is because the frontend Client sends visitor details like their IP Address and device information with events. This can be avoided with a middle-man server inside the European Region.
