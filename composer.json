@@ -1,6 +1,6 @@
 {
     "name": "alexwestergaard/php-ga4",
-    "description": "PHP Wrapper for Google Analytics 4 with Server Side Tracking",
+    "description": "PHP Library for Google Analytics 4 with Server Side Tagging",
     "keywords": [
         "php",
         "php8",
