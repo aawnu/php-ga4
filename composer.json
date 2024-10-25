@@ -1,55 +1,37 @@
 {
     "name": "tilted-pixel/php-ga4",
-    "description": "PHP Library for Google Analytics 4 with Server Side Tagging",
+    "description": "PHP Wrapper for Google Analytics 4 Events with Server Side Tracking",
     "keywords": [
-        "php",
-        "php8",
-        "php80",
-        "php81",
-        "php82",
-        "php83",
-        "php84",
-        "analytics",
-        "analytics 4",
+        "anayltics",
         "google analytics",
-        "google analytics 4",
-        "server side tracking",
-        "tracking",
         "ga4",
-        "sst",
-        "gdpr"
+        "server side tracking",
+        "sst"
     ],
-    "homepage": "https://github.com/tilted-pixel/php-ga4",
+    "homepage": "https://github.com/aawnu/php-ga4",
     "type": "library",
-    "license": "Unlicense",
+    "license": "MIT",
     "authors": [
         {
-            "name": "Alex Ahlgreen Westergaard",
+            "name": "Alex Westergaard",
             "homepage": "https://aaw.nu",
             "role": "Developer"
         }
     ],
     "support": {
-        "issues": "https://github.com/tilted-pixel/php-ga4/issues",
-        "source": "https://github.com/tilted-pixel/php-ga4/releases/latest"
+        "issues": "https://github.com/aawnu/php-ga4/issues",
+        "source": "https://github.com/aawnu/php-ga4/releases/latest"
     },
     "autoload": {
         "psr-4": {
             "AlexWestergaard\\PhpGa4\\": "src/"
         }
     },
-    "autoload-dev": {
-        "psr-4": {
-            "AlexWestergaard\\PhpGa4Test\\": "test/"
-        }
-    },
     "require": {
-        "php": ">=8.0,<8.5",
-        "guzzlehttp/guzzle": "^7.0"
+        "php": "^7.0|^8.0",
+        "guzzlehttp/guzzle": "^6.0|^7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.5|^10.0"
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+        "phpunit/phpunit": "^6.0|^7.0|^8.0|^9.0"
+    }
 }
