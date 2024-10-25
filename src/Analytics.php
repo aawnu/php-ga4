@@ -21,6 +21,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
     protected null|int $timestamp_micros;
     protected null|string $client_id;
     protected null|string $user_id;
+    protected null|string $session_id;
     protected array $user_properties = [];
     protected array $events = [];
 
@@ -42,6 +43,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             'timestamp_micros',
             'client_id',
             'user_id',
+            'session_id',
             'user_properties',
             'events',
         ];
@@ -71,6 +73,12 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
     public function setUserId(string $id)
     {
         $this->user_id = $id;
+        return $this;
+    }
+
+    public function setSessionId(string $id)
+    {
+        $this->session_id = $id;
         return $this;
     }
 
@@ -136,6 +144,10 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
+
+        if (!empty($this->session_id)) {
+            $body["session_id"] = $this->session_id;
+        }
 
         if (count($body["user_data"]) < 1) unset($body["user_data"]);
         if (count($body["user_properties"]) < 1) unset($body["user_properties"]);
