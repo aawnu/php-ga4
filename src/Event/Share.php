@@ -2,14 +2,14 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class Share extends EventHelper implements Facade\Group\ShareFacade
+class Share extends Model\Event implements Facade\Share
 {
-    protected null|string $method;
-    protected null|string $content_type;
-    protected null|string $item_id;
+    protected $method;
+    protected $content_type;
+    protected $item_id;
 
     public function getName(): string
     {
@@ -30,19 +30,19 @@ class Share extends EventHelper implements Facade\Group\ShareFacade
         return [];
     }
 
-    public function setMethod(null|string $method)
+    public function setMethod(string $method)
     {
         $this->method = $method;
         return $this;
     }
 
-    public function setContentType(null|string $type)
+    public function setContentType(string $type)
     {
         $this->content_type = $type;
         return $this;
     }
 
-    public function setItemId(null|string $id)
+    public function setItemId(string $id)
     {
         $this->item_id = $id;
         return $this;

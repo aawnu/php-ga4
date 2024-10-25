@@ -2,13 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class SelectContent extends EventHelper implements Facade\Group\SelectContentFacade
+class SelectContent extends Model\Event implements Facade\SelectContent
 {
-    protected null|string $content_type;
-    protected null|string $item_id;
+    protected $content_type;
+    protected $item_id = [];
 
     public function getName(): string
     {
@@ -28,13 +28,13 @@ class SelectContent extends EventHelper implements Facade\Group\SelectContentFac
         return [];
     }
 
-    public function setContentType(null|string $type)
+    public function setContentType(string $type)
     {
         $this->content_type = $type;
         return $this;
     }
 
-    public function setItemId(null|string $id)
+    public function setItemId(string $id)
     {
         $this->item_id = $id;
         return $this;

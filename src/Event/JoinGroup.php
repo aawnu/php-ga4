@@ -2,12 +2,12 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class JoinGroup extends EventHelper implements Facade\Group\JoinGroupFacade
+class JoinGroup extends Model\Event implements Facade\JoinGroup
 {
-    protected null|string $group_id;
+    protected $group_id;
 
     public function getName(): string
     {
@@ -26,7 +26,7 @@ class JoinGroup extends EventHelper implements Facade\Group\JoinGroupFacade
         return [];
     }
 
-    public function setGroupId(null|string $id)
+    public function setGroupId(string $id)
     {
         $this->group_id = $id;
         return $this;

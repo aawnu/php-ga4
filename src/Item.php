@@ -2,29 +2,29 @@
 
 namespace AlexWestergaard\PhpGa4;
 
-use AlexWestergaard\PhpGa4\Helper;
+use AlexWestergaard\PhpGa4\Model;
 use AlexWestergaard\PhpGa4\Facade;
 
 /**
- * Structured items for events that touch products
+ * @requires One of item_id or item_name must be present and valid
  */
-class Item extends Helper\IOHelper implements Facade\Type\ItemType
+class Item extends Model\ToArray implements Facade\Export, Facade\Item
 {
-    protected null|string $item_id;
-    protected null|string $item_name;
-    protected null|string $affiliation;
-    protected null|string $coupon;
-    protected null|string $currency;
-    protected null|string $item_brand;
-    protected null|string $item_list_id;
-    protected null|string $item_list_name;
-    protected null|string $item_variant;
-    protected null|string $location_id;
-    protected null|int|float $discount;
-    protected null|int|float $price;
-    protected null|int $quantity;
-    protected null|int $index;
-    protected array $item_category = [];
+    protected $item_id;
+    protected $item_name;
+    protected $affiliation;
+    protected $coupon;
+    protected $currency;
+    protected $discount;
+    protected $index;
+    protected $item_brand;
+    protected $item_category = [];
+    protected $item_list_id;
+    protected $item_list_name;
+    protected $item_variant;
+    protected $location_id;
+    protected $price;
+    protected $quantity;
 
     public function setItemId(string $id)
     {
@@ -56,8 +56,15 @@ class Item extends Helper\IOHelper implements Facade\Type\ItemType
         return $this;
     }
 
-    public function setDiscount(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setDiscount($amount)
     {
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setDiscount value must be numeric");
+        }
+
         $this->discount = $amount;
         return $this;
     }
@@ -104,8 +111,15 @@ class Item extends Helper\IOHelper implements Facade\Type\ItemType
         return $this;
     }
 
-    public function setPrice(int|float $amount)
+    /**
+     * @param int|float $amount
+     */
+    public function setPrice($amount)
     {
+        if (!is_numeric($amount)) {
+            throw new GA4Exception("setPrice value must be numeric");
+        }
+
         $this->price = 0 + $amount;
         return $this;
     }
@@ -154,29 +168,53 @@ class Item extends Helper\IOHelper implements Facade\Type\ItemType
         return $return;
     }
 
-    public function toArray(): array
+    public static function fromArray(array $params = [])
     {
-        $res = parent::toArray();
+        $item = static::new();
 
-        if (!isset($res['item_category'])) {
-            return $res;
-        }
+        $insertables = array_unique(array_merge($item->getParams(), $item->getRequiredParams()));
 
-        $categories = $res['item_category'];
-        unset($res['item_category']);
+        foreach ($insertables as $insertable) {
+            if (!in_array($insertable, array_keys($params)) || is_null($param = $params[$insertable])) {
+                continue;
+            }
 
-        if (is_array($categories)) {
-            foreach ($categories as $k => $val) {
-                $tag = 'item_category' . ($k > 0 ? $k + 1 : '');
+            $callableName = implode('', array_map('ucfirst', explode('_', $insertable)));
 
-                $res[$tag] = $val;
+            if (method_exists($item, ($method = 'add' . $callableName))) {
+                $item->$method($param);
+            } elseif (method_exists($item, ($method = 'set' . $callableName))) {
+                $item->$method($param);
             }
         }
 
-        return $res;
+        return $item;
     }
 
-    public static function new(): static
+    /**
+     * @param GA4Exception $childErrors
+     */
+    public function toArray(bool $isParent = false, $childErrors = null): array
+    {
+        if (!($childErrors instanceof GA4Exception) && $childErrors !== null) {
+            throw new GA4Exception("$childErrors is neither NULL of instance of GA4Exception");
+        }
+        $return = parent::toArray($isParent, $childErrors);
+
+        if (isset($return['item_category'])) {
+            $cats = $return['item_category'];
+            unset($return['item_category']);
+
+            foreach ($cats as $i => $v) {
+                $id = $i > 0 ? $i + 1 : '';
+                $return['item_category' . $id] = $v;
+            }
+        }
+
+        return $return;
+    }
+
+    public static function new()
     {
         return new static();
     }

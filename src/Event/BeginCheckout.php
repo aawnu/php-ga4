@@ -2,15 +2,17 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Item;
 
-class BeginCheckout extends EventHelper implements Facade\Group\BeginCheckoutFacade
+class BeginCheckout extends Model\Event implements Facade\BeginCheckout
 {
-    protected null|string $currency;
-    protected null|int|float $value;
-    protected null|string $coupon;
-    protected array $items = [];
+    protected $currency;
+    protected $value;
+    protected $coupon;
+    protected $items = [];
 
     public function getName(): string
     {
@@ -45,32 +47,34 @@ class BeginCheckout extends EventHelper implements Facade\Group\BeginCheckoutFac
         return $return;
     }
 
-    public function setCurrency(null|string $iso)
+    public function setCurrency(string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setValue(null|int|float $val)
+    /**
+     * @param int|float $val
+     */
+    public function setValue($val)
     {
+        if (!is_numeric($val)) {
+            throw new GA4Exception("setValue value must be numeric");
+        }
+
         $this->value = $val;
         return $this;
     }
 
-    public function setCoupon(null|string $code)
+    public function setCoupon(string $code)
     {
-        $this->coupon = $code;
+        $this->coupon = 0 + $code;
         return $this;
     }
 
-    public function addItem(Facade\Type\ItemType $item)
+    public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
         return $this;
-    }
-
-    public function resetItems()
-    {
-        $this->items = [];
     }
 }

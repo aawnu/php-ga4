@@ -2,12 +2,12 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class UnlockAchievement extends EventHelper implements Facade\Group\UnlockAchievementFacade
+class UnlockAchievement extends Model\Event implements Facade\UnlockAchievement
 {
-    protected null|string $achievement_id;
+    protected $achievement_id;
 
     public function getName(): string
     {
@@ -28,7 +28,7 @@ class UnlockAchievement extends EventHelper implements Facade\Group\UnlockAchiev
         ];
     }
 
-    public function setAchievementId(null|string $id)
+    public function setAchievementId(string $id)
     {
         $this->achievement_id = $id;
         return $this;

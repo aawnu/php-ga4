@@ -2,15 +2,15 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Item;
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Item;
 
-class SelectItem extends EventHelper implements Facade\Group\SelectItemFacade
+class SelectItem extends Model\Event implements Facade\SelectItem
 {
-    protected null|string $item_list_id;
-    protected null|string $item_list_name;
-    protected array $items;
+    protected $item_list_id;
+    protected $item_list_name;
+    protected $items = [];
 
     public function getName(): string
     {
@@ -31,13 +31,13 @@ class SelectItem extends EventHelper implements Facade\Group\SelectItemFacade
         return ['items'];
     }
 
-    public function setItemListId(null|string $id)
+    public function setItemListId(string $id)
     {
         $this->item_list_id = $id;
         return $this;
     }
 
-    public function setItemListName(null|string $name)
+    public function setItemListName(string $name)
     {
         $this->item_list_name = $name;
         return $this;

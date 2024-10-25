@@ -2,19 +2,21 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Item;
 
-class Purchase extends EventHelper implements Facade\Group\PurchaseFacade
+class Purchase extends Model\Event implements Facade\Purchase
 {
-    protected null|string $currency;
-    protected null|string $transaction_id;
-    protected null|int|float $value;
-    protected null|string $affiliation;
-    protected null|string $coupon;
-    protected null|int|float $shipping;
-    protected null|int|float $tax;
-    protected array $items = [];
+    protected $currency;
+    protected $transaction_id;
+    protected $value;
+    protected $affiliation;
+    protected $coupon;
+    protected $shipping;
+    protected $tax;
+    protected $items = [];
 
     public function getName(): string
     {
@@ -54,56 +56,58 @@ class Purchase extends EventHelper implements Facade\Group\PurchaseFacade
         return $return;
     }
 
-    public function setCurrency(null|string $iso)
+    public function setCurrency(string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setTransactionId(null|string $id)
+    public function setTransactionId(string $id)
     {
         $this->transaction_id = $id;
         return $this;
     }
 
-    public function setValue(null|int|float $val)
+    /**
+     * @param int|float $val
+     */
+    public function setValue($val)
     {
+        if (!is_numeric($val)) {
+            throw new GA4Exception("setValue value must be numeric");
+        }
+
         $this->value = $val;
         return $this;
     }
 
-    public function setAffiliation(null|string $affiliation)
+    public function setAffiliation(string $affiliation)
     {
         $this->affiliation = $affiliation;
         return $this;
     }
 
-    public function setCoupon(null|string $code)
+    public function setCoupon(string $code)
     {
         $this->coupon = $code;
         return $this;
     }
 
-    public function setShipping(null|int|float $cost)
+    public function setShipping(float $cost)
     {
-        $this->shipping = $cost;
+        $this->shipping = 0 + $cost;
         return $this;
     }
 
-    public function setTax(null|int|float $tax)
+    public function setTax(float $tax)
     {
         $this->tax = $tax;
         return $this;
     }
 
-    public function addItem(Facade\Type\ItemType $item)
+    public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
         return $this;
-    }
-
-    public function resetItems()
-    {
-        $this->items = [];
     }
 }

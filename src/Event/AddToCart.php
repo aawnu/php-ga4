@@ -2,14 +2,16 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\GA4Exception;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
+use AlexWestergaard\PhpGa4\Item;
 
-class AddToCart extends EventHelper implements Facade\Group\AddToCartFacade
+class AddToCart extends Model\Event implements Facade\AddToCart
 {
-    protected null|string $currency;
-    protected null|int|float $value;
-    protected array $items = [];
+    protected $currency;
+    protected $value;
+    protected $items = [];
 
     public function getName(): string
     {
@@ -43,26 +45,28 @@ class AddToCart extends EventHelper implements Facade\Group\AddToCartFacade
         return $return;
     }
 
-    public function setCurrency(null|string $iso)
+    public function setCurrency(string $iso)
     {
         $this->currency = $iso;
         return $this;
     }
 
-    public function setValue(null|int|float $val)
+    /**
+     * @param int|float $val
+     */
+    public function setValue($val)
     {
-        $this->value = $val;
+        if (!is_numeric($val)) {
+            throw new GA4Exception("setValue value must be numeric");
+        }
+
+        $this->value = 0 + $val;
         return $this;
     }
 
-    public function addItem(Facade\Type\ItemType $item)
+    public function addItem(Item $item)
     {
         $this->items[] = $item->toArray();
         return $this;
-    }
-
-    public function resetItems()
-    {
-        $this->items = [];
     }
 }

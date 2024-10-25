@@ -2,12 +2,12 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class Signup extends EventHelper implements Facade\Group\SignUpFacade
+class Signup extends Model\Event implements Facade\SignUp
 {
-    protected null|string $method;
+    protected $method;
 
     public function getName(): string
     {
@@ -26,7 +26,7 @@ class Signup extends EventHelper implements Facade\Group\SignUpFacade
         return [];
     }
 
-    public function setMethod(null|string $method)
+    public function setMethod(string $method)
     {
         $this->method = $method;
         return $this;

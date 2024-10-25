@@ -2,13 +2,13 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class EarnVirtualCurrency extends EventHelper implements Facade\Group\EarnVirtualCurrencyFacade
+class EarnVirtualCurrency extends Model\Event implements Facade\EarnVirtualCurrency
 {
-    protected null|string $virtual_currency_name;
-    protected null|int|float $value;
+    protected $virtual_currency_name;
+    protected $value;
 
     public function getName(): string
     {
@@ -28,13 +28,13 @@ class EarnVirtualCurrency extends EventHelper implements Facade\Group\EarnVirtua
         return [];
     }
     
-    public function setVirtualCurrencyName(null|string $name)
+    public function setVirtualCurrencyName(string $name)
     {
         $this->virtual_currency_name = $name;
         return $this;
     }
     
-    public function setValue(null|int|float $num)
+    public function setValue(int $num)
     {
         $this->value = $num;
         return $this;

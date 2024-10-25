@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\Model;
 
-class TutorialBegin extends EventHelper
+class TutorialBegin extends Model\Event
 {
 
     public function getName(): string

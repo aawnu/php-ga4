@@ -2,12 +2,12 @@
 
 namespace AlexWestergaard\PhpGa4\Event;
 
-use AlexWestergaard\PhpGa4\Helper\EventHelper;
 use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Model;
 
-class Search extends EventHelper implements Facade\Group\SearchFacade
+class Search extends Model\Event implements Facade\Search
 {
-    protected null|string $search_term;
+    protected $search_term;
 
     public function getName(): string
     {
@@ -26,7 +26,7 @@ class Search extends EventHelper implements Facade\Group\SearchFacade
         return [];
     }
 
-    public function setSearchTerm(null|string $term)
+    public function setSearchTerm(string $term)
     {
         $this->search_term = $term;
         return $this;
