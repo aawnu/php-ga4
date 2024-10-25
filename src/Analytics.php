@@ -82,6 +82,21 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
+    public function getClientId(): string
+    {
+        return $this->client_id;
+    }
+
+    public function getUserId(): string
+    {
+        return $this->user_id;
+    }
+
+    public function getSessionId(): string
+    {
+        return $this->session_id;
+    }
+
     public function setTimestampMicros(int|float $microOrUnix)
     {
         $min = Helper\ConvertHelper::timeAsMicro(strtotime('-3 days') + 10);
