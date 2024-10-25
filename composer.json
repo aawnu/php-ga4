@@ -1,5 +1,5 @@
 {
-    "name": "alexwestergaard/php-ga4",
+    "name": "tilted-pixel/php-ga4",
     "description": "PHP Library for Google Analytics 4 with Server Side Tagging",
     "keywords": [
         "php",
