@@ -193,7 +193,7 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         }
     }
 
-    public static function new(string $measurementId, string $apiSecret, bool $debug = false): static
+    public static function new(string $measurement_id, string $api_secret, bool $debug = false): static
     {
         return new static($measurementId, $apiSecret, $debug);
     }
