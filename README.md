@@ -31,8 +31,8 @@ Once you have obtained the credentials, you can initialise the Analytics like th
 use AlexWestergaard\PhpGa4\Analytics;
 
 $analytics = Analytics::new(
-    measurement_id: 'G-XXXXXXXX',
-    api_secret: 'xYzzX_xYzzXzxyZxX',
+    measurementId: 'G-XXXXXXXX',
+    apiSecret: 'xYzzX_xYzzXzxyZxX',
     debug: true|false #Default: False
 );
 ```
