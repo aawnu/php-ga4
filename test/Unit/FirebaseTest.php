@@ -99,6 +99,14 @@ final class FirebaseTest extends FirebaseTestCase
         $this->assertTrue($arr['timestamp_micros'] > 1_000_000);
     }
 
+    public function test_throws_if_app_instance_id_missing()
+    {
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_FIREBASE_APP_INSTANCE_ID);
+
+        Firebase::new($this->prefill['firebase_app_id'], $this->prefill['api_secret'], /* DEBUG */ true)->post();
+    }
+
     public function test_throws_if_microtime_older_than_three_days()
     {
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
