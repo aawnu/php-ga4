@@ -15,6 +15,9 @@ abstract class EventHelper extends IOHelper implements EventType
     protected null|string $page_title;
     protected null|string $screen_resolution;
 
+    protected null|string $session_id;
+    protected null|int $engagement_time_msec;
+
     protected array $campaign = [];
 
     public function setLanguage(string $lang)
@@ -57,6 +60,18 @@ abstract class EventHelper extends IOHelper implements EventType
         $this->page_title = $args['page_title'] ?? null;
         $this->screen_resolution = $args['screen_resolution'] ?? null;
 
+        return $this;
+    }
+
+    public function setSessionId(string $id)
+    {
+        $this->session_id = $id;
+        return $this;
+    }
+
+    public function setEngagementTimeMSec(int $msec)
+    {
+        $this->engagement_time_msec = $msec;
         return $this;
     }
 

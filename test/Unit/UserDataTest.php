@@ -4,9 +4,9 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\Event\Login;
 use AlexWestergaard\PhpGa4\Helper\UserDataHelper;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
-final class UserDataTest extends TestCase
+final class UserDataTest extends MeasurementTestCase
 {
     public function test_user_data_is_fillable()
     {

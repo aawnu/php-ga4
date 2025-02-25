@@ -5,20 +5,20 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Event;
-use AlexWestergaard\PhpGa4\Analytics;
+use AlexWestergaard\PhpGa4\Firebase;
 use AlexWestergaard\PhpGa4\Event\Login;
-use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
+use AlexWestergaard\PhpGa4Test\FirebaseTestCase;
 
-final class AnalyticsTest extends MeasurementTestCase
+final class FirebaseTest extends FirebaseTestCase
 {
     public function test_can_configure_only_client_id_and_export()
     {
-        $analytics = Analytics::new(
-            $this->prefill['measurement_id'],
+        $analytics = Firebase::new(
+            $this->prefill['firebase_app_id'],
             $this->prefill['api_secret'],
             $debug = true
         )
-            ->setClientId($this->prefill['client_id'])
+            ->setAppInstanceId($this->prefill['app_instance_id'])
             ->setTimestampMicros($time = time())
             ->addEvent($event = Event\JoinGroup::fromArray(['group_id' => 1]))
             ->addUserProperty($userProperty = UserProperty::fromArray(['name' => 'test', 'value' => 'testvalue']));
@@ -27,7 +27,7 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->assertIsArray($asArray);
 
         $this->assertArrayHasKey('timestamp_micros', $asArray);
-        $this->assertArrayHasKey('client_id', $asArray);
+        $this->assertArrayHasKey('app_instance_id', $asArray);
         $this->assertArrayNotHasKey('user_id', $asArray);
         $this->assertArrayHasKey('user_properties', $asArray);
         $this->assertArrayHasKey('events', $asArray);
@@ -35,48 +35,19 @@ final class AnalyticsTest extends MeasurementTestCase
         $timeAsMicro = $time * 1_000_000;
 
         $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
-        $this->assertEquals($this->prefill['client_id'], $asArray['client_id']);
-        $this->assertEquals($userProperty->toArray(), $asArray['user_properties']);
-        $this->assertEquals([$event->toArray()], $asArray['events']);
-    }
-
-    public function test_can_configure_only_user_id_and_export()
-    {
-        $analytics = Analytics::new(
-            $this->prefill['measurement_id'],
-            $this->prefill['api_secret'],
-            $debug = true
-        )
-            ->setUserId($this->prefill['user_id'])
-            ->setTimestampMicros($time = time())
-            ->addEvent($event = Event\JoinGroup::fromArray(['group_id' => 1]))
-            ->addUserProperty($userProperty = UserProperty::fromArray(['name' => 'test', 'value' => 'testvalue']));
-
-        $asArray = $analytics->toArray();
-        $this->assertIsArray($asArray);
-
-        $this->assertArrayHasKey('timestamp_micros', $asArray);
-        $this->assertArrayNotHasKey('client_id', $asArray);
-        $this->assertArrayHasKey('user_id', $asArray);
-        $this->assertArrayHasKey('user_properties', $asArray);
-        $this->assertArrayHasKey('events', $asArray);
-
-        $timeAsMicro = $time * 1_000_000;
-
-        $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
-        $this->assertEquals($this->prefill['user_id'], $asArray['user_id']);
+        $this->assertEquals($this->prefill['app_instance_id'], $asArray['app_instance_id']);
         $this->assertEquals($userProperty->toArray(), $asArray['user_properties']);
         $this->assertEquals([$event->toArray()], $asArray['events']);
     }
 
     public function test_can_configure_and_export()
     {
-        $analytics = Analytics::new(
-            $this->prefill['measurement_id'],
+        $analytics = Firebase::new(
+            $this->prefill['firebase_app_id'],
             $this->prefill['api_secret'],
             $debug = true
         )
-            ->setClientId($this->prefill['client_id'])
+            ->setAppInstanceId($this->prefill['app_instance_id'])
             ->setUserId($this->prefill['user_id'])
             ->setTimestampMicros($time = time())
             ->addEvent($event = Event\JoinGroup::fromArray(['group_id' => 1]))
@@ -86,7 +57,7 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->assertIsArray($asArray);
 
         $this->assertArrayHasKey('timestamp_micros', $asArray);
-        $this->assertArrayHasKey('client_id', $asArray);
+        $this->assertArrayHasKey('app_instance_id', $asArray);
         $this->assertArrayHasKey('user_id', $asArray);
         $this->assertArrayHasKey('user_properties', $asArray);
         $this->assertArrayHasKey('events', $asArray);
@@ -94,7 +65,7 @@ final class AnalyticsTest extends MeasurementTestCase
         $timeAsMicro = $time * 1_000_000;
 
         $this->assertEquals($timeAsMicro, $asArray['timestamp_micros']);
-        $this->assertEquals($this->prefill['client_id'], $asArray['client_id']);
+        $this->assertEquals($this->prefill['app_instance_id'], $asArray['app_instance_id']);
         $this->assertEquals($this->prefill['user_id'], $asArray['user_id']);
         $this->assertEquals($userProperty->toArray(), $asArray['user_properties']);
         $this->assertEquals([$event->toArray()], $asArray['events']);
@@ -103,28 +74,37 @@ final class AnalyticsTest extends MeasurementTestCase
     public function test_can_post_only_client_id_to_google()
     {
         $this->expectNotToPerformAssertions();
-        Analytics::new(
-            $this->prefill['measurement_id'],
+        Firebase::new(
+            $this->prefill['firebase_app_id'],
             $this->prefill['api_secret'],
             $debug = true
         )
-            ->setClientId($this->prefill['user_id'])
-            ->addEvent(Login::new())->post();
+            ->setAppInstanceId($this->prefill['app_instance_id'])
+            ->addEvent(Login::new())
+            ->post();
     }
 
     public function test_can_post_to_google()
     {
         $this->expectNotToPerformAssertions();
-        $this->analytics->addEvent(Login::new())->post();
+        $this->firebase->addEvent(Login::new())->post();
     }
 
     public function test_converts_to_full_microtime_stamp()
     {
-        $this->analytics->setTimestampMicros(microtime(true));
+        $this->firebase->setTimestampMicros(microtime(true));
 
-        $arr = $this->analytics->toArray();
+        $arr = $this->firebase->toArray();
 
         $this->assertTrue($arr['timestamp_micros'] > 1_000_000);
+    }
+
+    public function test_throws_if_app_instance_id_missing()
+    {
+        $this->expectException(Facade\Type\Ga4ExceptionType::class);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_FIREBASE_APP_INSTANCE_ID);
+
+        Firebase::new($this->prefill['firebase_app_id'], $this->prefill['api_secret'], /* DEBUG */ true)->post();
     }
 
     public function test_throws_if_microtime_older_than_three_days()
@@ -132,12 +112,12 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
 
-        $this->analytics->setTimestampMicros(strtotime('-1 week'));
+        $this->firebase->setTimestampMicros(strtotime('-1 week'));
     }
 
     public function test_exports_userproperty_to_array()
     {
-        $this->analytics->addEvent(Login::new());
+        $this->firebase->addEvent(Login::new());
 
         $userProperty = UserProperty::new()
             ->setName('customer_tier')
@@ -146,15 +126,15 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->assertInstanceOf(UserProperty::class, $userProperty);
         $this->assertIsArray($userProperty->toArray());
 
-        $this->analytics->addUserProperty($userProperty);
+        $this->firebase->addUserProperty($userProperty);
 
-        $arr = $this->analytics->toArray();
+        $arr = $this->firebase->toArray();
         $this->assertArrayHasKey('user_properties', $arr);
 
         $arr = $arr['user_properties'];
         $this->assertArrayHasKey('customer_tier', $arr);
 
-        $this->analytics->post();
+        $this->firebase->post();
     }
 
     public function test_exports_events_to_array()
@@ -165,21 +145,21 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->assertInstanceOf(Facade\Type\EventType::class, $event);
         $this->assertIsArray($event->toArray());
 
-        $this->analytics->addEvent($event);
+        $this->firebase->addEvent($event);
 
-        $arr = $this->analytics->toArray();
+        $arr = $this->firebase->toArray();
         $this->assertArrayHasKey('events', $arr);
         $this->assertCount(1, $arr['events']);
 
-        $this->analytics->post();
+        $this->firebase->post();
     }
 
-    public function test_throws_missing_measurement_id()
+    public function test_throws_missing_firebase_app_id()
     {
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
-        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_MEASUREMENT_ID);
+        $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_FIREBASE_APP_ID);
 
-        Analytics::new('', $this->prefill['api_secret'], true)->post();
+        Firebase::new('', $this->prefill['api_secret'], true)->post();
     }
 
     public function test_throws_missing_apisecret()
@@ -187,7 +167,7 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::REQUEST_MISSING_API_SECRET);
 
-        Analytics::new($this->prefill['measurement_id'], '', true)->post();
+        Firebase::new($this->prefill['firebase_app_id'], '', true)->post();
     }
 
     public function test_throws_on_too_large_request_package()
@@ -209,7 +189,7 @@ final class AnalyticsTest extends MeasurementTestCase
             $userProperty->setValue($overflowValue);
         }
 
-        $this->analytics->addEvent(Login::new())->addUserProperty($userProperty)->post();
+        $this->firebase->addEvent(Login::new())->addUserProperty($userProperty)->post();
     }
 
     public function test_timeasmicro_throws_exceeding_max()
@@ -219,7 +199,7 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
 
-        $this->analytics->setTimestampMicros($time);
+        $this->firebase->setTimestampMicros($time);
     }
 
     public function test_timeasmicro_throws_exceeding_min()
@@ -229,6 +209,6 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->expectException(Facade\Type\Ga4ExceptionType::class);
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_EXPIRED);
 
-        $this->analytics->setTimestampMicros($time);
+        $this->firebase->setTimestampMicros($time);
     }
 }

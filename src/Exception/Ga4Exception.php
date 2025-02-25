@@ -37,6 +37,16 @@ class Ga4Exception extends \Exception implements Ga4ExceptionType
         return new static("Missing Measurement ID", static::REQUEST_MISSING_MEASUREMENT_ID);
     }
 
+    public static function throwMissingFirebaseAppId()
+    {
+        return new static("Missing Firebase APP ID", static::REQUEST_MISSING_FIREBASE_APP_ID);
+    }
+
+    public static function throwMissingAppInstanceId()
+    {
+        return new static("Missing Application Instance ID", static::REQUEST_MISSING_FIREBASE_APP_INSTANCE_ID);
+    }
+
     public static function throwMissingApiSecret()
     {
         return new static("Missing API Secret", static::REQUEST_MISSING_API_SECRET);
