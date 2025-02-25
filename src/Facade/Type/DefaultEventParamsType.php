@@ -44,5 +44,25 @@ interface DefaultEventParamsType
      */
     public function setScreenResolution(string $wxh);
 
+    /**
+     * In order for user activity to display in reports like Realtime, \
+     * "session_id" must be supplied as part of the params for an event. \
+     * The "session_id" is supplied from the reserved "session_start" event.
+     *
+     * @var session_id
+     * @param string $id eg. "123"
+     */
+    public function setSessionId(string $id);
+
+    /**
+     * In order for user activity to display in reports like Realtime, \
+     * "engagement_time_msec" must be supplied as part of the params for an event. \
+     * The "engagement_time_msec" parameter should reflect the event's engagement time in milliseconds.
+     *
+     * @var engagement_time_msec
+     * @param string $msec eg. '150' for 150 milliseconds
+     */
+    public function setEngagementTimeMSec(int $msec);
+
     public function toArray(): array;
 }
