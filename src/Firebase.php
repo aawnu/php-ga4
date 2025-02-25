@@ -123,6 +123,7 @@ class Firebase extends Helper\IOHelper implements Facade\Type\FirebaseType
 
         $body = array_replace_recursive(
             $this->toArray(),
+            ["app_instance_id" => $this->app_instance_id],
             ["user_data" => !empty($this->user_id) ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
