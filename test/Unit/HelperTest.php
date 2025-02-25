@@ -5,9 +5,9 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Event;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
-final class HelperTest extends TestCase
+final class HelperTest extends MeasurementTestCase
 {
     public function test_convert_helper_transforms_array_into_events()
     {

@@ -4,9 +4,9 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\UserProperty;
 use AlexWestergaard\PhpGa4\Exception;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
-final class UserPropertyTest extends TestCase
+final class UserPropertyTest extends MeasurementTestCase
 {
     public function test_can_configure_and_export()
     {

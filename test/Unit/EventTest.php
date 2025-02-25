@@ -11,9 +11,9 @@ use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Campaign;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
-final class EventTest extends TestCase
+final class EventTest extends MeasurementTestCase
 {
     public function test_pageview()
     {

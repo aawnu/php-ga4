@@ -4,9 +4,9 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use AlexWestergaard\PhpGa4\Event\Login;
 use AlexWestergaard\PhpGa4\Helper\ConsentHelper;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
-final class ConsentTest extends TestCase
+final class ConsentTest extends MeasurementTestCase
 {
     public function test_no_consent_is_empty()
     {

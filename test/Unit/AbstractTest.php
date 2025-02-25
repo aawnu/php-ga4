@@ -6,10 +6,10 @@ use AlexWestergaard\PhpGa4\Item;
 use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4\Facade\Type;
 use AlexWestergaard\PhpGa4\Exception;
-use AlexWestergaard\PhpGa4Test\TestCase;
+use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 use AlexWestergaard\PhpGa4Test\Mocks;
 
-final class AbstractTest extends TestCase
+final class AbstractTest extends MeasurementTestCase
 {
     /******************************************************************
      * ABSTRACT IO | INPUT OUTPUT
