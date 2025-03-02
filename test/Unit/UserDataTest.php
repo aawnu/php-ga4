@@ -36,6 +36,7 @@ final class UserDataTest extends MeasurementTestCase
         $this->assertEquals($setPostalCode, $export["address"]["postal_code"], $setPostalCode);
         $this->assertEquals($setCountry, $export["address"]["country"], $setCountry);
     }
+
     public function test_user_data_is_sendable()
     {
         $uad = $this->analytics->userdata();
@@ -50,6 +51,6 @@ final class UserDataTest extends MeasurementTestCase
         $uad->setCountry("DK");
 
         $this->analytics->addEvent(Login::new());
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 }

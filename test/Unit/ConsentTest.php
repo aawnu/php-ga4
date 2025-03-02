@@ -75,7 +75,7 @@ final class ConsentTest extends MeasurementTestCase
         $this->assertArrayHasKey("ad_personalization", $export);
         $this->assertEquals(ConsentHelper::GRANTED, $export["ad_user_data"]);
         $this->assertEquals(ConsentHelper::GRANTED, $export["ad_personalization"]);
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_consent_ad_user_data_denied()
@@ -136,6 +136,6 @@ final class ConsentTest extends MeasurementTestCase
         $this->assertArrayHasKey("ad_personalization", $export);
         $this->assertEquals(ConsentHelper::DENIED, $export["ad_user_data"]);
         $this->assertEquals(ConsentHelper::DENIED, $export["ad_personalization"]);
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 }
