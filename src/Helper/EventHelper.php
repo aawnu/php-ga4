@@ -128,10 +128,4 @@ abstract class EventHelper extends IOHelper implements EventType
     {
         return new static();
     }
-
-    /** @deprecated 1.1.1 */
-    public function debug()
-    {
-        return $this;
-    }
 }
