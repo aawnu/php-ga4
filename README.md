@@ -187,54 +187,6 @@ foreach ($visitors as $collection) {
 
 ```
 
-### Frontend => Backend
-
-#### Frontend
-
-```js
-// array< array< eventName, array<eventParams> > >
-axios.post("/your-api-endpoint/ga4-event-receiver", [
-  // Note each event is its own object inside an array as
-  // this allows to pass the same event type multiple times
-  {
-    addToCart: {
-      currency: "EUR",
-      value: 13.37,
-      items: [
-        {
-          item_id: 1,
-          item_name: "Cup",
-          price: 13.37,
-          quantity: 1,
-        },
-      ],
-    },
-  },
-]);
-```
-
-#### Backend
-
-```php
-use AlexWestergaard\PhpGa4\Helper\ConvertHelper;
-use AlexWestergaard\PhpGa4\Exception;
-use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\Event;
-
-// require vendor/autoload.php
-
-try {
-    $events = ConvertHelper::parseEvents($_POST);
-
-    Analytics::new($measurementId, $apiSecret)
-        ->addEvent(...$events)
-        ->post();
-} catch (Exception\Ga4Exception $exception) {
-    // Handle exception
-    // Exceptions might be stacked, check: $exception->getPrevious();
-}
-```
-
 ## Custom Events
 
 You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\EventType` facade/interface.
@@ -320,11 +272,6 @@ Two important points:
 
 - Events sent to the Validation Server will not show up in reports.
 - There is no way for events sent through measurement protocol (Server Side) to show up in the `debugView` in Google Analytics Admin.
-
-## Additional information
-
-- Geographic information is only available via automatic collection from gtag, Google Tag Manager, or Google Analytics for Firebase.
-- The `page_view` event works, however it's not documented in the official documentation, so do not rely on it.
 
 ## Documentation
 
