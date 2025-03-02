@@ -1,3 +1,5 @@
+# Google Analytics 4 Server-Side PHP Package
+
 [![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=blue&label=stable%20release)](https://github.com/aawnu/php-ga4/releases/latest)
 [![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=yellow&include_prereleases&label=latest%20release)](https://github.com/aawnu/php-ga4/releases)
 ![Code Coverage Badge](https://raw.githubusercontent.com/AlexWestergaard/php-ga4/image-data/coverage.svg)
@@ -22,7 +24,7 @@ The European Union have notified that Google Analytics does not comply with GDPR
 
 Setup requires a **Measurement ID** and **API Secret**. Go to Administrator (Bottom left) -> Account -> Data Streams -> {Your Stream}. Here you should find Measurement ID at top and "Api Secrets for Measurement Protocol" a little down the page, where you can create yourself an `API secret`.
 
-Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.  
+Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.
 Here you will find `Measurement-ID` at top from and further down `Api Secrets for Measurement Protocol`, in there you can create yourself an `API Secret`.
 
 Once you have obtained the credentials, you can initialise the Analytics like this:
