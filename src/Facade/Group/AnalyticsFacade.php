@@ -29,15 +29,7 @@ interface AnalyticsFacade
      * @var timestamp_micros
      * @param integer|float $microOrUnix microtime(true) or time()
      */
-    public function setTimestamp(int|float $microOrUnix);
-
-    /**
-     * Indicate if these events should be used for personalized ads.
-     *
-     * @var non_personalized_ads
-     * @param boolean $allow
-     */
-    public function allowPersonalisedAds(bool $allow);
+    public function setTimestampMicros(int|float $microOrUnix);
 
     /**
      * The user properties for the measurement

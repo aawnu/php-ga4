@@ -12,8 +12,7 @@ class EventParamsHelper implements DefaultEventParamsType
         protected null|string $page_referrer = null,
         protected null|string $page_title = null,
         protected null|string $screen_resolution = null
-    ) {
-    }
+    ) {}
 
     public function setLanguage(string $lang)
     {

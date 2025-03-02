@@ -35,14 +35,6 @@ interface AnalyticsType extends IOType
     public function setTimestampMicros(int|float $microOrUnix);
 
     /**
-     * Indicate if these events should be used for personalized ads.
-     *
-     * @var non_personalized_ads
-     * @param boolean $allow
-     */
-    public function setNonPersonalizedAds(bool $allow);
-
-    /**
      * The user properties for the measurement (Up to 25 custom per project, see link)
      *
      * @var user_properties

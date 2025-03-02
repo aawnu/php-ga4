@@ -1,3 +1,5 @@
+# Google Analytics 4 Server-Side PHP Package
+
 [![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=blue&label=stable%20release)](https://github.com/aawnu/php-ga4/releases/latest)
 [![Version](https://img.shields.io/packagist/v/alexwestergaard/php-ga4?color=yellow&include_prereleases&label=latest%20release)](https://github.com/aawnu/php-ga4/releases)
 ![Code Coverage Badge](https://raw.githubusercontent.com/AlexWestergaard/php-ga4/image-data/coverage.svg)
@@ -22,7 +24,7 @@ The European Union have notified that Google Analytics does not comply with GDPR
 
 Setup requires a **Measurement ID** and **API Secret**. Go to Administrator (Bottom left) -> Account -> Data Streams -> {Your Stream}. Here you should find Measurement ID at top and "Api Secrets for Measurement Protocol" a little down the page, where you can create yourself an `API secret`.
 
-Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.  
+Go to `Administrator` (bottom left) and then select your `Account` -> `Data Streams` -> your stream.
 Here you will find `Measurement-ID` at top from and further down `Api Secrets for Measurement Protocol`, in there you can create yourself an `API Secret`.
 
 Once you have obtained the credentials, you can initialise the Analytics like this:
@@ -47,7 +49,7 @@ Server Side Tagging is not supposed to replace the frontend Client and session i
 4. Server uses `_ga` (or `_gid`) to send/populate events
    - Eg. GenerateLead, Purchase, Refund and other backend handled events.
 
-Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will, however, lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too. You can replace the `_ga` and `_gid` sessions with your own uniquely generated id.
+Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will, however, lose information bundled inside the `gtag.js` request if you do not figure out how to push that via backend too. You can replace the `_ga` and `_gid` sessions with your own uniquely generated id.
 
 All requests should follow this structure and contain at least 1 event for Google Analytics to accept it.
 
@@ -87,7 +89,7 @@ $event->setPageReferrer(string $var);
 $event->setPageTitle(string $var);
 $event->setScreenResolution(string $var);
 // Fillable for multiple events
-$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper();
+$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper(...);
 $event->setEventPage($eventPage);
 ```
 
@@ -132,17 +134,18 @@ $event->setEventPage($eventPage);
 
 ## Frontend & Backend Communication
 
-This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets. There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
+This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets.
+There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
 
 ### Logging / Queue
 
 ```php
+// require vendor/autoload.php
+
 use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
-
-// require vendor/autoload.php
 
 $visitors = getVisitorsAndEvents(); // pseudo function, make your own logic here
 
@@ -183,54 +186,6 @@ foreach ($visitors as $collection) {
     }
 }
 
-```
-
-### Frontend => Backend
-
-#### Frontend
-
-```js
-// array< array< eventName, array<eventParams> > >
-axios.post("/your-api-endpoint/ga4-event-receiver", [
-  // Note each event is its own object inside an array as
-  // this allows to pass the same event type multiple times
-  {
-    addToCart: {
-      currency: "EUR",
-      value: 13.37,
-      items: [
-        {
-          item_id: 1,
-          item_name: "Cup",
-          price: 13.37,
-          quantity: 1,
-        },
-      ],
-    },
-  },
-]);
-```
-
-#### Backend
-
-```php
-use AlexWestergaard\PhpGa4\Helper\ConvertHelper;
-use AlexWestergaard\PhpGa4\Exception;
-use AlexWestergaard\PhpGa4\Analytics;
-use AlexWestergaard\PhpGa4\Event;
-
-// require vendor/autoload.php
-
-try {
-    $events = ConvertHelper::parseEvents($_POST);
-
-    Analytics::new($measurementId, $apiSecret)
-        ->addEvent(...$events)
-        ->post();
-} catch (Exception\Ga4Exception $exception) {
-    // Handle exception
-    // Exceptions might be stacked, check: $exception->getPrevious();
-}
 ```
 
 ## Custom Events
@@ -318,11 +273,6 @@ Two important points:
 
 - Events sent to the Validation Server will not show up in reports.
 - There is no way for events sent through measurement protocol (Server Side) to show up in the `debugView` in Google Analytics Admin.
-
-## Additional information
-
-- Geographic information is only available via automatic collection from gtag, Google Tag Manager, or Google Analytics for Firebase.
-- The `page_view` event works, however it's not documented in the official documentation, so do not rely on it.
 
 ## Documentation
 

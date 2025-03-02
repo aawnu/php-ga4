@@ -36,8 +36,11 @@ final class UserDataTest extends MeasurementTestCase
         $this->assertEquals($setPostalCode, $export["address"]["postal_code"], $setPostalCode);
         $this->assertEquals($setCountry, $export["address"]["country"], $setCountry);
     }
+
     public function test_user_data_is_sendable()
     {
+        $this->expectNotToPerformAssertions();
+
         $uad = $this->analytics->userdata();
         $uad->setEmail("test@gmail.com");
         $uad->setPhone(4500000000);
@@ -50,6 +53,6 @@ final class UserDataTest extends MeasurementTestCase
         $uad->setCountry("DK");
 
         $this->analytics->addEvent(Login::new());
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 }

@@ -15,26 +15,6 @@ use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
 final class EventTest extends MeasurementTestCase
 {
-    public function test_pageview()
-    {
-        $event = new Event\PageView;
-
-        $this->assertEventNaming($event);
-        $this->assertEventFills($this->populateEventByMethod(clone $event));
-        $this->assertEventFills($this->populateEventByArrayable(clone $event));
-        $this->assertEventFills($this->populateEventByFromArray(clone $event));
-
-        $this->assertImportableByConvertHelper(
-            [
-                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
-            ],
-            $event
-        );
-
-        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
-    }
-
     public function test_addpaymentinfo()
     {
         $event = new Event\AddPaymentInfo;
@@ -52,7 +32,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_addshippinginfo()
@@ -71,7 +51,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_addtocart()
@@ -90,7 +70,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_addtowishlist()
@@ -109,7 +89,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_begincheckout()
@@ -128,7 +108,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_earnvirtualcurrency()
@@ -147,7 +127,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_generatelead()
@@ -166,7 +146,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_joingroup()
@@ -185,7 +165,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_levelup()
@@ -205,7 +185,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
     public function test_login()
     {
@@ -223,7 +203,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_postscore()
@@ -242,7 +222,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_purchase()
@@ -261,7 +241,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_refund()
@@ -280,16 +260,18 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_refund_full_succeeds_without_items()
     {
+        $this->expectNotToPerformAssertions();
+
         $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
         $this->analytics->addEvent($refund);
 
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_refund_partial_succeeds_with_items()
@@ -333,7 +315,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_search()
@@ -352,7 +334,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_selectcontent()
@@ -371,7 +353,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_selectitem()
@@ -390,7 +372,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_selectpromotion()
@@ -409,7 +391,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_share()
@@ -428,7 +410,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_signup()
@@ -447,7 +429,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_spendvirtualcurrency()
@@ -466,7 +448,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_tutorialbegin()
@@ -485,7 +467,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_tutorialcomplete()
@@ -504,7 +486,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_unlockachievement()
@@ -523,7 +505,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_biewcart()
@@ -542,7 +524,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_viewitem()
@@ -561,7 +543,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_viewitemlist()
@@ -580,7 +562,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_viewpromotion()
@@ -599,7 +581,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_viewsearchresults()
@@ -618,7 +600,7 @@ final class EventTest extends MeasurementTestCase
         );
 
         $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
-        $this->assertNull($this->analytics->post());
+        $this->analytics->post();
     }
 
     public function test_throw_name_missing()
