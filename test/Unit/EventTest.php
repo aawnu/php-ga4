@@ -265,6 +265,8 @@ final class EventTest extends MeasurementTestCase
 
     public function test_refund_full_succeeds_without_items()
     {
+        $this->expectNotToPerformAssertions();
+
         $refund = Event\Refund::new()->setTransactionId(1)->isFullRefund(true);
 
         $this->analytics->addEvent($refund);

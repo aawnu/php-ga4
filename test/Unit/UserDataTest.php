@@ -39,6 +39,8 @@ final class UserDataTest extends MeasurementTestCase
 
     public function test_user_data_is_sendable()
     {
+        $this->expectNotToPerformAssertions();
+
         $uad = $this->analytics->userdata();
         $uad->setEmail("test@gmail.com");
         $uad->setPhone(4500000000);
