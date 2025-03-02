@@ -189,27 +189,4 @@ class Firebase extends Helper\IOHelper implements Facade\Type\FirebaseType
     {
         return new static($firebase_app_id, $api_secret, $debug);
     }
-
-    /**
-     * Deprecated references
-     */
-
-    /** @deprecated 1.1.9 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
-    public function setNonPersonalizedAds(bool $exclude)
-    {
-        $this->consent->setAdPersonalizationPermission(!$exclude);
-        return $this;
-    }
-
-    /** @deprecated 1.1.1 Please use `Analytics->consent->setAdPersonalizationPermission()` instead */
-    public function allowPersonalisedAds(bool $allow)
-    {
-        $this->consent->setAdPersonalizationPermission($allow);
-    }
-
-    /** @deprecated 1.1.1 Please use `Analytics->setTimestampMicros()` instead */
-    public function setTimestamp(int|float $microOrUnix)
-    {
-        $this->setTimestampMicros($microOrUnix);
-    }
 }
