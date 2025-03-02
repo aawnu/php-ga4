@@ -49,7 +49,7 @@ Server Side Tagging is not supposed to replace the frontend Client and session i
 4. Server uses `_ga` (or `_gid`) to send/populate events
    - Eg. GenerateLead, Purchase, Refund and other backend handled events.
 
-Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will, however, lose information bundled inside the `GTAG.js` request if you do not figure out how to push that via backend too. You can replace the `_ga` and `_gid` sessions with your own uniquely generated id.
+Note: It is entirely possible to push events to backend without acquiring the session cookies from Google Analytics; you will, however, lose information bundled inside the `gtag.js` request if you do not figure out how to push that via backend too. You can replace the `_ga` and `_gid` sessions with your own uniquely generated id.
 
 All requests should follow this structure and contain at least 1 event for Google Analytics to accept it.
 
@@ -89,7 +89,7 @@ $event->setPageReferrer(string $var);
 $event->setPageTitle(string $var);
 $event->setScreenResolution(string $var);
 // Fillable for multiple events
-$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper();
+$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper(...);
 $event->setEventPage($eventPage);
 ```
 
@@ -134,17 +134,18 @@ $event->setEventPage($eventPage);
 
 ## Frontend & Backend Communication
 
-This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets. There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
+This library is built for backend server side tracking, but you will probably trigger most events through frontend with Javascript or Websockets.
+There will be 2 examples, one as pure backend for logged/queued events and one for frontend to backend communication.
 
 ### Logging / Queue
 
 ```php
+// require vendor/autoload.php
+
 use AlexWestergaard\PhpGa4\Exception;
 use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
-
-// require vendor/autoload.php
 
 $visitors = getVisitorsAndEvents(); // pseudo function, make your own logic here
 
