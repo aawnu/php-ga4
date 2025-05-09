@@ -715,6 +715,26 @@ final class EventTest extends MeasurementTestCase
         $class->toArray();
     }
 
+    public function test_exception()
+    {
+
+        $event = new Event\Exception;
+        $this->assertEventNaming($event);
+        $this->assertEventFills($this->populateEventByMethod(clone $event));
+        $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->analytics->post();
+    }
+
     protected function assertEventNaming($event)
     {
         $this->assertInstanceOf(Type\EventType::class, $event);
@@ -765,6 +785,9 @@ final class EventTest extends MeasurementTestCase
             'page_title' => 'Home - Site',
             'screen_resolution' => '1920x1080',
             // ---
+            'description' => "This is a short description",
+            'fatal' => true,
+            // ---
             'currency' => $this->prefill['currency'],
             'value' => 9.99,
             'affiliation' => 'affiliation',
@@ -807,6 +830,9 @@ final class EventTest extends MeasurementTestCase
         $event['page_title'] = 'Home - Site';
         $event['screen_resolution'] = '1920x1080';
 
+        $event['description'] = 'This is a short description';
+        $event['fatal'] = true;
+
         $event['currency'] = $this->prefill['currency'];
         $event['value'] = 9.99;
         $event['affiliation'] = 'affiliation';
@@ -843,7 +869,7 @@ final class EventTest extends MeasurementTestCase
     }
 
     private function populateEventByMethod(
-        Type\EventType|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
+        Type\EventType|Group\ExceptionFacade|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
     ) {
         $params = $event->getAllParams();
 
@@ -852,6 +878,13 @@ final class EventTest extends MeasurementTestCase
         $event->setPageReferrer('https://example.com/');
         $event->setPageTitle('Home - Site');
         $event->setScreenResolution('1920x1080');
+
+        if (in_array('description', $params)) {
+            $event->setDescription("This is a short description");
+            if (in_array('fatal', $params)) {
+                $event->setFatal(1);
+            }
+        }
 
         if (in_array('currency', $params)) {
             $event->setCurrency($this->prefill['currency']);
