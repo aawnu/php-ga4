@@ -2,7 +2,7 @@
 
 namespace AlexWestergaard\PhpGa4\Facade\Type;
 
-interface EventType extends IOType, DefaultEventParamsType
+interface EventType extends IOType
 {
     /** @return array<int,string> */
     public const RESERVED_NAMES = [
