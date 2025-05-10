@@ -800,9 +800,9 @@ final class EventTest extends MeasurementTestCase
     {
         return $event::fromArray([
             'language' => 'en-US',
-            'page_location' => '/',
+            'page_location' => 'https://www.example.com/',
             'page_referrer' => 'https://example.com/',
-            'page_title' => 'Home - Site',
+            'page_title' => 'Home - Example',
             'screen_resolution' => '1920x1080',
             // ---
             'description' => "This is a short description",
@@ -846,7 +846,7 @@ final class EventTest extends MeasurementTestCase
     {
         $event['language'] = 'en-US';
         $event['page_location'] = 'https://example.com/';
-        $event['page_referrer'] = 'https://example.com/';
+        $event['page_referrer'] = 'https://www.example.com/';
         $event['page_title'] = 'Home - Example';
         $event['screen_resolution'] = '1920x1080';
 
@@ -895,9 +895,7 @@ final class EventTest extends MeasurementTestCase
 
         if ($event instanceof EventHelper) {
             $event->setLanguage('en-US');
-            $event->setPageLocation('https://example.com/');
             $event->setPageReferrer('https://example.com/');
-            $event->setPageTitle('Home - Example');
             $event->setScreenResolution('1920x1080');
         }
 
@@ -905,7 +903,7 @@ final class EventTest extends MeasurementTestCase
             $event->setPageTitle('Home - Example');
         }
 
-        if (in_array('page_title', $params)) {
+        if (in_array('page_location', $params)) {
             $event->setPageLocation('https://example.com/');
         }
 

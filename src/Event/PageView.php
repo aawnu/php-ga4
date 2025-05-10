@@ -36,7 +36,21 @@ class PageView extends EventMainHelper implements Facade\Group\PageViewFacade
 
     public function setPageLocation(null|string $url)
     {
-        $this->page_location = $url;
+        if ($url === null) {
+            $this->page_location = null;
+        } else {
+            $model = parse_url($url);
+
+            if (is_array($model) && !empty($model["scheme"]) && !empty($model["host"])) {
+                $this->page_location = implode("", [
+                    $model["scheme"] . "://" . $model["host"],
+                    "/" . ltrim($model["path"], "/"),
+                    !empty($model["query"]) ? "?" . $model["query"] : "",
+                    !empty($model["fragment"]) ? "#" . $model["fragment"] : "",
+                ]);
+            }
+        }
+
         return $this;
     }
 }
