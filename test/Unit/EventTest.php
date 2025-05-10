@@ -4,17 +4,37 @@ namespace AlexWestergaard\PhpGa4Test\Unit;
 
 use ReflectionClass;
 use AlexWestergaard\PhpGa4\Helper\EventHelper;
+use AlexWestergaard\PhpGa4\Helper\EventMainHelper;
 use AlexWestergaard\PhpGa4\Helper\ConvertHelper;
 use AlexWestergaard\PhpGa4\Facade\Type;
 use AlexWestergaard\PhpGa4\Facade\Group;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Exception\Ga4EventException;
 use AlexWestergaard\PhpGa4\Event;
-use AlexWestergaard\PhpGa4\Campaign;
 use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
 final class EventTest extends MeasurementTestCase
 {
+    public function test_page_view()
+    {
+        $event = new Event\PageView;
+
+        $this->assertEventNaming($event);
+        $this->assertEventFills($this->populateEventByMethod(clone $event));
+        $this->assertEventFills($this->populateEventByArrayable(clone $event));
+        $this->assertEventFills($this->populateEventByFromArray(clone $event));
+
+        $this->assertImportableByConvertHelper(
+            [
+                [ConvertHelper::camel($event->getName()) => $this->populateEventByFromArray(clone $event)->toArray()]
+            ],
+            $event
+        );
+
+        $this->analytics->addEvent($this->populateEventByFromArray(clone $event));
+        $this->analytics->post();
+    }
+
     public function test_addpaymentinfo()
     {
         $event = new Event\AddPaymentInfo;
@@ -738,7 +758,7 @@ final class EventTest extends MeasurementTestCase
     protected function assertEventNaming($event)
     {
         $this->assertInstanceOf(Type\EventType::class, $event);
-        $this->assertInstanceOf(EventHelper::class, $event);
+        $this->assertInstanceOf(EventMainHelper::class, $event);
 
         $reflection = new ReflectionClass($event);
         $filename = $reflection->getFileName();
@@ -825,9 +845,9 @@ final class EventTest extends MeasurementTestCase
     private function populateEventByArrayable(Type\EventType $event)
     {
         $event['language'] = 'en-US';
-        $event['page_location'] = '/';
+        $event['page_location'] = 'https://example.com/';
         $event['page_referrer'] = 'https://example.com/';
-        $event['page_title'] = 'Home - Site';
+        $event['page_title'] = 'Home - Example';
         $event['screen_resolution'] = '1920x1080';
 
         $event['description'] = 'This is a short description';
@@ -869,15 +889,25 @@ final class EventTest extends MeasurementTestCase
     }
 
     private function populateEventByMethod(
-        Type\EventType|Group\ExceptionFacade|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
+        Type\EventType|Group\ExceptionFacade|Group\PageViewFacade|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
     ) {
         $params = $event->getAllParams();
 
-        $event->setLanguage('en-US');
-        $event->setPageLocation('/');
-        $event->setPageReferrer('https://example.com/');
-        $event->setPageTitle('Home - Site');
-        $event->setScreenResolution('1920x1080');
+        if ($event instanceof EventHelper) {
+            $event->setLanguage('en-US');
+            $event->setPageLocation('https://example.com/');
+            $event->setPageReferrer('https://example.com/');
+            $event->setPageTitle('Home - Example');
+            $event->setScreenResolution('1920x1080');
+        }
+
+        if (in_array('page_title', $params)) {
+            $event->setPageTitle('Home - Example');
+        }
+
+        if (in_array('page_title', $params)) {
+            $event->setPageLocation('https://example.com/');
+        }
 
         if (in_array('description', $params)) {
             $event->setDescription("This is a short description");
