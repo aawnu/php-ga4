@@ -916,6 +916,13 @@ final class EventTest extends MeasurementTestCase
             }
         }
 
+        if (in_array('description', $params)) {
+            $event->setDescription("This is a short description");
+            if (in_array('fatal', $params)) {
+                $event->setFatal(1);
+            }
+        }
+
         if (in_array('currency', $params)) {
             $event->setCurrency($this->prefill['currency']);
             if (in_array('value', $params)) {
