@@ -81,56 +81,48 @@ Analytics [
 
 This is a list of prebuilt events as shown in the documentation. All events have the following parameters to locate trigger location of each event.
 
-```php
-// Manual setting of each event
-$event->setLanguage(string $var);
-$event->setPageLocation(string $var);
-$event->setPageReferrer(string $var);
-$event->setPageTitle(string $var);
-$event->setScreenResolution(string $var);
-// Fillable for multiple events
-$eventPage = AlexWestergaard\PhpGa4\Helper\EventParamsHelper(...);
-$event->setEventPage($eventPage);
-```
-
 ### Default
 
-![badge](https://shields.io/badge/PageView-informational)
-![badge](https://shields.io/badge/Share-informational)
-![badge](https://shields.io/badge/Signup-informational)
-![badge](https://shields.io/badge/Login-informational)
-![badge](https://shields.io/badge/Search-informational)
-![badge](https://shields.io/badge/SelectContent-informational)
-![badge](https://shields.io/badge/SelectItem-informational)
-![badge](https://shields.io/badge/SelectPromotion-informational)
-![badge](https://shields.io/badge/ViewItem-informational)
-![badge](https://shields.io/badge/ViewItemList-informational)
-![badge](https://shields.io/badge/ViewPromotion-informational)
-![badge](https://shields.io/badge/ViewSearchResults-informational)
+- [PageView](src/Event/PageView.php)
+- [Share](src/Event/Share.php)
+- [Signup](src/Event/Signup.php)
+- [Login](src/Event/Login.php)
+- [Search](src/Event/Search.php)
+- [SelectContent](src/Event/SelectContent.php)
+- [SelectItem](src/Event/SelectItem.php)
+- [SelectPromotion](src/Event/SelectPromotion.php)
+- [ViewItem](src/Event/ViewItem.php)
+- [ViewItemList](src/Event/ViewItemList.php)
+- [ViewPromotion](src/Event/ViewPromotion.php)
+- [ViewSearchResults](src/Event/ViewSearchResults.php)
 
 ### E-commerce
 
-![badge](https://shields.io/badge/GenerateLead-informational)
-![badge](https://shields.io/badge/AddToWishlist-informational)
-![badge](https://shields.io/badge/AddToCart-informational)
-![badge](https://shields.io/badge/ViewCart-informational)
-![badge](https://shields.io/badge/RemoveFromCart-informational)
-![badge](https://shields.io/badge/BeginCheckout-informational)
-![badge](https://shields.io/badge/AddPaymentInfo-informational)
-![badge](https://shields.io/badge/AddShippingInfo-informational)
-![badge](https://shields.io/badge/Purchase-informational)
-![badge](https://shields.io/badge/Refund-informational)
+- [GenerateLead](src/Event/GenerateLead.php)
+- [AddToWishlist](src/Event/AddToWishlist.php)
+- [AddToCart](src/Event/AddToCart.php)
+- [ViewCart](src/Event/ViewCart.php)
+- [RemoveFromCart](src/Event/RemoveFromCart.php)
+- [BeginCheckout](src/Event/BeginCheckout.php)
+- [AddPaymentInfo](src/Event/AddPaymentInfo.php)
+- [AddShippingInfo](src/Event/AddShippingInfo.php)
+- [Purchase](src/Event/Purchase.php)
+- [Refund](src/Event/Refund.php)
 
 ### Engagement / Gaming
 
-![badge](https://shields.io/badge/EarnVirtualCurrency-informational)
-![badge](https://shields.io/badge/SpendVirtualCurrency-informational)
-![badge](https://shields.io/badge/LevelUp-informational)
-![badge](https://shields.io/badge/PostScore-informational)
-![badge](https://shields.io/badge/TutorialBegin-informational)
-![badge](https://shields.io/badge/TutorialComplete-informational)
-![badge](https://shields.io/badge/UnlockAchievement-informational)
-![badge](https://shields.io/badge/JoinGroup-informational)
+- [EarnVirtualCurrency](src/Event/EarnVirtualCurrency.php)
+- [SpendVirtualCurrency](src/Event/SpendVirtualCurrency.php)
+- [LevelUp](src/Event/LevelUp.php)
+- [PostScore](src/Event/PostScore.php)
+- [TutorialBegin](src/Event/TutorialBegin.php)
+- [TutorialComplete](src/Event/TutorialComplete.php)
+- [UnlockAchievement](src/Event/UnlockAchievement.php)
+- [JoinGroup](src/Event/JoinGroup.php)
+
+### Reporting
+
+- [Exception](src/Event/Exception.php)
 
 ## Frontend & Backend Communication
 
@@ -147,42 +139,58 @@ use AlexWestergaard\PhpGa4\Analytics;
 use AlexWestergaard\PhpGa4\Event;
 use AlexWestergaard\PhpGa4\Item;
 
-$visitors = getVisitorsAndEvents(); // pseudo function, make your own logic here
+// pseudo function, make your own logic here
+$visitors = getVisitorsWithEvents();
 
-foreach ($visitors as $collection) {
+foreach ($visitors as $visitor) {
     // Group of events, perhaps need logic to change from json or array to event objects
     // Maybe its formatted well for the > ConvertHelper::parseEvents([...]) < helper
-    $groups = $collection['events'];
+    $groups = $visitor['events'];
 
     // If gtag.js, this can be the _ga or _gid cookie
     // This can be any kind of session identifier
     // Usually derives from $_COOKIE['_ga'] or $_COOKIE['_gid'] set by GTAG.js
-    $visitor = $collection['session_id'];
+    $client = $visitor['client_id'];
 
     // load logged in user/visitor
     // This can be any kind of unique identifier, readable is easier for you
     // Just be wary not to use GDPR sensitive information
-    $user = $collection['user_id'];
+    $user = $visitor['user_id'];
+    $userParameters = $visitor["user_parameters"]
 
     // Render events grouped on time (max offset is 3 days from NOW)
     foreach ($groups as $time => $data) {
         try {
                 $analytics = Analytics::new($measurementId, $apiSecret)
-                    ->setClientId($visitor)
+                    ->setClientId($client)
                     ->setTimestampMicros($time);
 
                 if ($user !== null) {
                     $analytics->setUserId($user);
                 }
 
-                $analytics->addUserParameter(...$data['userParameters']); // pseudo logic for adding user parameters
-                $analytics->addEvent(...$data['events']); // pseudo logic for adding events
+                // pseudo logic for adding user parameters
+                $analytics->addUserParameter(...$userParameters);
+                // pseudo logic for adding events
+                $analytics->addEvent(...$data['events']);
 
-                $analytics->post(); // send events to Google Analytics
+                // send events to Google Analytics
+                $analytics->post();
         } catch (Exception\Ga4Exception $exception) {
             // Handle exception
             // Exceptions might be stacked, check: $exception->getPrevious();
+            ExceptionTrail(function(Exception $e) {/*...*/}, $exception)
         }
+    }
+}
+
+// pseudo function to trail the exception tree
+function ExceptionTrail(callable $handler, Exception $e) {
+    $handler($e);
+
+    $prev = $e->getPrevious();
+    if ($prev instanceof Exception) {
+        ExceptionTrail($handler, $prev);
     }
 }
 
@@ -191,10 +199,9 @@ foreach ($visitors as $collection) {
 ## Custom Events
 
 You can build your own custom events. All you need is to implement and fullfill the `AlexWestergaard\PhpGa4\Facade\Type\EventType` facade/interface.
-If you want ease of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\EventHelper` and overwrite as you see fit.
+If you want quality of life features, then you can extend your event from `AlexWestergaard\PhpGa4\Helper\EventHelper` or `AlexWestergaard\PhpGa4\Helper\EventMainHelper` and overwrite as you see fit.
 
 ```php
-
 // EventHelper implements AlexWestergaard\PhpGa4\Facade\Type\EventType
 class ExampleEvent extends AlexWestergaard\PhpGa4\Helper\EventHelper
 {
