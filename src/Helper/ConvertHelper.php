@@ -2,8 +2,8 @@
 
 namespace AlexWestergaard\PhpGa4\Helper;
 
-use AlexWestergaard\PhpGa4\Facade\Type\EventType;
 use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
+use AlexWestergaard\PhpGa4\Facade\Type\EventType;
 
 class ConvertHelper
 {
@@ -76,5 +76,69 @@ class ConvertHelper
             }
         }
         return $events;
+    }
+
+    /**
+     * Parse the session cookie (GA_{measurement_id}) into named parts.
+     *
+     * @param string $session The cookie value
+     * @return array
+     */
+    public static function parseSessionCookie(string $session): array
+    {
+        $parts = explode('.', $session);
+        
+        $version = $parts[0] ?? null;
+        $k = $parts[1] ?? null;
+        $data = $parts[2] ?? null;
+
+        // If the data part is empty, return an empty array
+        if (!$data) {
+            return [];
+        }
+
+        if ($version === 'GS1') {
+            $data = explode('.', $session);
+
+            return [
+                'version' => $data[0] ?? null,
+                'domain_level' => $data[1] ?? null,
+                'session_id' => $data[2] ?? null,
+                'session_number' => $data[3] ?? null,
+                'session_engagement' => $data[4] ?? null,
+                'timestampt' => $data[5] ?? null
+            ];
+        }
+
+        $cookieParts = explode('$', $data);
+
+        if (empty(array_filter($cookieParts))) {
+            return [];
+        }
+
+        $data = array_map(
+            fn ($part) => match ($part[0]) {
+                's' => ['session_id' => $part],
+                't' => ['timestamp' => $part],
+                'o' => ['session_number' => $part],
+                'g' => ['session_engaged' => $part],
+                'j' => ['join_timer' => $part],
+                'l' => ['logged_in_state' => $part],
+                'h' => ['user_id' => $part],
+                'd' => ['join_id' => $part],
+                default => [$part[0] => $part]
+            },
+            $cookieParts
+        );
+
+        $result = [];
+
+        foreach ($data as $mapValue) {
+            foreach ($mapValue as $key => $value) {
+                $result[$key] = $value;
+            }
+        }
+
+        return $result;
     }
 }
