@@ -2,9 +2,9 @@
 
 namespace AlexWestergaard\PhpGa4Test\Unit;
 
-use AlexWestergaard\PhpGa4\Helper;
-use AlexWestergaard\PhpGa4\Facade;
 use AlexWestergaard\PhpGa4\Event;
+use AlexWestergaard\PhpGa4\Facade;
+use AlexWestergaard\PhpGa4\Helper;
 use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
 final class HelperTest extends MeasurementTestCase
@@ -81,5 +81,53 @@ final class HelperTest extends MeasurementTestCase
         $this->expectExceptionCode(Facade\Type\Ga4ExceptionType::MICROTIME_INVALID_FORMAT);
 
         $this->analytics->setTimestampMicros($time);
+    }
+
+    public function test_parse_session_cookie_gs1()
+    {
+        $sessionData = Helper\ConvertHelper::parseSessionCookie('GS1.1.1689053763.1.1.1689054101.0.0.0');
+        $this->assertEquals([
+            'version' => 'GS1',
+            'domain_level' => '1',
+            'session_id' => '1689053763',
+            'session_number' => '1',
+            'session_engagement' => '1',
+            'timestampt' => '1689054101',
+        ], $sessionData);
+    }
+
+    public function test_parse_session_cookie_gs2()
+    {
+        $sessionData = Helper\ConvertHelper::parseSessionCookie('GS2.1.s1764888982$o50$g1$t1764890260$j59$l0$h681028196');
+        $this->assertEquals([
+            'session_id' => 's1764888982',
+            'session_number' => 'o50',
+            'session_engaged' => 'g1',
+            'timestamp' => 't1764890260',
+            'join_timer' => 'j59',
+            'logged_in_state' => 'l0',
+            'user_id' => 'h681028196',
+        ], $sessionData);
+        
+        // same data, different order
+        $sessionData = Helper\ConvertHelper::parseSessionCookie('GS2.1.t1764890260$o50$g1$s1764888982$j59$l0$h681028196');
+        $this->assertEquals([
+            'session_id' => 's1764888982',
+            'session_number' => 'o50',
+            'session_engaged' => 'g1',
+            'timestamp' => 't1764890260',
+            'join_timer' => 'j59',
+            'logged_in_state' => 'l0',
+            'user_id' => 'h681028196',
+        ], $sessionData);
+    }
+
+    public function test_parse_session_cookie_invalid()
+    {
+        $sessionData = Helper\ConvertHelper::parseSessionCookie('invalid');
+        $this->assertEquals([], $sessionData);
+        
+        $sessionData = Helper\ConvertHelper::parseSessionCookie('');
+        $this->assertEquals([], $sessionData);
     }
 }
