@@ -40,7 +40,7 @@ class UserProperty extends Helper\UserPropertyHelper
 
     public function getParams(): array
     {
-        return ['name', 'value'];
+        return ['name', 'value', 'set_timestamp_micros'];
     }
 
     public function getRequiredParams(): array

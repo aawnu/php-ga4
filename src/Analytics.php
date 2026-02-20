@@ -19,8 +19,12 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
 
     protected null|bool $non_personalized_ads = false;
     protected null|int $timestamp_micros;
+    protected null|string $validation_behavior;
+    protected null|string $ip_override;
     protected null|string $client_id;
     protected null|string $user_id;
+    protected array $user_location = [];
+    protected array $device = [];
     protected array $user_properties = [];
     protected array $events = [];
 
@@ -40,8 +44,12 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return [
             'non_personalized_ads',
             'timestamp_micros',
+            'validation_behavior',
+            'ip_override',
             'client_id',
             'user_id',
+            'user_location',
+            'device',
             'user_properties',
             'events',
         ];
@@ -68,6 +76,12 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         return $this;
     }
 
+    public function setNonPersonalizedAds(bool $enabled = true)
+    {
+        $this->non_personalized_ads = $enabled;
+        return $this;
+    }
+
     public function setUserId(string $id)
     {
         $this->user_id = $id;
@@ -86,6 +100,30 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         }
 
         $this->timestamp_micros = $time;
+        return $this;
+    }
+
+    public function setValidationBehavior(null|string $behavior)
+    {
+        $this->validation_behavior = $behavior;
+        return $this;
+    }
+
+    public function setIpOverride(null|string $ip)
+    {
+        $this->ip_override = $ip;
+        return $this;
+    }
+
+    public function setUserLocation(array $location)
+    {
+        $this->user_location = static::cleanAssoc($location);
+        return $this;
+    }
+
+    public function setDevice(array $device)
+    {
+        $this->device = static::cleanAssoc($device);
         return $this;
     }
 
@@ -130,9 +168,11 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
         $url = $this->debug ? Facade\Type\AnalyticsType::URL_DEBUG : Facade\Type\AnalyticsType::URL_LIVE;
         $url .= '?' . http_build_query(['measurement_id' => $this->measurement_id, 'api_secret' => $this->api_secret]);
 
+        $userData = $this->userdata->toArray();
+
         $body = array_replace_recursive(
             $this->toArray(),
-            ["user_data" => !empty($this->user_id) ? $this->userdata->toArray() : []], // Only accepted if user_id is passed too
+            ["user_data" => $userData],
             ["user_properties" => $this->user_properties],
             ["consent" => $this->consent->toArray()],
         );
@@ -196,5 +236,23 @@ class Analytics extends Helper\IOHelper implements Facade\Type\AnalyticsType
     public static function new(string $measurement_id, string $api_secret, bool $debug = false): static
     {
         return new static($measurement_id, $api_secret, $debug);
+    }
+
+    private static function cleanAssoc(array $input): array
+    {
+        $out = [];
+        foreach ($input as $key => $value) {
+            if (!is_string($key)) {
+                continue;
+            }
+
+            if ($value === null || $value === '') {
+                continue;
+            }
+
+            $out[$key] = $value;
+        }
+
+        return $out;
     }
 }

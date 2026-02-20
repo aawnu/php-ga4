@@ -71,6 +71,51 @@ final class FirebaseTest extends FirebaseTestCase
         $this->assertEquals([$event->toArray()], $asArray['events']);
     }
 
+    public function test_can_set_extended_top_level_fields()
+    {
+        $firebase = Firebase::new(
+            $this->prefill['firebase_app_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setAppInstanceId($this->prefill['app_instance_id'])
+            ->setNonPersonalizedAds(true)
+            ->setValidationBehavior('ENFORCE_RECOMMENDATIONS')
+            ->setIpOverride('203.0.113.42')
+            ->setUserLocation([
+                'city' => 'Copenhagen',
+                'country_id' => 'DK',
+            ])
+            ->setDevice([
+                'category' => 'mobile',
+                'language' => 'en-US',
+            ])
+            ->addEvent(Login::new()->setMethod('password'));
+
+        $asArray = $firebase->toArray();
+        $this->assertTrue($asArray['non_personalized_ads']);
+        $this->assertEquals('ENFORCE_RECOMMENDATIONS', $asArray['validation_behavior']);
+        $this->assertEquals('203.0.113.42', $asArray['ip_override']);
+        $this->assertEquals('DK', $asArray['user_location']['country_id']);
+        $this->assertEquals('mobile', $asArray['device']['category']);
+    }
+
+    public function test_user_data_can_be_sent_without_user_id()
+    {
+        $this->expectNotToPerformAssertions();
+
+        $firebase = Firebase::new(
+            $this->prefill['firebase_app_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setAppInstanceId($this->prefill['app_instance_id']);
+
+        $firebase->userdata()->setEmail('test@gmail.com');
+        $firebase->addEvent(Login::new()->setMethod('password'));
+        $firebase->post();
+    }
+
     public function test_can_post_only_client_id_to_google()
     {
         $this->expectNotToPerformAssertions();

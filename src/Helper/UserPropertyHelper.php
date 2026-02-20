@@ -3,10 +3,13 @@
 namespace AlexWestergaard\PhpGa4\Helper;
 
 use AlexWestergaard\PhpGa4\Facade\Type\UserPropertyType;
+use AlexWestergaard\PhpGa4\Exception\Ga4Exception;
 use AlexWestergaard\PhpGa4\Exception\Ga4UserPropertyException;
 
 abstract class UserPropertyHelper extends IOHelper implements UserPropertyType
 {
+    protected null|int $set_timestamp_micros;
+
     public function setName(string $name): static
     {
         if (
@@ -24,6 +27,21 @@ abstract class UserPropertyHelper extends IOHelper implements UserPropertyType
         return $this;
     }
 
+    public function setTimestampMicros(int|float $microOrUnix): static
+    {
+        $min = ConvertHelper::timeAsMicro(strtotime('-3 days') + 10);
+        $max = ConvertHelper::timeAsMicro(time() + 3);
+
+        $time = ConvertHelper::timeAsMicro($microOrUnix);
+
+        if ($time < $min || $time > $max) {
+            throw Ga4Exception::throwMicrotimeExpired();
+        }
+
+        $this->set_timestamp_micros = $time;
+        return $this;
+    }
+
     public function toArray(): array
     {
         $return = [];
@@ -35,6 +53,10 @@ abstract class UserPropertyHelper extends IOHelper implements UserPropertyType
         $value = isset($this->value) ? $this->value : null;
         if (!is_array($value)) {
             $value = ['value' => $value];
+        }
+
+        if (isset($this->set_timestamp_micros)) {
+            $value['set_timestamp_micros'] = $this->set_timestamp_micros;
         }
 
         $return[$this->name] = $value;

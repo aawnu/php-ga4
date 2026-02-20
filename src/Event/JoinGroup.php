@@ -23,7 +23,9 @@ class JoinGroup extends EventHelper implements Facade\Group\JoinGroupFacade
 
     public function getRequiredParams(): array
     {
-        return [];
+        return [
+            'group_id',
+        ];
     }
 
     public function setGroupId(null|string $id)

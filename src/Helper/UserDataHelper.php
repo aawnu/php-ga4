@@ -58,20 +58,35 @@ class UserDataHelper
     }
 
     /**
-     * @param int $number International number (without prefix "+" and dashes) eg. \
-     * "+1-123-4567890" for USA or\
-     * "+44-1234-5678900" for UK or\
-     * "+45-12345678" for DK
+     * @param int|string $number International number in E.164-compatible style.
      * @return bool
      */
-    public function setPhone(int $number): bool
+    public function setPhone(int|string $number): bool
     {
-        $sNumber = strval($number);
-        if (strlen($sNumber) < 3 || strlen($sNumber) > 15) {
+        $sNumber = trim(strval($number));
+        if ($sNumber === '') {
             return false;
         }
 
-        $this->sha256_phone_number = hash("sha256", "+{$sNumber}");
+        $sNumber = preg_replace('/[^\d+]/', '', $sNumber);
+        if ($sNumber === null || $sNumber === '') {
+            return false;
+        }
+
+        if (str_starts_with($sNumber, '00')) {
+            $sNumber = '+' . substr($sNumber, 2);
+        }
+
+        $digits = ltrim($sNumber, '+');
+        if (!ctype_digit($digits)) {
+            return false;
+        }
+
+        if (strlen($digits) < 3 || strlen($digits) > 15) {
+            return false;
+        }
+
+        $this->sha256_phone_number = hash("sha256", "+{$digits}");
         return true;
     }
 

@@ -30,4 +30,12 @@ interface UserPropertyType extends IOType
      * @return static
      */
     public function setValue(int|float|string $value): static;
+
+    /**
+     * Optional timestamp override for when the user property was set.
+     *
+     * @param int|float $microOrUnix microtime(true) or time()
+     * @return static
+     */
+    public function setTimestampMicros(int|float $microOrUnix): static;
 }

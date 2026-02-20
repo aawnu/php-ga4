@@ -37,6 +37,19 @@ final class UserDataTest extends MeasurementTestCase
         $this->assertEquals($setCountry, $export["address"]["country"], $setCountry);
     }
 
+    public function test_phone_number_accepts_string_formatting()
+    {
+        $uda = new UserDataHelper();
+        $this->assertTrue($uda->setPhone('+45 00-00-00-00'));
+
+        $export = $uda->toArray();
+        $this->assertArrayHasKey('sha256_phone_number', $export);
+        $this->assertEquals(
+            hash('sha256', '+4500000000'),
+            $export['sha256_phone_number']
+        );
+    }
+
     public function test_user_data_is_sendable()
     {
         $this->expectNotToPerformAssertions();

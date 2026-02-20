@@ -25,7 +25,7 @@ class LevelUp extends EventHelper implements Facade\Group\LevelUpFacade
 
     public function getRequiredParams(): array
     {
-        return [];
+        return ['level'];
     }
 
     public function setLevel(null|int $lvl)

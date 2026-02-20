@@ -100,6 +100,51 @@ final class AnalyticsTest extends MeasurementTestCase
         $this->assertEquals([$event->toArray()], $asArray['events']);
     }
 
+    public function test_can_set_extended_top_level_fields()
+    {
+        $analytics = Analytics::new(
+            $this->prefill['measurement_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setClientId($this->prefill['client_id'])
+            ->setNonPersonalizedAds(true)
+            ->setValidationBehavior('ENFORCE_RECOMMENDATIONS')
+            ->setIpOverride('203.0.113.42')
+            ->setUserLocation([
+                'city' => 'Copenhagen',
+                'country_id' => 'DK',
+            ])
+            ->setDevice([
+                'category' => 'desktop',
+                'language' => 'en-US',
+            ])
+            ->addEvent(Login::new()->setMethod('password'));
+
+        $asArray = $analytics->toArray();
+        $this->assertTrue($asArray['non_personalized_ads']);
+        $this->assertEquals('ENFORCE_RECOMMENDATIONS', $asArray['validation_behavior']);
+        $this->assertEquals('203.0.113.42', $asArray['ip_override']);
+        $this->assertEquals('DK', $asArray['user_location']['country_id']);
+        $this->assertEquals('desktop', $asArray['device']['category']);
+    }
+
+    public function test_user_data_can_be_sent_without_user_id()
+    {
+        $this->expectNotToPerformAssertions();
+
+        $analytics = Analytics::new(
+            $this->prefill['measurement_id'],
+            $this->prefill['api_secret'],
+            $debug = true
+        )
+            ->setClientId($this->prefill['client_id']);
+
+        $analytics->userdata()->setEmail('test@gmail.com');
+        $analytics->addEvent(Login::new()->setMethod('password'));
+        $analytics->post();
+    }
+
     public function test_can_post_only_client_id_to_google()
     {
         $this->expectNotToPerformAssertions();

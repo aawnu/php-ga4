@@ -25,7 +25,10 @@ class EarnVirtualCurrency extends EventHelper implements Facade\Group\EarnVirtua
 
     public function getRequiredParams(): array
     {
-        return [];
+        return [
+            'virtual_currency_name',
+            'value',
+        ];
     }
     
     public function setVirtualCurrencyName(null|string $name)

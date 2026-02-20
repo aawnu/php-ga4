@@ -22,6 +22,22 @@ final class UserPropertyTest extends MeasurementTestCase
         $this->assertEquals($value, $export[$name]['value']);
     }
 
+    public function test_can_set_property_timestamp()
+    {
+        $userProperty = new UserProperty();
+
+        $userProperty
+            ->setName('testname')
+            ->setValue('testvalue')
+            ->setTimestampMicros($time = time());
+
+        $export = $userProperty->toArray();
+
+        $this->assertArrayHasKey('testname', $export);
+        $this->assertArrayHasKey('set_timestamp_micros', $export['testname']);
+        $this->assertEquals($time * 1_000_000, $export['testname']['set_timestamp_micros']);
+    }
+
     public function test_throws_on_reserved_name()
     {
         $userProperty = new UserProperty();

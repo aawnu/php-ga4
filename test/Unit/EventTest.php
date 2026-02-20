@@ -15,6 +15,38 @@ use AlexWestergaard\PhpGa4Test\MeasurementTestCase;
 
 final class EventTest extends MeasurementTestCase
 {
+    public function test_event_can_set_event_timestamp_override()
+    {
+        $event = Event\Login::new()
+            ->setMethod('password')
+            ->setEventTimestampMicros($time = time());
+
+        $asArray = $event->toArray();
+
+        $this->assertArrayHasKey('timestamp_micros', $asArray);
+        $this->assertEquals($time * 1_000_000, $asArray['timestamp_micros']);
+    }
+
+    public function test_event_can_set_campaign_defaults()
+    {
+        $event = Event\Login::new()
+            ->setMethod('password')
+            ->setCampaignSource('newsletter')
+            ->setCampaignMedium('email')
+            ->setCampaignName('spring_sale')
+            ->setCampaignTerm('term')
+            ->setCampaignContent('content')
+            ->setCampaignId('cmp_1');
+
+        $asArray = $event->toArray();
+        $this->assertEquals('newsletter', $asArray['params']['campaign_source']);
+        $this->assertEquals('email', $asArray['params']['campaign_medium']);
+        $this->assertEquals('spring_sale', $asArray['params']['campaign_name']);
+        $this->assertEquals('term', $asArray['params']['campaign_term']);
+        $this->assertEquals('content', $asArray['params']['campaign_content']);
+        $this->assertEquals('cmp_1', $asArray['params']['campaign_id']);
+    }
+
     public function test_page_view()
     {
         $event = new Event\PageView;
@@ -799,6 +831,9 @@ final class EventTest extends MeasurementTestCase
     private function populateEventByFromArray(Type\EventType $event)
     {
         return $event::fromArray([
+            'session_id' => '1700000000',
+            'engagement_time_msec' => 150,
+            'timestamp_micros' => time(),
             'language' => 'en-US',
             'page_location' => 'https://www.example.com/',
             'page_referrer' => 'https://example.com/',
@@ -849,6 +884,9 @@ final class EventTest extends MeasurementTestCase
         $event['page_referrer'] = 'https://www.example.com/';
         $event['page_title'] = 'Home - Example';
         $event['screen_resolution'] = '1920x1080';
+        $event['session_id'] = '1700000000';
+        $event['engagement_time_msec'] = 150;
+        $event['timestamp_micros'] = time();
 
         $event['description'] = 'This is a short description';
         $event['fatal'] = true;
@@ -892,6 +930,10 @@ final class EventTest extends MeasurementTestCase
         Type\EventType|Group\ExceptionFacade|Group\PageViewFacade|Group\AddPaymentInfoFacade|Group\AddShippingInfoFacade|Group\AddToCartFacade|Group\AddToWishlistFacade|Group\AnalyticsFacade|Group\BeginCheckoutFacade|Group\EarnVirtualCurrencyFacade|Group\ExportFacade|Group\GenerateLeadFacade|Group\ItemFacade|Group\JoinGroupFacade|Group\LevelUpFacade|Group\LoginFacade|Group\PostScoreFacade|Group\PurchaseFacade|Group\RefundFacade|Group\RemoveFromCartFacade|Group\SearchFacade|Group\SelectContentFacade|Group\SelectItemFacade|Group\SelectPromotionFacade|Group\ShareFacade|Group\SignUpFacade|Group\SpendVirtualCurrencyFacade|Group\UnlockAchievementFacade|Group\ViewCartFacade|Group\ViewItemFacade|Group\ViewItemListFacade|Group\ViewPromotionFacade|Group\ViewSearchResultsFacade|Group\hasItemsFacade $event
     ) {
         $params = $event->getAllParams();
+
+        $event->setSessionId('1700000000');
+        $event->setEngagementTimeMSec(150);
+        $event->setEventTimestampMicros(time());
 
         if ($event instanceof EventHelper) {
             $event->setLanguage('en-US');

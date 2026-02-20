@@ -92,7 +92,10 @@ final class HelperTest extends MeasurementTestCase
             'session_id' => '1689053763',
             'session_number' => '1',
             'session_engagement' => '1',
-            'timestampt' => '1689054101',
+            'timestamp' => '1689054101',
+            'join_timer' => '0',
+            'logged_in_state' => '0',
+            'join_id' => '0',
         ], $sessionData);
     }
 
@@ -100,25 +103,30 @@ final class HelperTest extends MeasurementTestCase
     {
         $sessionData = Helper\ConvertHelper::parseSessionCookie('GS2.1.s1764888982$o50$g1$t1764890260$j59$l0$h681028196');
         $this->assertEquals([
-            'session_id' => 's1764888982',
-            'session_number' => 'o50',
-            'session_engaged' => 'g1',
-            'timestamp' => 't1764890260',
-            'join_timer' => 'j59',
-            'logged_in_state' => 'l0',
-            'user_id' => 'h681028196',
+            'version' => 'GS2',
+            'domain_level' => '1',
+            // Prefix removed from values.
+            'session_id' => '1764888982',
+            'session_number' => '50',
+            'session_engaged' => '1',
+            'timestamp' => '1764890260',
+            'join_timer' => '59',
+            'logged_in_state' => '0',
+            'user_id' => '681028196',
         ], $sessionData);
         
         // same data, different order
         $sessionData = Helper\ConvertHelper::parseSessionCookie('GS2.1.t1764890260$o50$g1$s1764888982$j59$l0$h681028196');
         $this->assertEquals([
-            'session_id' => 's1764888982',
-            'session_number' => 'o50',
-            'session_engaged' => 'g1',
-            'timestamp' => 't1764890260',
-            'join_timer' => 'j59',
-            'logged_in_state' => 'l0',
-            'user_id' => 'h681028196',
+            'version' => 'GS2',
+            'domain_level' => '1',
+            'session_id' => '1764888982',
+            'session_number' => '50',
+            'session_engaged' => '1',
+            'timestamp' => '1764890260',
+            'join_timer' => '59',
+            'logged_in_state' => '0',
+            'user_id' => '681028196',
         ], $sessionData);
     }
 
@@ -129,5 +137,45 @@ final class HelperTest extends MeasurementTestCase
         
         $sessionData = Helper\ConvertHelper::parseSessionCookie('');
         $this->assertEquals([], $sessionData);
+    }
+
+    public function test_parse_client_id_from_ga_cookie()
+    {
+        $this->assertEquals(
+            '1234567890.987654321',
+            Helper\ConvertHelper::parseClientIdFromGaCookie('GA1.1.1234567890.987654321')
+        );
+        $this->assertNull(Helper\ConvertHelper::parseClientIdFromGaCookie('invalid'));
+    }
+
+    public function test_parse_client_id_from_cookies()
+    {
+        $this->assertEquals(
+            '1234567890.987654321',
+            Helper\ConvertHelper::parseClientIdFromCookies([
+                '_ga' => 'GA1.1.1234567890.987654321',
+                '_gid' => 'GA1.1.111.222',
+            ])
+        );
+
+        $this->assertEquals(
+            '111.222',
+            Helper\ConvertHelper::parseClientIdFromCookies([
+                '_gid' => 'GA1.1.111.222',
+            ])
+        );
+    }
+
+    public function test_parse_ga_cookies_bundle()
+    {
+        $parsed = Helper\ConvertHelper::parseGaCookies([
+            '_ga' => 'GA1.1.1234567890.987654321',
+            '_ga_123456789' => 'GS2.1.s1764888982$o50$g1$t1764890260',
+        ]);
+
+        $this->assertArrayHasKey('client_id', $parsed);
+        $this->assertArrayHasKey('session', $parsed);
+        $this->assertEquals('1234567890.987654321', $parsed['client_id']);
+        $this->assertEquals('1764888982', $parsed['session']['session_id']);
     }
 }

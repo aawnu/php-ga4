@@ -23,7 +23,9 @@ class Search extends EventHelper implements Facade\Group\SearchFacade
 
     public function getRequiredParams(): array
     {
-        return [];
+        return [
+            'search_term',
+        ];
     }
 
     public function setSearchTerm(null|string $term)

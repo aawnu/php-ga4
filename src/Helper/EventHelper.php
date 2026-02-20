@@ -44,6 +44,42 @@ abstract class EventHelper extends EventMainHelper implements DefaultEventParams
         return $this;
     }
 
+    public function setCampaignSource(string $source)
+    {
+        $this->campaign['campaign_source'] = $source;
+        return $this;
+    }
+
+    public function setCampaignMedium(string $medium)
+    {
+        $this->campaign['campaign_medium'] = $medium;
+        return $this;
+    }
+
+    public function setCampaignName(string $name)
+    {
+        $this->campaign['campaign_name'] = $name;
+        return $this;
+    }
+
+    public function setCampaignTerm(string $term)
+    {
+        $this->campaign['campaign_term'] = $term;
+        return $this;
+    }
+
+    public function setCampaignContent(string $content)
+    {
+        $this->campaign['campaign_content'] = $content;
+        return $this;
+    }
+
+    public function setCampaignId(string $id)
+    {
+        $this->campaign['campaign_id'] = $id;
+        return $this;
+    }
+
     public function setEventPage(DefaultEventParamsType $page)
     {
         $args = $page->toArray();

@@ -18,6 +18,14 @@ interface AnalyticsType extends IOType
     public function setClientId(string $id);
 
     /**
+     * Mark payload as non-personalized ads.
+     *
+     * @var non_personalized_ads
+     * @param bool $enabled
+     */
+    public function setNonPersonalizedAds(bool $enabled = true);
+
+    /**
      * A unique identifier for a user. See User-ID for cross-platform analysis for more information on this identifier.
      *
      * @var user_id
@@ -33,6 +41,38 @@ interface AnalyticsType extends IOType
      * @param integer|float $microOrUnix microtime(true) or time()
      */
     public function setTimestampMicros(int|float $microOrUnix);
+
+    /**
+     * Validation behavior for debug endpoint.
+     *
+     * @var validation_behavior
+     * @param string|null $behavior
+     */
+    public function setValidationBehavior(null|string $behavior);
+
+    /**
+     * Override source IP address.
+     *
+     * @var ip_override
+     * @param string|null $ip
+     */
+    public function setIpOverride(null|string $ip);
+
+    /**
+     * Override user location object.
+     *
+     * @var user_location
+     * @param array $location
+     */
+    public function setUserLocation(array $location);
+
+    /**
+     * Override device object.
+     *
+     * @var device
+     * @param array $device
+     */
+    public function setDevice(array $device);
 
     /**
      * The user properties for the measurement (Up to 25 custom per project, see link)

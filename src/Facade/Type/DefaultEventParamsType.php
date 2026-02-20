@@ -64,5 +64,61 @@ interface DefaultEventParamsType
      */
     public function setEngagementTimeMSec(int $msec);
 
+    /**
+     * Optional event-level override for event timestamp.
+     *
+     * @var timestamp_micros
+     * @param int|float $microOrUnix microtime(true) or time()
+     */
+    public function setEventTimestampMicros(int|float $microOrUnix);
+
+    /**
+     * Campaign source.
+     *
+     * @var campaign_source
+     * @param string $source eg. newsletter
+     */
+    public function setCampaignSource(string $source);
+
+    /**
+     * Campaign medium.
+     *
+     * @var campaign_medium
+     * @param string $medium eg. email
+     */
+    public function setCampaignMedium(string $medium);
+
+    /**
+     * Campaign name.
+     *
+     * @var campaign_name
+     * @param string $name eg. spring_sale
+     */
+    public function setCampaignName(string $name);
+
+    /**
+     * Campaign term.
+     *
+     * @var campaign_term
+     * @param string $term
+     */
+    public function setCampaignTerm(string $term);
+
+    /**
+     * Campaign content.
+     *
+     * @var campaign_content
+     * @param string $content
+     */
+    public function setCampaignContent(string $content);
+
+    /**
+     * Campaign identifier.
+     *
+     * @var campaign_id
+     * @param string $id
+     */
+    public function setCampaignId(string $id);
+
     public function toArray(): array;
 }
